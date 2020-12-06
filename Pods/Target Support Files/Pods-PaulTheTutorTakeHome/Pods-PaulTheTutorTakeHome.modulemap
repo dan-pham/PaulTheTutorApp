@@ -1,0 +1,6 @@
+framework module Pods_PaulTheTutorTakeHome {
+  umbrella header "Pods-PaulTheTutorTakeHome-umbrella.h"
+
+  export *
+  module * { export * }
+}
