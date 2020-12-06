@@ -15,10 +15,10 @@ class ProblemSetVC: UIViewController {
     var totalProblemsLabel = PTTitleLabel(textAlignment: .center, fontSize: 30)
     var containerView = PTContainerView(frame: .zero)
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
-    var dividerView = UIView(frame: .zero)
     var answerTextField = PTTextField(frame: .zero)
     var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
-    var nextButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Next")
+    var nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Submit")
+    var hintButton = PTButton(titleColor: Colors.paulDarkGreen, backgroundColor: .clear, title: "Hint")
     
     var problemSet: ProblemSet!
     var currentProblem = 0
@@ -78,6 +78,10 @@ class ProblemSetVC: UIViewController {
         }
     }
     
+    @objc func showHint() {
+        print("Show hint")
+    }
+    
     
     // MARK: - Presentation Functions
     
@@ -96,18 +100,6 @@ class ProblemSetVC: UIViewController {
     
     
     // MARK: - Update UI Functions
-    
-    private func configureUI() {
-        configureViewController()
-        configureNavBar()
-        configureTotalProblemsLabel()
-        configureContainerView()
-        configureProblemLabel()
-        configureDividerView()
-        configureAnswerTextField()
-        configureNextButton()
-        configureEncouragementLabel()
-    }
     
     private func updateFields() {
         answerTextField.text = ""

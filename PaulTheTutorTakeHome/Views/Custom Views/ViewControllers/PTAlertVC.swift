@@ -23,8 +23,8 @@ class PTAlertVC: UIViewController {
     let containerView = PTContainerView(frame: .zero)
     let titleLabel = PTTitleLabel(textAlignment: .center, fontSize: 24)
     let messageLabel = PTBodyLabel(textAlignment: .center, fontSize: 20)
-    let actionButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Leave")
-    let cancelButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Cancel")
+    let actionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Leave")
+    let cancelButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Cancel")
     
     let padding: CGFloat = 20
     let containerViewWidth: CGFloat = 300

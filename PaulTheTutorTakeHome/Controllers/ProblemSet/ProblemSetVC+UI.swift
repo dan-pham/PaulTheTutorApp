@@ -12,20 +12,32 @@ import UIKit
 
 extension ProblemSetVC {
     
-    func configureViewController() {
+    func configureUI() {
+        configureViewController()
+        configureNavBar()
+        configureTotalProblemsLabel()
+        configureContainerView()
+        configureProblemLabel()
+        configureAnswerTextField()
+        configureNextButton()
+        configureEncouragementLabel()
+        configureHintButton()
+    }
+    
+    private func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
         view.createDismissKeyboardTapGesture()
         title = problemSet.title
-        view.addSubviews(totalProblemsLabel, containerView)
+        view.addSubviews(totalProblemsLabel, containerView, hintButton)
     }
     
-    func configureNavBar() {
+    private func configureNavBar() {
         let backItem = UIBarButtonItem(title: "Leave", style: .plain, target: self, action: #selector(presentLeaveConfirmationAlert))
         backItem.tintColor = Colors.paulDarkGreen
         navigationItem.leftBarButtonItem = backItem
     }
     
-    func configureTotalProblemsLabel() {
+    private func configureTotalProblemsLabel() {
         NSLayoutConstraint.activate([
             totalProblemsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
             totalProblemsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
@@ -33,8 +45,8 @@ extension ProblemSetVC {
         ])
     }
     
-    func configureContainerView() {
-        containerView.addSubviews(problemLabel, dividerView, answerTextField, encouragementLabel, nextButton)
+    private func configureContainerView() {
+        containerView.addSubviews(problemLabel, answerTextField, encouragementLabel, nextButton)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
@@ -44,38 +56,29 @@ extension ProblemSetVC {
         ])
     }
     
-    func configureProblemLabel() {
-        problemLabel.numberOfLines = 1
+    private func configureProblemLabel() {
+        problemLabel.textAlignment = .center
         
         NSLayoutConstraint.activate([
             problemLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
             problemLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            problemLabel.trailingAnchor.constraint(equalTo: containerView.centerXAnchor, constant: padding)
+            problemLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
         ])
     }
     
-    func configureDividerView() {
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        dividerView.backgroundColor = .black
+    private func configureAnswerTextField() {
+        answerTextField.delegate = self
+        answerTextField.placeholder = "Answer"
         
         NSLayoutConstraint.activate([
-            dividerView.topAnchor.constraint(equalTo: problemLabel.bottomAnchor),
-            dividerView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            dividerView.widthAnchor.constraint(equalToConstant: 100),
-            dividerView.heightAnchor.constraint(equalToConstant: 2)
-        ])
-    }
-    
-    func configureAnswerTextField() {
-        NSLayoutConstraint.activate([
-            answerTextField.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: padding),
+            answerTextField.topAnchor.constraint(equalTo: problemLabel.bottomAnchor, constant: padding),
             answerTextField.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            answerTextField.widthAnchor.constraint(equalToConstant: 100),
+            answerTextField.widthAnchor.constraint(equalToConstant: 150),
             answerTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
-    func configureNextButton() {
+    private func configureNextButton() {
         nextButton.addTarget(self, action: #selector(setupNextEquation), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -86,7 +89,7 @@ extension ProblemSetVC {
         ])
     }
     
-    func configureEncouragementLabel() {
+    private func configureEncouragementLabel() {
         encouragementLabel.numberOfLines = 2
         encouragementLabel.lineBreakMode = .byWordWrapping
         
@@ -94,6 +97,20 @@ extension ProblemSetVC {
             encouragementLabel.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -padding),
             encouragementLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             encouragementLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
+        ])
+    }
+    
+    private func configureHintButton() {
+        hintButton.addTarget(self, action: #selector(showHint), for: .touchUpInside)
+        
+        hintButton.layer.borderWidth = 2
+        hintButton.layer.borderColor = Colors.paulDarkGreen.cgColor
+        
+        NSLayoutConstraint.activate([
+            hintButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: padding),
+            hintButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            hintButton.widthAnchor.constraint(equalToConstant: 60),
+            hintButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
     

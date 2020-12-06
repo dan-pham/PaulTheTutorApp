@@ -29,7 +29,7 @@ class ResultsVC: UIViewController {
     let incorrectProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     let animationView = AnimationView()
-    let homeButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Home")
+    let homeButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Home")
     
     var problemSet: ProblemSet!
     

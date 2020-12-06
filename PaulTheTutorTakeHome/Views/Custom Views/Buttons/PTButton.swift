@@ -21,10 +21,20 @@ class PTButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(backgroundColor: UIColor, title: String) {
+    convenience init(titleColor: UIColor, backgroundColor: UIColor, title: String) {
         self.init(frame: .zero)
+        setTitleColor(titleColor, for: .normal)
+        setTitleColor(titleColor.withAlphaComponent(0.7), for: .highlighted)
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            if backgroundColor != .clear {
+                backgroundColor = backgroundColor?.withAlphaComponent(isHighlighted ? 0.7 : 1)
+            }
+        }
     }
     
     
@@ -34,7 +44,6 @@ class PTButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 10
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .title2)
-        setTitleColor(.white, for: .normal)
     }
     
 }

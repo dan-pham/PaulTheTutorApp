@@ -27,8 +27,8 @@ class ConfirmationVC: UIViewController {
     let titleLabel = PTTitleLabel(textAlignment: .left, fontSize: 24)
     let numberOfProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let confirmLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
-    let confirmButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Let's go!")
-    let dismissButton = PTButton(backgroundColor: Colors.paulDarkGreen, title: "Maybe later")
+    let confirmButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Let's go!")
+    let dismissButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Maybe later")
     
     let padding: CGFloat = 10
     let containerWidth: CGFloat = 300

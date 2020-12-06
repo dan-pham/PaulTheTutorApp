@@ -8,6 +8,26 @@
 
 import UIKit
 
+
+// MARK: - TextFieldDelegate Functions {
+
+extension ProblemSetVC: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.placeholder == "Answer" {
+            textField.placeholder = ""
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.placeholder == "" {
+            textField.placeholder = "Answer"
+        }
+    }
+    
+}
+
+
 // MARK: - ResultsDelegate Functions
 
 extension ProblemSetVC: ResultsDelegate {
