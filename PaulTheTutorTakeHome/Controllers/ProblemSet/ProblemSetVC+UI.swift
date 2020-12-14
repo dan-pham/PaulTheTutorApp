@@ -20,14 +20,14 @@ extension ProblemSetVC {
         configureProblemLabel()
         configureAnswerTextField()
         configureNextButton()
-        configureEncouragementLabel()
+//        configureEncouragementLabel()
         configureHintButton()
     }
     
     private func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
-        view.createDismissKeyboardTapGesture()
-        title = problemSet.title
+        view.addDismissKeyboardTapGesture()
+//        title = problemSet.title
         view.addSubviews(totalProblemsLabel, containerView, hintButton)
     }
     
@@ -46,7 +46,7 @@ extension ProblemSetVC {
     }
     
     private func configureContainerView() {
-        containerView.addSubviews(problemLabel, answerTextField, encouragementLabel, nextButton)
+        containerView.addSubviews(problemLabel, answerTextField, nextButton) // encouragementLabel, nextButton)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
@@ -89,16 +89,16 @@ extension ProblemSetVC {
         ])
     }
     
-    private func configureEncouragementLabel() {
-        encouragementLabel.numberOfLines = 2
-        encouragementLabel.lineBreakMode = .byWordWrapping
-        
-        NSLayoutConstraint.activate([
-            encouragementLabel.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -padding),
-            encouragementLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            encouragementLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
-        ])
-    }
+//    private func configureEncouragementLabel() {
+//        encouragementLabel.numberOfLines = 2
+//        encouragementLabel.lineBreakMode = .byWordWrapping
+//
+//        NSLayoutConstraint.activate([
+//            encouragementLabel.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -padding),
+//            encouragementLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+//            encouragementLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
+//        ])
+//    }
     
     private func configureHintButton() {
         hintButton.addTarget(self, action: #selector(showHint), for: .touchUpInside)

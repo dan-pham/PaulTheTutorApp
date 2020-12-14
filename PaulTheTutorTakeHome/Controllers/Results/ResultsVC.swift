@@ -33,7 +33,7 @@ class ResultsVC: UIViewController {
     
     var problemSet: ProblemSet!
     
-    let padding: CGFloat = 20
+    let padding = Padding.standard
     
     var problemsCorrect = 0
     var correctProblems = ""
@@ -66,7 +66,7 @@ class ResultsVC: UIViewController {
     // MARK: - Action Functions
     
     private func calculateResults() {
-        for i in 0..<problemSet.numberOfProblems {
+        for i in 0..<problemSet.parameters.numberOfProblems {
             if problemSet.problems![i].isCorrect {
                 if problemsCorrect > 0 { correctProblems.append(contentsOf: "\n") }
                 correctProblems.append(contentsOf: "\(problemSet.problems![i].printEquation())")
@@ -102,12 +102,12 @@ class ResultsVC: UIViewController {
     }
     
     private func updateLabels() {
-        correctResultsLabel.text = "Correct: \(problemsCorrect)/\(problemSet.numberOfProblems)"
+        correctResultsLabel.text = "Correct: \(problemsCorrect)/\(problemSet.parameters.numberOfProblems)"
         correctProblemsLabel.text = correctProblems
-        incorrectResultsLabel.text = "Incorrect: \(problemsIncorrect)/\(problemSet.numberOfProblems)"
+        incorrectResultsLabel.text = "Incorrect: \(problemsIncorrect)/\(problemSet.parameters.numberOfProblems)"
         incorrectProblemsLabel.text = incorrectProblems
         
-        if problemsCorrect >= 7 {
+        if Double(problemsCorrect) >= Double(problemSet.parameters.numberOfProblems) * 0.7 {
             encouragementLabel.text = "Great job!"
         } else {
             encouragementLabel.numberOfLines = 2

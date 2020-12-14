@@ -26,7 +26,7 @@ class PTAlertVC: UIViewController {
     let actionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Leave")
     let cancelButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Cancel")
     
-    let padding: CGFloat = 20
+    let padding = Padding.standard
     let containerViewWidth: CGFloat = 300
     var isConfirmationAlert = false
     

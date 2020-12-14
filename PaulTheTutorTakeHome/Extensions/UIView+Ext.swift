@@ -16,7 +16,7 @@ extension UIView {
         }
     }
     
-    func createDismissKeyboardTapGesture() {
+    func addDismissKeyboardTapGesture() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing)))
     }
     

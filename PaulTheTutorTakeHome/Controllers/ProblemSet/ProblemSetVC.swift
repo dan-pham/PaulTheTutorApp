@@ -16,14 +16,14 @@ class ProblemSetVC: UIViewController {
     var containerView = PTContainerView(frame: .zero)
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
     var answerTextField = PTTextField(frame: .zero)
-    var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
+//    var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     var nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Submit")
     var hintButton = PTButton(titleColor: Colors.paulDarkGreen, backgroundColor: .clear, title: "Hint")
     
     var problemSet: ProblemSet!
     var currentProblem = 0
     
-    let padding: CGFloat = 20
+    let padding = Padding.standard
     
     
     // MARK: - Initialization Functions
@@ -59,7 +59,7 @@ class ProblemSetVC: UIViewController {
         
         if currentProblem > 0 { checkAnswer() }
         
-        guard currentProblem < problemSet.numberOfProblems else {
+        guard currentProblem < problemSet.parameters.numberOfProblems else {
             answerTextField.resignFirstResponder()
             presentResultsVC()
             return
@@ -103,9 +103,9 @@ class ProblemSetVC: UIViewController {
     
     private func updateFields() {
         answerTextField.text = ""
-        totalProblemsLabel.text = "Question \(currentProblem) of 10"
+        totalProblemsLabel.text = "Question \(currentProblem) of \(problemSet.parameters.numberOfProblems)"
         updateProblemLabel()
-        updateEncouragementLabel()
+//        updateEncouragementLabel()
     }
     
     private func updateProblemLabel() {
@@ -114,23 +114,23 @@ class ProblemSetVC: UIViewController {
         }
     }
     
-    private func updateEncouragementLabel() {
-        switch currentProblem {
-        case 2:
-            encouragementLabel.text = "You're off to a good start!"
-        case 3, 4:
-            encouragementLabel.text = "Almost halfway!"
-        case 5, 6:
-            encouragementLabel.text = "You're halfway there!"
-        case 7, 8, 9:
-            encouragementLabel.text = "You're almost done!"
-        case 10:
-            encouragementLabel.text = "Last one!"
-            nextButton.setTitle("Finish", for: .normal)
-        default:
-            encouragementLabel.text = "Let's go!"
-        }
-    }
+//    private func updateEncouragementLabel() {
+//        switch currentProblem {
+//        case 2:
+//            encouragementLabel.text = "You're off to a good start!"
+//        case 3, 4:
+//            encouragementLabel.text = "Almost halfway!"
+//        case 5, 6:
+//            encouragementLabel.text = "You're halfway there!"
+//        case 7, 8, 9:
+//            encouragementLabel.text = "You're almost done!"
+//        case 10:
+//            encouragementLabel.text = "Last one!"
+//            nextButton.setTitle("Finish", for: .normal)
+//        default:
+//            encouragementLabel.text = "Let's go!"
+//        }
+//    }
     
 }
 

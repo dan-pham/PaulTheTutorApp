@@ -30,7 +30,7 @@ class ConfirmationVC: UIViewController {
     let confirmButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Let's go!")
     let dismissButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Maybe later")
     
-    let padding: CGFloat = 10
+    let padding = Padding.standard
     let containerWidth: CGFloat = 300
     var containerHalfWidth: CGFloat = 0
     
@@ -61,12 +61,12 @@ class ConfirmationVC: UIViewController {
     // MARK: - Action Functions
     
     private func setProblemSet() {
-        animationView.animation = problemSet.animation
-        animationView.loopMode = .loop
-        animationView.play()
-        
-        titleLabel.text = problemSet.title
-        numberOfProblemsLabel.text = "\(problemSet.numberOfProblems) problems"
+//        animationView.animation = problemSet.animation
+//        animationView.loopMode = .loop
+//        animationView.play()
+//
+//        titleLabel.text = problemSet.title
+//        numberOfProblemsLabel.text = "\(problemSet.parameters.numberOfProblems) problems"
     }
     
     @objc func confirmAction() {

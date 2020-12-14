@@ -1,5 +1,5 @@
 //
-//  DashboardVC+UI.swift
+//  MathOperationsVC+UI.swift
 //  PaulTheTutorTakeHome
 //
 //  Created by Dan Pham on 5/11/20.
@@ -10,11 +10,10 @@ import UIKit
 
 // MARK: - Configuration Functions
 
-extension DashboardVC {
+extension MathOperationsVC {
     
     func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
-        title = "Math Problem Sets"
     }
     
     func configureNavBar() {

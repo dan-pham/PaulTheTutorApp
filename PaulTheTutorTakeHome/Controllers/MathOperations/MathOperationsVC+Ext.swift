@@ -1,5 +1,5 @@
 //
-//  DashboardVC+Ext.swift
+//  MathOperationsVC+Ext.swift
 //  PaulTheTutorTakeHome
 //
 //  Created by Dan Pham on 5/11/20.
@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - CollectionView Delegate Functions
 
-extension DashboardVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MathOperationsVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return problemSets.count
@@ -43,7 +43,7 @@ extension DashboardVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
 // MARK: - ConfirmationDelegate Functions
 
-extension DashboardVC: ConfirmationDelegate {
+extension MathOperationsVC: ConfirmationDelegate {
     
     func didCancelAction() {
         playAnimations()

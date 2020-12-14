@@ -1,14 +1,14 @@
 //
-//  PTTitleLabel.swift
+//  PTBlackOverlayView.swift
 //  PaulTheTutorTakeHome
 //
-//  Created by Dan Pham on 5/10/20.
+//  Created by Dan Pham on 12/13/20.
 //  Copyright © 2020 Dan Pham. All rights reserved.
 //
 
 import UIKit
 
-class PTTitleLabel: UILabel {
+class PTBlackOverlayView: UIView {
     
     // MARK: - Initialization Functions
     
@@ -21,10 +21,18 @@ class PTTitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
-        self.init(frame: .zero)
-        self.textAlignment = textAlignment
-        self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
+    @objc func showOverlay(on view: UIView) {
+        UIView.animate(withDuration: 0.3) {
+            self.isHidden = false
+            self.alpha = 1
+        }
+    }
+    
+    @objc func hideOverlay() {
+        UIView.animate(withDuration: 0.3) {
+            self.alpha = 0
+            self.isHidden = true
+        }
     }
     
     
@@ -32,11 +40,9 @@ class PTTitleLabel: UILabel {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        textColor = .black
-        lineBreakMode = .byWordWrapping
-        
-        adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.9
+        backgroundColor = Colors.blackOverlay
+        isHidden = true
+        alpha = 0
     }
     
 }

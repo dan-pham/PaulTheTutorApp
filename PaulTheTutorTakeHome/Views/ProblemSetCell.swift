@@ -36,10 +36,10 @@ class ProblemSetCell: UICollectionViewCell {
     // MARK: - Public Functions
     
     func setProblemSet(problemSet: ProblemSet) {
-        titleLabel.text = problemSet.title
-        numberOfProblemsLabel.text = "\(problemSet.numberOfProblems) problems"
-        
-        animationView.animation = problemSet.animation
+//        titleLabel.text = problemSet.title
+//        numberOfProblemsLabel.text = "\(problemSet.parameters.numberOfProblems) problems"
+//        
+//        animationView.animation = problemSet.animation
     }
     
     func playAnimation() {
@@ -68,7 +68,7 @@ class ProblemSetCell: UICollectionViewCell {
         chevronImageView.image = SFSymbols.chevronRight
         chevronImageView.tintColor = Colors.paulDarkGreen
         
-        let padding: CGFloat = 10
+        let padding = Padding.standard
         let iconImageViewLength: CGFloat = 50
         let chevronImageViewLength: CGFloat = 30
         

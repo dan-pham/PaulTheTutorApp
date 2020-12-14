@@ -12,7 +12,7 @@ enum UIHelper {
     
     static func createVerticalFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
-        let padding: CGFloat = 20
+        let padding = Padding.large
         
         let availableItemWidth = width - (padding * 2)
         let itemHeight: CGFloat = 85
