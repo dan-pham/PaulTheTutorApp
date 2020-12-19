@@ -10,7 +10,7 @@ import UIKit
 
 class TypeOfIntegersVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Type of Integers")
     
     let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")
@@ -20,8 +20,6 @@ class TypeOfIntegersVC: UIViewController {
     let multipleDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "multiple digits")
     let focusOnANumberButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "focus on a number")
     let pickTheRangeButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "pick the range")
-    
-    let padding = Padding.standard
     
     let parameters = ProblemSetParameters.shared
     
@@ -112,102 +110,47 @@ extension TypeOfIntegersVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "Type of Integers"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configureDoublesButton() {
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            doublesButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            doublesButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            doublesButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            doublesButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        doublesButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }
     
     private func configureOneDigitButton() {
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            oneDigitButton.topAnchor.constraint(equalTo: doublesButton.bottomAnchor, constant: padding),
-            oneDigitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            oneDigitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            oneDigitButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        oneDigitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: doublesButton)
     }
     
     private func configureHardOneDigitsButton() {
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            hardOneDigitsButton.topAnchor.constraint(equalTo: oneDigitButton.bottomAnchor, constant: padding),
-            hardOneDigitsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            hardOneDigitsButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            hardOneDigitsButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneDigitButton)
     }
     
     private func configureZeroToTwelveButton() {
         zeroToTwelveButton.addTarget(self, action: #selector(selectZeroToTwelve), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            zeroToTwelveButton.topAnchor.constraint(equalTo: hardOneDigitsButton.bottomAnchor, constant: padding),
-            zeroToTwelveButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            zeroToTwelveButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            zeroToTwelveButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: hardOneDigitsButton)
     }
     
     private func configureOneToTwoDigitsButton() {
         oneToTwoDigitsButton.addTarget(self, action: #selector(selectOneToTwoDigits), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            oneToTwoDigitsButton.topAnchor.constraint(equalTo: zeroToTwelveButton.bottomAnchor, constant: padding),
-            oneToTwoDigitsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            oneToTwoDigitsButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            oneToTwoDigitsButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: zeroToTwelveButton)
     }
     
     private func configureMultipleDigitsButton() {
         multipleDigitsButton.addTarget(self, action: #selector(selectMultipleDigits), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            multipleDigitsButton.topAnchor.constraint(equalTo: oneToTwoDigitsButton.bottomAnchor, constant: padding),
-            multipleDigitsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            multipleDigitsButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            multipleDigitsButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        multipleDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneToTwoDigitsButton)
     }
     
     private func configureFocusOnANumberButton() {
         focusOnANumberButton.addTarget(self, action: #selector(selectFocusOnANumber), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            focusOnANumberButton.topAnchor.constraint(equalTo: multipleDigitsButton.bottomAnchor, constant: padding),
-            focusOnANumberButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            focusOnANumberButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            focusOnANumberButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        focusOnANumberButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: multipleDigitsButton)
     }
     
     private func configurePickTheRangeButton() {
         pickTheRangeButton.addTarget(self, action: #selector(selectPickTheRange), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            pickTheRangeButton.topAnchor.constraint(equalTo: focusOnANumberButton.bottomAnchor, constant: padding),
-            pickTheRangeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            pickTheRangeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            pickTheRangeButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        pickTheRangeButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusOnANumberButton)
     }
     
 }

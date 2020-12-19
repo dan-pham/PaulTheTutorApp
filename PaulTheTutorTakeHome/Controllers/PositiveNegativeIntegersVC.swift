@@ -10,11 +10,9 @@ import UIKit
 
 class PositiveNegativeIntegersVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Type of Integers")
     let positiveIntegersButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "positive integers")
     let negativeAndPositiveIntegersButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "negative and positive integers")
-    
-    let padding = Padding.standard
     
     let parameters = ProblemSetParameters.shared
     
@@ -59,36 +57,17 @@ extension PositiveNegativeIntegersVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "Type of Integers"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configurePositiveIntegersButton() {
         positiveIntegersButton.addTarget(self, action: #selector(selectPositiveIntegers), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            positiveIntegersButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            positiveIntegersButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            positiveIntegersButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            positiveIntegersButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        positiveIntegersButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }
     
     private func configureNegativeAndPositiveIntegersButton() {
         negativeAndPositiveIntegersButton.addTarget(self, action: #selector(selectNegativeAndPositiveIntegers), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            negativeAndPositiveIntegersButton.topAnchor.constraint(equalTo: positiveIntegersButton.bottomAnchor, constant: padding),
-            negativeAndPositiveIntegersButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            negativeAndPositiveIntegersButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            negativeAndPositiveIntegersButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        negativeAndPositiveIntegersButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: positiveIntegersButton)
     }
     
 }

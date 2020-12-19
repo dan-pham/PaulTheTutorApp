@@ -10,9 +10,8 @@ import UIKit
 
 class DashboardVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What type of numbers?")
     let integerButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "integers")
-    let padding = Padding.standard
     
     let parameters = ProblemSetParameters.shared
     
@@ -58,25 +57,12 @@ extension DashboardVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "What type of numbers?"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configureIntegersButton() {
         integerButton.addTarget(self, action: #selector(selectIntegers), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            integerButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            integerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            integerButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            integerButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        integerButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }
     
 }

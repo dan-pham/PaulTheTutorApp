@@ -12,7 +12,7 @@ class ProblemSetVC: UIViewController {
     
     // MARK: - Variables and Constants
     
-    var totalProblemsLabel = PTTitleLabel(textAlignment: .center, fontSize: 30)
+    var totalProblemsLabel = PTTitleLabel(textAlignment: .center, fontSize: 30, text: "")
     var containerView = PTContainerView(frame: .zero)
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
     var answerTextField = PTTextField(frame: .zero)

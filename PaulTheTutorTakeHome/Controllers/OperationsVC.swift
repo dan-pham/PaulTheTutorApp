@@ -10,10 +10,9 @@ import UIKit
 
 class OperationsVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What shall we do?")
     let additionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "addition")
     let subtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "subtraction")
-    let padding = Padding.standard
     
     let parameters = ProblemSetParameters.shared
     
@@ -58,36 +57,17 @@ extension OperationsVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "What shall we do?"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configureAdditionButton() {
         additionButton.addTarget(self, action: #selector(selectAddition), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            additionButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            additionButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            additionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            additionButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        additionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }
     
     private func configureSubtractionButton() {
         subtractionButton.addTarget(self, action: #selector(selectSubtraction), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            subtractionButton.topAnchor.constraint(equalTo: additionButton.bottomAnchor, constant: padding),
-            subtractionButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            subtractionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            subtractionButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        subtractionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: additionButton)
     }
     
 }

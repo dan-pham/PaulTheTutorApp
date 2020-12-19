@@ -10,23 +10,21 @@ import UIKit
 
 class PickRangeVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What range do you want to focus on?")
     
-    let firstNumberMinLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let firstNumberMinLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Min for 1st Number")
     let firstNumberMinTextfield = PTTextField(frame: .zero)
     
-    let firstNumberMaxLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let firstNumberMaxLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Max for 1st Number")
     let firstNumberMaxTextfield = PTTextField(frame: .zero)
     
-    let secondNumberMinLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let secondNumberMinLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Other number's min")
     let secondNumberMinTextfield = PTTextField(frame: .zero)
     
-    let secondNumberMaxLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let secondNumberMaxLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Other number's max")
     let secondNumberMaxTextfield = PTTextField(frame: .zero)
     
     let submitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "submit")
-    let padding = Padding.standard
-    let smallPadding = Padding.small
     
     let parameters = ProblemSetParameters.shared
     
@@ -89,101 +87,44 @@ extension PickRangeVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "What range do you want to focus on?"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configureFirstNumberMinLabel() {
-        firstNumberMinLabel.text = "Min for 1st Number"
-        
-        NSLayoutConstraint.activate([
-            firstNumberMinLabel.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            firstNumberMinLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            firstNumberMinLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
-        ])
+        firstNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel, naturalHeight: true)
     }
     
     private func configureFirstNumberMinTextfield() {
-        NSLayoutConstraint.activate([
-            firstNumberMinTextfield.topAnchor.constraint(equalTo: firstNumberMinLabel.bottomAnchor, constant: smallPadding),
-            firstNumberMinTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            firstNumberMinTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            firstNumberMinTextfield.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        firstNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMinLabel, smallTopPadding: true)
     }
     
     private func configureFirstNumberMaxLabel() {
-        firstNumberMaxLabel.text = "Max for 1st Number"
-        
-        NSLayoutConstraint.activate([
-            firstNumberMaxLabel.topAnchor.constraint(equalTo: firstNumberMinTextfield.bottomAnchor, constant: padding),
-            firstNumberMaxLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            firstNumberMaxLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
-        ])
+        firstNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMinTextfield, naturalHeight: true)
     }
     
     private func configureFirstNumberMaxTextfield() {
-        NSLayoutConstraint.activate([
-            firstNumberMaxTextfield.topAnchor.constraint(equalTo: firstNumberMaxLabel.bottomAnchor, constant: smallPadding),
-            firstNumberMaxTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            firstNumberMaxTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            firstNumberMaxTextfield.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        firstNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMaxLabel, smallTopPadding: true)
     }
     
     private func configureSecondNumberMinLabel() {
-        secondNumberMinLabel.text = "Other number's min"
-        
-        NSLayoutConstraint.activate([
-            secondNumberMinLabel.topAnchor.constraint(equalTo: firstNumberMaxTextfield.bottomAnchor, constant: padding),
-            secondNumberMinLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            secondNumberMinLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
-        ])
+        secondNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMaxTextfield, naturalHeight: true)
     }
     
     private func configureSecondNumberMinTextfield() {
-        NSLayoutConstraint.activate([
-            secondNumberMinTextfield.topAnchor.constraint(equalTo: secondNumberMinLabel.bottomAnchor, constant: smallPadding),
-            secondNumberMinTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            secondNumberMinTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            secondNumberMinTextfield.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        secondNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMinLabel, smallTopPadding: true)
     }
     
     private func configureSecondNumberMaxLabel() {
-        secondNumberMaxLabel.text = "Other number's max"
-        
-        NSLayoutConstraint.activate([
-            secondNumberMaxLabel.topAnchor.constraint(equalTo: secondNumberMinTextfield.bottomAnchor, constant: padding),
-            secondNumberMaxLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            secondNumberMaxLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
-        ])
+        secondNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMinTextfield, naturalHeight: true)
     }
     
     private func configureSecondNumberMaxTextfield() {
-        NSLayoutConstraint.activate([
-            secondNumberMaxTextfield.topAnchor.constraint(equalTo: secondNumberMaxLabel.bottomAnchor, constant: smallPadding),
-            secondNumberMaxTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            secondNumberMaxTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            secondNumberMaxTextfield.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        secondNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMaxLabel, smallTopPadding: true)
     }
     
     private func configureSubmitButton() {
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            submitButton.topAnchor.constraint(equalTo: secondNumberMaxTextfield.bottomAnchor, constant: padding),
-            submitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            submitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            submitButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMaxTextfield)
     }
     
 }

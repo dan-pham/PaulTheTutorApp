@@ -10,10 +10,9 @@ import UIKit
 
 class NumberOfProblemsVC: UIViewController {
     
-    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
+    let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Number of problems?")
     let numberOfProblemsTextfield = PTTextField(frame: .zero)
     let submitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "submit")
-    let padding = Padding.standard
     
     let parameters = ProblemSetParameters.shared
     
@@ -65,34 +64,16 @@ extension NumberOfProblemsVC {
     }
     
     private func configureQuestionLabel() {
-        questionLabel.text = "Number of problems?"
-        
-        NSLayoutConstraint.activate([
-            questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            questionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            questionLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        questionLabel.addFlexWidthSetHeightConstraints(to: view)
     }
     
     private func configureNumberOfProblemsTextfield() {
-        NSLayoutConstraint.activate([
-            numberOfProblemsTextfield.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
-            numberOfProblemsTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            numberOfProblemsTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            numberOfProblemsTextfield.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        numberOfProblemsTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }
     
     private func configureSubmitButton() {
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            submitButton.topAnchor.constraint(equalTo: numberOfProblemsTextfield.bottomAnchor, constant: padding),
-            submitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            submitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            submitButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: numberOfProblemsTextfield)
     }
     
 }

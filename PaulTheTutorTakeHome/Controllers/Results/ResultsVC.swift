@@ -23,9 +23,9 @@ class ResultsVC: UIViewController {
     
     let containerView = PTContainerView(frame: .zero)
     let scrollView = PTScrollView(heightConstraint: 375)
-    let correctResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24)
+    let correctResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
     let correctProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
-    let incorrectResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24)
+    let incorrectResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
     let incorrectProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     let animationView = AnimationView()

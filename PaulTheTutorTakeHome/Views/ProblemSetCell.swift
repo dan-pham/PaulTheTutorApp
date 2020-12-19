@@ -16,7 +16,7 @@ class ProblemSetCell: UICollectionViewCell {
     static let reuseID = "ProblemSetCell"
     
     let animationView = AnimationView()
-    let titleLabel = PTTitleLabel(textAlignment: .left, fontSize: 24)
+    let titleLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
     let numberOfProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let chevronImageView = PTImageView(frame: .zero)
     

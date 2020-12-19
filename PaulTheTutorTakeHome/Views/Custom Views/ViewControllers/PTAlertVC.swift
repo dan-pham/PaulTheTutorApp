@@ -21,7 +21,7 @@ class PTAlertVC: UIViewController {
     var delegate: AlertActionDelegate!
     
     let containerView = PTContainerView(frame: .zero)
-    let titleLabel = PTTitleLabel(textAlignment: .center, fontSize: 24)
+    let titleLabel = PTTitleLabel(textAlignment: .center, fontSize: 24, text: "")
     let messageLabel = PTBodyLabel(textAlignment: .center, fontSize: 20)
     let actionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Leave")
     let cancelButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Cancel")

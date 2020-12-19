@@ -32,40 +32,6 @@ struct ProblemSet {
     private func generateRandomProblem(number: Int, parameters: ProblemSetParameters) -> Problem {
         let minRange = calculateMinRange()
         let maxRange = calculateMaxRange()
-        
-//        let operand1: Int
-//        if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
-//            operand1 = Int.random(in: firstNumberMin...firstNumberMax)
-//        } else if parameters.integerType == .focusOnANumber, let focusNumber = parameters.focusNumber {
-//            operand1 = focusNumber
-//        } else if parameters.integerSign == .positive {
-//            operand1 = Int.random(in: minRange...maxRange)
-//        } else {
-//            operand1 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
-//        }
-//
-//        let operand2: Int
-//        if parameters.integerType == .doubles {
-//            operand2 = operand1
-//        } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
-//            operand2 = Int.random(in: secondNumberMin...secondNumberMax)
-//        } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
-//            operand2 = Int.random(in: otherNumberMin...otherNumberMax)
-//        } else if parameters.integerSign == .positive {
-//            operand2 = Int.random(in: minRange...maxRange)
-//        } else {
-//            operand2 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
-//        }
-        
-//        let result: Int
-//
-//        switch parameters.operation {
-//        case .addition:
-//            result = operand1 + operand2
-//        case .subtraction:
-//            result = operand1 - operand2
-//        }
-        
         let operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
         let operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
         let result = generateResult(operand1: operand1, operand2: operand2)

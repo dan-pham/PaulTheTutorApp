@@ -32,7 +32,7 @@ class PTBodyLabel: UILabel {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        textColor = .label
+        textColor = .black
         lineBreakMode = .byWordWrapping
         
         adjustsFontSizeToFitWidth = true

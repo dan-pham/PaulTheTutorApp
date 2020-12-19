@@ -31,4 +31,19 @@ extension UIView {
         ])
     }
     
+    func addFlexWidthSetHeightConstraints(to superview: UIView, aboveComponent: UIView? = nil, naturalHeight: Bool = false, smallTopPadding: Bool = false) {
+        let padding = smallTopPadding ? Padding.small : Padding.standard
+        let isTop = aboveComponent != nil ? false : true
+        
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: isTop ? superview.safeAreaLayoutGuide.topAnchor : aboveComponent!.bottomAnchor, constant: padding),
+            leadingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+            trailingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
+        ])
+        
+        if !naturalHeight {
+            NSLayoutConstraint.activate([heightAnchor.constraint(equalToConstant: 50)])
+        }
+    }
+    
 }
