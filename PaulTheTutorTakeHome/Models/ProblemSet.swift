@@ -33,36 +33,42 @@ struct ProblemSet {
         let minRange = calculateMinRange()
         let maxRange = calculateMaxRange()
         
-        let operand1: Int
-        if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
-            operand1 = Int.random(in: firstNumberMin...firstNumberMax)
-        } else if parameters.integerType == .focusOnANumber, let focusNumber = parameters.focusNumber {
-            operand1 = focusNumber
-        } else if parameters.integerSign == .positive {
-            operand1 = Int.random(in: minRange...maxRange)
-        } else {
-            operand1 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
-        }
+//        let operand1: Int
+//        if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
+//            operand1 = Int.random(in: firstNumberMin...firstNumberMax)
+//        } else if parameters.integerType == .focusOnANumber, let focusNumber = parameters.focusNumber {
+//            operand1 = focusNumber
+//        } else if parameters.integerSign == .positive {
+//            operand1 = Int.random(in: minRange...maxRange)
+//        } else {
+//            operand1 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
+//        }
+//
+//        let operand2: Int
+//        if parameters.integerType == .doubles {
+//            operand2 = operand1
+//        } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
+//            operand2 = Int.random(in: secondNumberMin...secondNumberMax)
+//        } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
+//            operand2 = Int.random(in: otherNumberMin...otherNumberMax)
+//        } else if parameters.integerSign == .positive {
+//            operand2 = Int.random(in: minRange...maxRange)
+//        } else {
+//            operand2 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
+//        }
         
-        let operand2: Int
-        if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
-            operand2 = Int.random(in: secondNumberMin...secondNumberMax)
-        } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
-            operand2 = Int.random(in: otherNumberMin...otherNumberMax)
-        } else if parameters.integerSign == .positive {
-            operand2 = Int.random(in: minRange...maxRange)
-        } else {
-            operand2 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
-        }
+//        let result: Int
+//
+//        switch parameters.operation {
+//        case .addition:
+//            result = operand1 + operand2
+//        case .subtraction:
+//            result = operand1 - operand2
+//        }
         
-        let result: Int
-        
-        switch parameters.operation {
-        case .addition:
-            result = operand1 + operand2
-        case .subtraction:
-            result = operand1 - operand2
-        }
+        let operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
+        let operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
+        let result = generateResult(operand1: operand1, operand2: operand2)
         
         return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
     }
@@ -70,6 +76,8 @@ struct ProblemSet {
     private func calculateMinRange() -> Int {
         let minRange: Int
         switch parameters.integerType {
+        case .doubles:
+            minRange = 1
         case .oneDigit:
             minRange = 1
         case .hardOneDigits:
@@ -92,6 +100,8 @@ struct ProblemSet {
     private func calculateMaxRange() -> Int {
         let maxRange: Int
         switch parameters.integerType {
+        case .doubles:
+            maxRange = 9
         case .oneDigit:
             maxRange = 9
         case .hardOneDigits:
@@ -110,6 +120,54 @@ struct ProblemSet {
         
         return maxRange
     }
+    
+    private func generateOperand1(minRange: Int, maxRange: Int) -> Int {
+        let operand1: Int
+        
+        if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
+            operand1 = Int.random(in: firstNumberMin...firstNumberMax)
+        } else if parameters.integerType == .focusOnANumber, let focusNumber = parameters.focusNumber {
+            operand1 = focusNumber
+        } else if parameters.integerSign == .positive {
+            operand1 = Int.random(in: minRange...maxRange)
+        } else {
+            operand1 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
+        }
+        
+        return operand1
+    }
+    
+    private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int) -> Int {
+        let operand2: Int
+        
+        if parameters.integerType == .doubles {
+            operand2 = operand1
+        } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
+            operand2 = Int.random(in: secondNumberMin...secondNumberMax)
+        } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
+            operand2 = Int.random(in: otherNumberMin...otherNumberMax)
+        } else if parameters.integerSign == .positive {
+            operand2 = Int.random(in: minRange...maxRange)
+        } else {
+            operand2 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
+        }
+        
+        return operand2
+    }
+    
+    private func generateResult(operand1: Int, operand2: Int) -> Int {
+        let result: Int
+        
+        switch parameters.operation {
+        case .addition:
+            result = operand1 + operand2
+        case .subtraction:
+            result = operand1 - operand2
+        }
+        
+        return result
+    }
+    
 }
 
 class ProblemSetParameters {
@@ -143,6 +201,7 @@ class ProblemSetParameters {
     }
     
     enum IntegerType {
+        case doubles
         case oneDigit
         case hardOneDigits
         case zeroToTwelve

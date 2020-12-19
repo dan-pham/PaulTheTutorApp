@@ -12,6 +12,7 @@ class TypeOfIntegersVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20)
     
+    let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")
     let hardOneDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "hard one digits (4-9)")
     let zeroToTwelveButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "0 to 12")
@@ -28,6 +29,11 @@ class TypeOfIntegersVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+    }
+    
+    @objc func selectDoubles() {
+        parameters.integerType = .doubles
+        navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectOneDigit() {
@@ -90,6 +96,7 @@ extension TypeOfIntegersVC {
     func configureUI() {
         configureViewController()
         configureQuestionLabel()
+        configureDoublesButton()
         configureOneDigitButton()
         configureHardOneDigitsButton()
         configureZeroToTwelveButton()
@@ -101,7 +108,7 @@ extension TypeOfIntegersVC {
     
     private func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(questionLabel, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
+        view.addSubviews(questionLabel, doublesButton, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
     }
     
     private func configureQuestionLabel() {
@@ -115,11 +122,22 @@ extension TypeOfIntegersVC {
         ])
     }
     
+    private func configureDoublesButton() {
+        doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            doublesButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
+            doublesButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+            doublesButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            doublesButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
     private func configureOneDigitButton() {
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            oneDigitButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: padding),
+            oneDigitButton.topAnchor.constraint(equalTo: doublesButton.bottomAnchor, constant: padding),
             oneDigitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             oneDigitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
             oneDigitButton.heightAnchor.constraint(equalToConstant: 50)
