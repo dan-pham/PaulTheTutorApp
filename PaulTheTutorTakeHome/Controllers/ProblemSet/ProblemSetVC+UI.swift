@@ -52,7 +52,7 @@ extension ProblemSetVC {
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             containerView.widthAnchor.constraint(equalToConstant: 300),
-            containerView.heightAnchor.constraint(equalToConstant: 300)
+            containerView.heightAnchor.constraint(equalToConstant: 250)
         ])
     }
     

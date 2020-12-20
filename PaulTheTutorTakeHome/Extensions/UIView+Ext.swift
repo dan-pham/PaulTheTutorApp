@@ -31,12 +31,12 @@ extension UIView {
         ])
     }
     
-    func addFlexWidthSetHeightConstraints(to superview: UIView, aboveComponent: UIView? = nil, naturalHeight: Bool = false, smallTopPadding: Bool = false) {
+    func addFlexWidthSetHeightConstraints(to superview: UIView, aboveComponent: UIView? = nil, naturalHeight: Bool = false, smallTopPadding: Bool = false, isScrollViewTop: Bool = false) {
         let padding = smallTopPadding ? Padding.small : Padding.standard
         let isTop = aboveComponent != nil ? false : true
         
         NSLayoutConstraint.activate([
-            topAnchor.constraint(equalTo: isTop ? superview.safeAreaLayoutGuide.topAnchor : aboveComponent!.bottomAnchor, constant: padding),
+            topAnchor.constraint(equalTo: isScrollViewTop ? superview.topAnchor : isTop ? superview.safeAreaLayoutGuide.topAnchor : aboveComponent!.bottomAnchor, constant: padding),
             leadingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             trailingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
         ])
@@ -44,6 +44,19 @@ extension UIView {
         if !naturalHeight {
             NSLayoutConstraint.activate([heightAnchor.constraint(equalToConstant: 50)])
         }
+    }
+    
+    func addScrollViewConstraints(to superview: UIView, aboveComponent: UIView? = nil, belowComponent: UIView? = nil) {
+        let padding = Padding.standard
+        let isTop = aboveComponent != nil ? false : true
+        let isBottom = belowComponent != nil ? false : true
+        
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: isTop ? superview.safeAreaLayoutGuide.topAnchor : aboveComponent!.bottomAnchor),
+            leadingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.leadingAnchor),
+            trailingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.trailingAnchor),
+            bottomAnchor.constraint(equalTo: isBottom ? superview.safeAreaLayoutGuide.bottomAnchor : belowComponent!.topAnchor, constant: -padding)
+        ])
     }
     
 }

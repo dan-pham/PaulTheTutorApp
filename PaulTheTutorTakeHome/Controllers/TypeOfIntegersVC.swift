@@ -11,6 +11,7 @@ import UIKit
 class TypeOfIntegersVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Type of Integers")
+    let scrollView = PTScrollView(heightConstraint: 620)
     
     let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")
@@ -86,33 +87,36 @@ class TypeOfIntegersVC: UIViewController {
     
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(questionLabel, doublesButton, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
+        view.addSubviews(questionLabel, scrollView)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
+        scrollView.addSubviews(doublesButton, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
+        scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
+        
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
-        doublesButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
+        doublesButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: true)
         
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
-        oneDigitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: doublesButton)
+        oneDigitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: doublesButton)
         
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
-        hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneDigitButton)
+        hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneDigitButton)
         
         zeroToTwelveButton.addTarget(self, action: #selector(selectZeroToTwelve), for: .touchUpInside)
-        zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: hardOneDigitsButton)
+        zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: hardOneDigitsButton)
         
         oneToTwoDigitsButton.addTarget(self, action: #selector(selectOneToTwoDigits), for: .touchUpInside)
-        oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: zeroToTwelveButton)
+        oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: zeroToTwelveButton)
         
         multipleDigitsButton.addTarget(self, action: #selector(selectMultipleDigits), for: .touchUpInside)
-        multipleDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneToTwoDigitsButton)
+        multipleDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneToTwoDigitsButton)
         
         focusOnANumberButton.addTarget(self, action: #selector(selectFocusOnANumber), for: .touchUpInside)
-        focusOnANumberButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: multipleDigitsButton)
+        focusOnANumberButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: multipleDigitsButton)
         
         pickTheRangeButton.addTarget(self, action: #selector(selectPickTheRange), for: .touchUpInside)
-        pickTheRangeButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusOnANumberButton)
+        pickTheRangeButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: focusOnANumberButton)
     }
     
 }
