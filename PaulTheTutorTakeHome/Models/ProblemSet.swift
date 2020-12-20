@@ -129,6 +129,8 @@ struct ProblemSet {
             result = operand1 + operand2
         case .subtraction:
             result = operand1 - operand2
+        case .multiplication:
+            result = operand1 * operand2
         }
         
         return result
@@ -164,6 +166,7 @@ class ProblemSetParameters {
     enum Operation: String {
         case addition = "+"
         case subtraction = "-"
+        case multiplication = "x"
     }
     
     enum IntegerType {

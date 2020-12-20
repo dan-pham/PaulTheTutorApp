@@ -13,6 +13,7 @@ class OperationsVC: UIViewController {
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What shall we do?")
     let additionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "addition")
     let subtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "subtraction")
+    let multiplicationButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "multiplication")
     
     let parameters = ProblemSetParameters.shared
     
@@ -32,6 +33,11 @@ class OperationsVC: UIViewController {
         navigateToNextVC()
     }
     
+    @objc func selectMultiplication() {
+        parameters.operation = .multiplication
+        navigateToNextVC()
+    }
+    
     private func navigateToNextVC() {
         let vc = TypeOfIntegersVC()
         navigationController?.pushViewController(vc, animated: true)
@@ -39,7 +45,7 @@ class OperationsVC: UIViewController {
     
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(questionLabel, additionButton, subtractionButton)
+        view.addSubviews(questionLabel, additionButton, subtractionButton, multiplicationButton)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
@@ -48,6 +54,9 @@ class OperationsVC: UIViewController {
         
         subtractionButton.addTarget(self, action: #selector(selectSubtraction), for: .touchUpInside)
         subtractionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: additionButton)
+        
+        multiplicationButton.addTarget(self, action: #selector(selectMultiplication), for: .touchUpInside)
+        multiplicationButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: subtractionButton)
     }
     
 }
