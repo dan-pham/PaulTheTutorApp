@@ -84,71 +84,33 @@ class TypeOfIntegersVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension TypeOfIntegersVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureQuestionLabel()
-        configureDoublesButton()
-        configureOneDigitButton()
-        configureHardOneDigitsButton()
-        configureZeroToTwelveButton()
-        configureOneToTwoDigitsButton()
-        configureMultipleDigitsButton()
-        configureFocusOnANumberButton()
-        configurePickTheRangeButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, doublesButton, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
-    }
-    
-    private func configureQuestionLabel() {
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configureDoublesButton() {
+        
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
         doublesButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
-    }
-    
-    private func configureOneDigitButton() {
+        
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
         oneDigitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: doublesButton)
-    }
-    
-    private func configureHardOneDigitsButton() {
+        
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
         hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneDigitButton)
-    }
-    
-    private func configureZeroToTwelveButton() {
+        
         zeroToTwelveButton.addTarget(self, action: #selector(selectZeroToTwelve), for: .touchUpInside)
         zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: hardOneDigitsButton)
-    }
-    
-    private func configureOneToTwoDigitsButton() {
+        
         oneToTwoDigitsButton.addTarget(self, action: #selector(selectOneToTwoDigits), for: .touchUpInside)
         oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: zeroToTwelveButton)
-    }
-    
-    private func configureMultipleDigitsButton() {
+        
         multipleDigitsButton.addTarget(self, action: #selector(selectMultipleDigits), for: .touchUpInside)
         multipleDigitsButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: oneToTwoDigitsButton)
-    }
-    
-    private func configureFocusOnANumberButton() {
+        
         focusOnANumberButton.addTarget(self, action: #selector(selectFocusOnANumber), for: .touchUpInside)
         focusOnANumberButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: multipleDigitsButton)
-    }
-    
-    private func configurePickTheRangeButton() {
+        
         pickTheRangeButton.addTarget(self, action: #selector(selectPickTheRange), for: .touchUpInside)
         pickTheRangeButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusOnANumberButton)
     }

@@ -31,36 +31,16 @@ class DashboardVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension DashboardVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureNavBar()
-        configureQuestionLabel()
-        configureIntegersButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         title = "Math Facts"
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, integerButton)
-    }
-    
-    private func configureNavBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationController?.navigationBar.tintColor = .black
-    }
-    
-    private func configureQuestionLabel() {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configureIntegersButton() {
+        
         integerButton.addTarget(self, action: #selector(selectIntegers), for: .touchUpInside)
         integerButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
     }

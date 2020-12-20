@@ -37,35 +37,15 @@ class OperationsVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension OperationsVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureQuestionLabel()
-        configureAdditionButton()
-        configureSubtractionButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, additionButton, subtractionButton)
-    }
-    
-    private func configureQuestionLabel() {
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configureAdditionButton() {
+        
         additionButton.addTarget(self, action: #selector(selectAddition), for: .touchUpInside)
         additionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
-    }
-    
-    private func configureSubtractionButton() {
+        
         subtractionButton.addTarget(self, action: #selector(selectSubtraction), for: .touchUpInside)
         subtractionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: additionButton)
     }

@@ -37,35 +37,15 @@ class PositiveNegativeIntegersVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension PositiveNegativeIntegersVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureQuestionLabel()
-        configurePositiveIntegersButton()
-        configureNegativeAndPositiveIntegersButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, positiveIntegersButton, negativeAndPositiveIntegersButton)
-    }
-    
-    private func configureQuestionLabel() {
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configurePositiveIntegersButton() {
+        
         positiveIntegersButton.addTarget(self, action: #selector(selectPositiveIntegers), for: .touchUpInside)
         positiveIntegersButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
-    }
-    
-    private func configureNegativeAndPositiveIntegersButton() {
+        
         negativeAndPositiveIntegersButton.addTarget(self, action: #selector(selectNegativeAndPositiveIntegers), for: .touchUpInside)
         negativeAndPositiveIntegersButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: positiveIntegersButton)
     }

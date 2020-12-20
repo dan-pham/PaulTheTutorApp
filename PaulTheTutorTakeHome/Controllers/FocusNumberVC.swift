@@ -54,60 +54,22 @@ class FocusNumberVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension FocusNumberVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureQuestionLabel()
-        configureFocusNumberLabel()
-        configureFocusNumberTextfield()
-        configureOtherNumberMinLabel()
-        configureOtherNumberMinTextfield()
-        configureOtherNumberMaxLabel()
-        configureOtherNumberMaxTextfield()
-        configureSubmitButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
         view.addSubviews(questionLabel, focusNumberLabel, focusNumberTextfield, otherNumberMinLabel, otherNumberMinTextfield, otherNumberMaxLabel, otherNumberMaxTextfield, submitButton)
-    }
-    
-    private func configureQuestionLabel() {
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configureFocusNumberLabel() {
+        
         focusNumberLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel, naturalHeight: true)
-    }
-    
-    private func configureFocusNumberTextfield() {
         focusNumberTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusNumberLabel, smallTopPadding: true)
-    }
-    
-    private func configureOtherNumberMinLabel() {
+        
         otherNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusNumberTextfield, naturalHeight: true)
-    }
-    
-    private func configureOtherNumberMinTextfield() {
         otherNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMinLabel, smallTopPadding: true)
-    }
-    
-    private func configureOtherNumberMaxLabel() {
+        
         otherNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMinTextfield, naturalHeight: true)
-    }
-    
-    private func configureOtherNumberMaxTextfield() {
         otherNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMaxLabel, smallTopPadding: true)
-    }
-    
-    private func configureSubmitButton() {
+        
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
         submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMaxTextfield)
     }

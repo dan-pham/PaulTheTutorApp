@@ -17,7 +17,6 @@ class NumberOfProblemsVC: UIViewController {
     let parameters = ProblemSetParameters.shared
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -43,35 +42,15 @@ class NumberOfProblemsVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-}
-
-
-// MARK: - Configuration Functions
-
-extension NumberOfProblemsVC {
-    
-    func configureUI() {
-        configureViewController()
-        configureQuestionLabel()
-        configureNumberOfProblemsTextfield()
-        configureSubmitButton()
-    }
-    
-    private func configureViewController() {
+    private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
         view.addSubviews(questionLabel, numberOfProblemsTextfield, submitButton)
-    }
-    
-    private func configureQuestionLabel() {
+        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
-    }
-    
-    private func configureNumberOfProblemsTextfield() {
+        
         numberOfProblemsTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
-    }
-    
-    private func configureSubmitButton() {
+        
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
         submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: numberOfProblemsTextfield)
     }
