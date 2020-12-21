@@ -14,7 +14,7 @@ struct Problem {
     var operand2: Int
     var operation: String
     var result: Int
-    var answer: String?
+    var answer: String = ""
     var isCorrect: Bool = false
     
     init(number: Int, operand1: Int, operand2: Int, operation: String, result: Int) {
@@ -26,6 +26,6 @@ struct Problem {
     }
     
     func printEquation() -> String {
-        return "\(operand1) \(operation) \(operand2) = \(answer!)"
+        return "\(operand1) \(operation) \(operand2) = \(answer)"
     }
 }

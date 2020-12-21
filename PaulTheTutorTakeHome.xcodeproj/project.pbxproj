@@ -43,6 +43,7 @@
 		C307406B2469F4340075F950 /* plus.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740682469F4330075F950 /* plus.json */; };
 		C307406C2469F4340075F950 /* smile.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740692469F4330075F950 /* smile.json */; };
 		C307406D2469F4340075F950 /* minus.json in Resources */ = {isa = PBXBuildFile; fileRef = C307406A2469F4340075F950 /* minus.json */; };
+		C37DAF9F258F0C1600F526FD /* TypeOfDivisionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */; };
 		C37EBB48258694E6008C7670 /* DashboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB47258694E6008C7670 /* DashboardVC.swift */; };
 		C37EBB4E25869FE2008C7670 /* PTBlackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB4D25869FE2008C7670 /* PTBlackOverlayView.swift */; };
 		C37EBB512586A3BA008C7670 /* PTCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB502586A3BA008C7670 /* PTCloseButton.swift */; };
@@ -93,6 +94,7 @@
 		C30740682469F4330075F950 /* plus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plus.json; sourceTree = "<group>"; };
 		C30740692469F4330075F950 /* smile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = smile.json; sourceTree = "<group>"; };
 		C307406A2469F4340075F950 /* minus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = minus.json; sourceTree = "<group>"; };
+		C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfDivisionVC.swift; sourceTree = "<group>"; };
 		C37EBB47258694E6008C7670 /* DashboardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVC.swift; sourceTree = "<group>"; };
 		C37EBB4D25869FE2008C7670 /* PTBlackOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTBlackOverlayView.swift; sourceTree = "<group>"; };
 		C37EBB502586A3BA008C7670 /* PTCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTCloseButton.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			children = (
 				C37EBB412586945C008C7670 /* Dashboard */,
 				C37EBB612586B0D1008C7670 /* OperationsVC.swift */,
+				C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */,
 				C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */,
 				C3004C2625872D76002C2822 /* FocusNumberVC.swift */,
 				C3004C2925872D81002C2822 /* PickRangeVC.swift */,
@@ -484,6 +487,7 @@
 				C37EBB48258694E6008C7670 /* DashboardVC.swift in Sources */,
 				C307403E2468D34C0075F950 /* ProblemSetVC.swift in Sources */,
 				C30740582469B8000075F950 /* ProblemSetVC+Ext.swift in Sources */,
+				C37DAF9F258F0C1600F526FD /* TypeOfDivisionVC.swift in Sources */,
 				C30740402468D3F40075F950 /* Problem.swift in Sources */,
 				C30740212468970C0075F950 /* UIColor+Ext.swift in Sources */,
 				C3074019246894F20075F950 /* MathOperationsVC.swift in Sources */,

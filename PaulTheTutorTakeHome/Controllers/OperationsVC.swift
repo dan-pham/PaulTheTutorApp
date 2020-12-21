@@ -14,6 +14,7 @@ class OperationsVC: UIViewController {
     let additionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "addition")
     let subtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "subtraction")
     let multiplicationButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "multiplication")
+    let divisionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "division")
     
     let parameters = ProblemSetParameters.shared
     
@@ -25,27 +26,27 @@ class OperationsVC: UIViewController {
     
     @objc func selectAddition() {
         parameters.operation = .addition
-        navigateToNextVC()
+        navigationController?.pushViewController(TypeOfIntegersVC(), animated: true)
     }
     
     @objc func selectSubtraction() {
         parameters.operation = .subtraction
-        navigateToNextVC()
+        navigationController?.pushViewController(TypeOfIntegersVC(), animated: true)
     }
     
     @objc func selectMultiplication() {
         parameters.operation = .multiplication
-        navigateToNextVC()
+        navigationController?.pushViewController(TypeOfIntegersVC(), animated: true)
     }
     
-    private func navigateToNextVC() {
-        let vc = TypeOfIntegersVC()
-        navigationController?.pushViewController(vc, animated: true)
+    @objc func selectDivision() {
+        parameters.operation = .division
+        navigationController?.pushViewController(TypeOfDivisionVC(), animated: true)
     }
     
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(questionLabel, additionButton, subtractionButton, multiplicationButton)
+        view.addSubviews(questionLabel, additionButton, subtractionButton, multiplicationButton, divisionButton)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
@@ -57,6 +58,9 @@ class OperationsVC: UIViewController {
         
         multiplicationButton.addTarget(self, action: #selector(selectMultiplication), for: .touchUpInside)
         multiplicationButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: subtractionButton)
+        
+        divisionButton.addTarget(self, action: #selector(selectDivision), for: .touchUpInside)
+        divisionButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: multiplicationButton)
     }
     
 }

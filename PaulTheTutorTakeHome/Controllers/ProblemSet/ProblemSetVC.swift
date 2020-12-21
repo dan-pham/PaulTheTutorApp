@@ -51,7 +51,7 @@ class ProblemSetVC: UIViewController {
     
     @objc func setupNextEquation() {
         if currentProblem != 0 {
-            guard !answerTextField.text!.isEmpty else {
+            guard let answer = answerTextField.text, !answer.isEmpty else {
                 Alerts.showEmptyInputAlert(on: self)
                 return
             }
@@ -70,7 +70,12 @@ class ProblemSetVC: UIViewController {
     }
     
     private func checkAnswer() {
-        problemSet.problems?[currentProblem - 1].answer = answerTextField.text
+        guard let answer = answerTextField.text, !answer.isEmpty else {
+            Alerts.showEmptyInputAlert(on: self)
+            return
+        }
+        
+        problemSet.problems?[currentProblem - 1].answer = answer
         
         if var problem = problemSet.problems?[currentProblem - 1] {
             problem.isCorrect = answerTextField.text == "\(problem.result)" ? true : false

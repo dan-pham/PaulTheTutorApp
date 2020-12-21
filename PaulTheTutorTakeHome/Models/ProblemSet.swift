@@ -32,9 +32,18 @@ struct ProblemSet {
     private func generateRandomProblem(number: Int, parameters: ProblemSetParameters) -> Problem {
         let minRange = calculateMinRange()
         let maxRange = calculateMaxRange()
-        let operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
-        let operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
-        let result = generateResult(operand1: operand1, operand2: operand2)
+        var operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
+        var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
+        let result: Int
+        
+        if parameters.divisionType == .even {
+            let temp = operand2
+            operand2 = operand1
+            operand1 = temp
+            result = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
+        } else {
+            result = generateResult(operand1: operand1, operand2: operand2)
+        }
         
         return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
     }
@@ -88,7 +97,7 @@ struct ProblemSet {
     }
     
     private func generateOperand1(minRange: Int, maxRange: Int) -> Int {
-        let operand1: Int
+        var operand1: Int
         
         if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
             operand1 = Int.random(in: firstNumberMin...firstNumberMax)
@@ -100,6 +109,8 @@ struct ProblemSet {
             operand1 = Bool.random() ? -Int.random(in: minRange...maxRange) : Int.random(in: minRange...maxRange)
         }
         
+        if parameters.divisionType != nil && operand1 == 0 { return 1 }
+        
         return operand1
     }
     
@@ -108,6 +119,8 @@ struct ProblemSet {
         
         if parameters.integerType == .doubles {
             operand2 = operand1
+        } else if parameters.divisionType == .even {
+            operand2 = operand1 * Int.random(in: minRange...maxRange)
         } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
             operand2 = Int.random(in: secondNumberMin...secondNumberMax)
         } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
@@ -131,6 +144,24 @@ struct ProblemSet {
             result = operand1 - operand2
         case .multiplication:
             result = operand1 * operand2
+        case .division:
+            result = operand1 / operand2
+        }
+        
+        return result
+    }
+    
+    private func generateDivisionResult(operand1: Int, operand2: Int) -> Double {
+        guard let divisionType = parameters.divisionType else { return Double() }
+        let result: Double
+        
+        switch divisionType {
+        case .even:
+            result = Double(operand1 / operand2)
+        case .remainders:
+            result = Double(operand1 / operand2)
+        case .decimals:
+            result = Double(operand1 / operand2)
         }
         
         return result
@@ -144,6 +175,7 @@ class ProblemSetParameters {
     
     var numberType: NumberType = .integers
     var operation: Operation = .addition
+    var divisionType: DivisionType?
     var integerType: IntegerType = .oneDigit
     var integerSign: IntegerSign = .positive
     var numberOfProblems: Int = 0
@@ -167,6 +199,13 @@ class ProblemSetParameters {
         case addition = "+"
         case subtraction = "-"
         case multiplication = "x"
+        case division = "÷"
+    }
+    
+    enum DivisionType {
+        case even
+        case remainders
+        case decimals
     }
     
     enum IntegerType {
@@ -184,4 +223,10 @@ class ProblemSetParameters {
         case positive
         case negativeAndPositive
     }
+}
+
+class PTResult {
+    var integer: Int?
+    var remainder: Int?
+    var decimal: Double?
 }
