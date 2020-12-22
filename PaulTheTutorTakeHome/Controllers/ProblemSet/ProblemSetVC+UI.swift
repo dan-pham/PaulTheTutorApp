@@ -19,6 +19,7 @@ extension ProblemSetVC {
         configureContainerView()
         configureProblemLabel()
         configureAnswerTextField()
+        configureRemainderTextField()
         configureNextButton()
 //        configureEncouragementLabel()
         configureHintButton()
@@ -46,7 +47,7 @@ extension ProblemSetVC {
     }
     
     private func configureContainerView() {
-        containerView.addSubviews(problemLabel, answerTextField, nextButton) // encouragementLabel, nextButton)
+        containerView.addSubviews(problemLabel, answerTextField, remainderTextField, nextButton) // encouragementLabel, nextButton)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
@@ -68,13 +69,41 @@ extension ProblemSetVC {
     
     private func configureAnswerTextField() {
         answerTextField.delegate = self
-        answerTextField.placeholder = "Answer"
+        let isRemainderProblem = problemSet.parameters.divisionType == .remainders
+        answerTextField.placeholder = isRemainderProblem ? "Quotient" : "Answer"
         
         NSLayoutConstraint.activate([
             answerTextField.topAnchor.constraint(equalTo: problemLabel.bottomAnchor, constant: padding),
-            answerTextField.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            answerTextField.widthAnchor.constraint(equalToConstant: 150),
             answerTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        if isRemainderProblem {
+            NSLayoutConstraint.activate([
+                answerTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+                answerTextField.trailingAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -padding / 2)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                answerTextField.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+                answerTextField.widthAnchor.constraint(equalToConstant: 150),
+            ])
+        }
+    
+    }
+    
+    private func configureRemainderTextField() {
+        remainderTextField.delegate = self
+        remainderTextField.placeholder = "Remainder"
+        
+        if problemSet.parameters.divisionType != .remainders {
+            remainderTextField.isHidden = true
+        }
+        
+        NSLayoutConstraint.activate([
+            remainderTextField.centerYAnchor.constraint(equalTo: answerTextField.centerYAnchor),
+            remainderTextField.leadingAnchor.constraint(equalTo: answerTextField.trailingAnchor, constant: padding),
+            remainderTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
+            remainderTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     

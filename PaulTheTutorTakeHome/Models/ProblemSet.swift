@@ -34,18 +34,25 @@ struct ProblemSet {
         let maxRange = calculateMaxRange()
         var operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
         var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
-        let result: Int
         
         if parameters.divisionType == .even {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
-            result = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
+            let result = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
+        } else if parameters.divisionType == .remainders {
+            let temp = operand2
+            operand2 = operand1
+            operand1 = temp
+            let quotient = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
+            let remainder = operand1 % operand2
+            print("quotient: \(quotient), remainder: \(remainder)")
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, quotient: quotient, remainder: remainder)
         } else {
-            result = generateResult(operand1: operand1, operand2: operand2)
+            let result = generateResult(operand1: operand1, operand2: operand2)
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
         }
-        
-        return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
     }
     
     private func calculateMinRange() -> Int {
@@ -188,6 +195,7 @@ class ProblemSetParameters {
     var firstNumberMax: Int?
     var secondNumberMin: Int?
     var secondNumberMax: Int?
+    
     
     private init() { }
     

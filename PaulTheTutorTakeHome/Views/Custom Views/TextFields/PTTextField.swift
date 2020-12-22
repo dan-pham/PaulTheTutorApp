@@ -34,7 +34,7 @@ class PTTextField: UITextField {
         textColor = .black
         tintColor = .black
         textAlignment = .center
-        font = UIFont.preferredFont(forTextStyle: .title1)
+        font = UIFont.preferredFont(forTextStyle: .title2)
         adjustsFontSizeToFitWidth = true
         
         backgroundColor = .white

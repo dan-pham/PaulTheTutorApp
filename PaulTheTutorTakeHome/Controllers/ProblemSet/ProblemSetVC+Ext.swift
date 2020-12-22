@@ -14,14 +14,20 @@ import UIKit
 extension ProblemSetVC: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.placeholder == "Answer" {
+        if textField.placeholder == "Answer" || textField.placeholder == "Quotient" || textField.placeholder == "Remainder" {
             textField.placeholder = ""
         }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.placeholder == "" {
-            textField.placeholder = "Answer"
+        if textField == answerTextField {
+            if textField.placeholder == "" {
+                textField.placeholder = problemSet.parameters.divisionType == .remainders ? "Quotient" : "Answer"
+            }
+        } else if textField == remainderTextField {
+            if textField.placeholder == "" {
+                textField.placeholder = "Remainder"
+            }
         }
     }
     

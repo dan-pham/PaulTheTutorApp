@@ -16,6 +16,7 @@ class ProblemSetVC: UIViewController {
     var containerView = PTContainerView(frame: .zero)
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
     var answerTextField = PTTextField(frame: .zero)
+    var remainderTextField = PTTextField(frame: .zero)
 //    var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     var nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Submit")
     var hintButton = PTButton(titleColor: Colors.paulDarkGreen, backgroundColor: .clear, title: "Hint")
@@ -51,6 +52,13 @@ class ProblemSetVC: UIViewController {
     
     @objc func setupNextEquation() {
         if currentProblem != 0 {
+            if problemSet.parameters.divisionType == .remainders {
+                guard let answer = answerTextField.text, let remainder = remainderTextField.text, !answer.isEmpty, !remainder.isEmpty else {
+                    Alerts.showEmptyInputAlert(on: self)
+                    return
+                }
+            }
+            
             guard let answer = answerTextField.text, !answer.isEmpty else {
                 Alerts.showEmptyInputAlert(on: self)
                 return
@@ -59,8 +67,13 @@ class ProblemSetVC: UIViewController {
         
         if currentProblem > 0 { checkAnswer() }
         
+        answerTextField.resignFirstResponder()
+        
+        if problemSet.parameters.divisionType == .remainders {
+            remainderTextField.resignFirstResponder()
+        }
+        
         guard currentProblem < problemSet.parameters.numberOfProblems else {
-            answerTextField.resignFirstResponder()
             presentResultsVC()
             return
         }
@@ -70,6 +83,15 @@ class ProblemSetVC: UIViewController {
     }
     
     private func checkAnswer() {
+        if problemSet.parameters.divisionType == .remainders {
+            guard let remainder = remainderTextField.text, !remainder.isEmpty else {
+                Alerts.showEmptyInputAlert(on: self)
+                return
+            }
+            
+            problemSet.problems?[currentProblem - 1].remainderAnswer = remainder
+        }
+        
         guard let answer = answerTextField.text, !answer.isEmpty else {
             Alerts.showEmptyInputAlert(on: self)
             return
@@ -78,7 +100,12 @@ class ProblemSetVC: UIViewController {
         problemSet.problems?[currentProblem - 1].answer = answer
         
         if var problem = problemSet.problems?[currentProblem - 1] {
-            problem.isCorrect = answerTextField.text == "\(problem.result)" ? true : false
+            if let result = problem.result {
+                problem.isCorrect = answerTextField.text == "\(result)" ? true : false
+            } else if let quotient = problem.quotient, let remainder = problem.remainder {
+                problem.isCorrect = answerTextField.text == "\(quotient)" && remainderTextField.text == "\(remainder)"
+            }
+            
             problemSet.problems?[currentProblem - 1].isCorrect = problem.isCorrect
         }
     }
@@ -108,6 +135,9 @@ class ProblemSetVC: UIViewController {
     
     private func updateFields() {
         answerTextField.text = ""
+        if problemSet.parameters.divisionType == .remainders {
+            remainderTextField.text = ""
+        }
         totalProblemsLabel.text = "Question \(currentProblem) of \(problemSet.parameters.numberOfProblems)"
         updateProblemLabel()
 //        updateEncouragementLabel()
