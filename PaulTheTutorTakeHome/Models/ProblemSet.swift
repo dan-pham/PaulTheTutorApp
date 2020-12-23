@@ -39,19 +39,24 @@ struct ProblemSet {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
-            let result = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
+            let result = operand1 / operand2
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
         } else if parameters.divisionType == .remainders {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
-            let quotient = Int(generateDivisionResult(operand1: operand1, operand2: operand2))
+            let quotient = operand1 / operand2
             let remainder = operand1 % operand2
-            print("quotient: \(quotient), remainder: \(remainder)")
             return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, quotient: quotient, remainder: remainder)
+        } else if parameters.divisionType == .decimals {
+            let temp = operand2
+            operand2 = operand1
+            operand1 = temp
+            let result = (Double(operand1) / Double(operand2)).round(toPlaces: 2)
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, decimalResult: result)
         } else {
             let result = generateResult(operand1: operand1, operand2: operand2)
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, result: result)
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
         }
     }
     
@@ -153,22 +158,6 @@ struct ProblemSet {
             result = operand1 * operand2
         case .division:
             result = operand1 / operand2
-        }
-        
-        return result
-    }
-    
-    private func generateDivisionResult(operand1: Int, operand2: Int) -> Double {
-        guard let divisionType = parameters.divisionType else { return Double() }
-        let result: Double
-        
-        switch divisionType {
-        case .even:
-            result = Double(operand1 / operand2)
-        case .remainders:
-            result = Double(operand1 / operand2)
-        case .decimals:
-            result = Double(operand1 / operand2)
         }
         
         return result

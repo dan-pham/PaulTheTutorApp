@@ -13,23 +13,25 @@ struct Problem {
     var operand1: Int
     var operand2: Int
     var operation: String
-    var result: Int?
+    var integerResult: Int?
     var quotient: Int?
     var remainder: Int?
+    var decimalResult: Double?
     
     var answer: String = ""
     var remainderAnswer: String = ""
     
     var isCorrect: Bool = false
     
-    init(number: Int, operand1: Int, operand2: Int, operation: String, result: Int? = nil, quotient: Int? = nil, remainder: Int? = nil) {
+    init(number: Int, operand1: Int, operand2: Int, operation: String, integerResult: Int? = nil, quotient: Int? = nil, remainder: Int? = nil, decimalResult: Double? = nil) {
         self.number = number
         self.operand1 = operand1
         self.operand2 = operand2
         self.operation = operation
-        self.result = result
+        self.integerResult = integerResult
         self.quotient = quotient
         self.remainder = remainder
+        self.decimalResult = decimalResult
     }
     
     func printEquation() -> String {

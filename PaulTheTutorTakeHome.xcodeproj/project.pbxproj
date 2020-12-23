@@ -51,6 +51,7 @@
 		C37EBB5C2586B08E008C7670 /* PositiveNegativeIntegersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB5B2586B08E008C7670 /* PositiveNegativeIntegersVC.swift */; };
 		C37EBB5F2586B0A7008C7670 /* NumberOfProblemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */; };
 		C37EBB622586B0D1008C7670 /* OperationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB612586B0D1008C7670 /* OperationsVC.swift */; };
+		C3B446112592BA5700EF2098 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B446102592BA5700EF2098 /* Double+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		C37EBB5B2586B08E008C7670 /* PositiveNegativeIntegersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositiveNegativeIntegersVC.swift; sourceTree = "<group>"; };
 		C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberOfProblemsVC.swift; sourceTree = "<group>"; };
 		C37EBB612586B0D1008C7670 /* OperationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsVC.swift; sourceTree = "<group>"; };
+		C3B446102592BA5700EF2098 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 			children = (
 				C30740202468970C0075F950 /* UIColor+Ext.swift */,
 				C307402A2468A1F90075F950 /* UIView+Ext.swift */,
+				C3B446102592BA5700EF2098 /* Double+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 			files = (
 				C30740302468AF900075F950 /* PTBodyLabel.swift in Sources */,
 				C3074023246897300075F950 /* Constants.swift in Sources */,
+				C3B446112592BA5700EF2098 /* Double+Ext.swift in Sources */,
 				C30740612469E0100075F950 /* PTAlertVC.swift in Sources */,
 				C30740562469B7F60075F950 /* ProblemSetVC+UI.swift in Sources */,
 				C3074005246893D60075F950 /* AppDelegate.swift in Sources */,

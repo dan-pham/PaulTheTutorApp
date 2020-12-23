@@ -20,6 +20,7 @@ extension ProblemSetVC {
         configureProblemLabel()
         configureAnswerTextField()
         configureRemainderTextField()
+        configureRoundingLabel()
         configureNextButton()
 //        configureEncouragementLabel()
         configureHintButton()
@@ -47,7 +48,7 @@ extension ProblemSetVC {
     }
     
     private func configureContainerView() {
-        containerView.addSubviews(problemLabel, answerTextField, remainderTextField, nextButton) // encouragementLabel, nextButton)
+        containerView.addSubviews(problemLabel, answerTextField, remainderTextField, roundingLabel, nextButton) // encouragementLabel, nextButton)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
@@ -104,6 +105,16 @@ extension ProblemSetVC {
             remainderTextField.leadingAnchor.constraint(equalTo: answerTextField.trailingAnchor, constant: padding),
             remainderTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             remainderTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    private func configureRoundingLabel() {
+        roundingLabel.text = "Round answer up to 2 decimal places"
+        
+        NSLayoutConstraint.activate([
+            roundingLabel.topAnchor.constraint(equalTo: answerTextField.bottomAnchor, constant: Padding.small),
+            roundingLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Padding.small),
+            roundingLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Padding.small)
         ])
     }
     

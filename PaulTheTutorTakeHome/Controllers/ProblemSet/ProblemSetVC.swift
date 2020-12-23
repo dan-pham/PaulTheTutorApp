@@ -17,6 +17,7 @@ class ProblemSetVC: UIViewController {
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
     var answerTextField = PTTextField(frame: .zero)
     var remainderTextField = PTTextField(frame: .zero)
+    var roundingLabel = PTBodyLabel(textAlignment: .center, fontSize: 20)
 //    var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     var nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Submit")
     var hintButton = PTButton(titleColor: Colors.paulDarkGreen, backgroundColor: .clear, title: "Hint")
@@ -100,10 +101,12 @@ class ProblemSetVC: UIViewController {
         problemSet.problems?[currentProblem - 1].answer = answer
         
         if var problem = problemSet.problems?[currentProblem - 1] {
-            if let result = problem.result {
+            if let result = problem.integerResult {
                 problem.isCorrect = answerTextField.text == "\(result)" ? true : false
             } else if let quotient = problem.quotient, let remainder = problem.remainder {
                 problem.isCorrect = answerTextField.text == "\(quotient)" && remainderTextField.text == "\(remainder)"
+            } else if let result = problem.decimalResult?.round(toPlaces: 2), let answer = answerTextField.text, let decimalAnswer = Double(answer)?.round(toPlaces: 2) {
+                problem.isCorrect = result == decimalAnswer ? true : false
             }
             
             problemSet.problems?[currentProblem - 1].isCorrect = problem.isCorrect
