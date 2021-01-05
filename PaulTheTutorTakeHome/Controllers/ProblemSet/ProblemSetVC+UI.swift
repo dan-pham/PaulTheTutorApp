@@ -111,6 +111,10 @@ extension ProblemSetVC {
     private func configureRoundingLabel() {
         roundingLabel.text = "Round answer up to 2 decimal places"
         
+        if problemSet.parameters.divisionType != .decimals {
+            roundingLabel.isHidden = true
+        }
+        
         NSLayoutConstraint.activate([
             roundingLabel.topAnchor.constraint(equalTo: answerTextField.bottomAnchor, constant: Padding.small),
             roundingLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Padding.small),
