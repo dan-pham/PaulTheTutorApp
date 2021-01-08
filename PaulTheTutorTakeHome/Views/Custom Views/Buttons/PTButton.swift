@@ -37,6 +37,13 @@ class PTButton: UIButton {
         }
     }
     
+    override var isEnabled: Bool {
+        didSet {
+            backgroundColor?.withAlphaComponent(isEnabled ? 1.0 : 0.5)
+            setTitleColor(currentTitleColor.withAlphaComponent(isEnabled ? 1.0 : 0.5), for: .normal)
+        }
+    }
+    
     
     // MARK: - Configuration Functions
     

@@ -10,6 +10,8 @@
 		879D8D3C0609A537CAE9B2B7 /* Pods_PaulTheTutorTakeHome.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD885DD593C2A22C86FC8 /* Pods_PaulTheTutorTakeHome.framework */; };
 		C3004C2725872D76002C2822 /* FocusNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3004C2625872D76002C2822 /* FocusNumberVC.swift */; };
 		C3004C2A25872D81002C2822 /* PickRangeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3004C2925872D81002C2822 /* PickRangeVC.swift */; };
+		C303704C25A542AD004E49FB /* PTRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303704B25A542AD004E49FB /* PTRadioButton.swift */; };
+		C303704F25A55D8A004E49FB /* TimerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303704E25A55D8A004E49FB /* TimerVC.swift */; };
 		C3074005246893D60075F950 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3074004246893D60075F950 /* AppDelegate.swift */; };
 		C3074007246893D60075F950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3074006246893D60075F950 /* SceneDelegate.swift */; };
 		C307400E246893D70075F950 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C307400D246893D70075F950 /* Assets.xcassets */; };
@@ -43,8 +45,12 @@
 		C307406B2469F4340075F950 /* plus.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740682469F4330075F950 /* plus.json */; };
 		C307406C2469F4340075F950 /* smile.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740692469F4330075F950 /* smile.json */; };
 		C307406D2469F4340075F950 /* minus.json in Resources */ = {isa = PBXBuildFile; fileRef = C307406A2469F4340075F950 /* minus.json */; };
+		C3301DB425A51F910014B0DA /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB325A51F910014B0DA /* TabBarVC.swift */; };
+		C3301DB825A524D00014B0DA /* TimerMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB725A524D00014B0DA /* TimerMenuVC.swift */; };
+		C3301DBC25A525340014B0DA /* MathFactsMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */; };
+		C3301DC725A532B00014B0DA /* TimerParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DC625A532B00014B0DA /* TimerParameters.swift */; };
+		C3301DCA25A534190014B0DA /* TestSectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DC925A534190014B0DA /* TestSectionsVC.swift */; };
 		C37DAF9F258F0C1600F526FD /* TypeOfDivisionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */; };
-		C37EBB48258694E6008C7670 /* DashboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB47258694E6008C7670 /* DashboardVC.swift */; };
 		C37EBB4E25869FE2008C7670 /* PTBlackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB4D25869FE2008C7670 /* PTBlackOverlayView.swift */; };
 		C37EBB512586A3BA008C7670 /* PTCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB502586A3BA008C7670 /* PTCloseButton.swift */; };
 		C37EBB592586B06A008C7670 /* TypeOfIntegersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */; };
@@ -60,6 +66,8 @@
 		8472AA8B1EBBFA4C2706FEA7 /* Pods-PaulTheTutorTakeHome.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaulTheTutorTakeHome.release.xcconfig"; path = "Target Support Files/Pods-PaulTheTutorTakeHome/Pods-PaulTheTutorTakeHome.release.xcconfig"; sourceTree = "<group>"; };
 		C3004C2625872D76002C2822 /* FocusNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusNumberVC.swift; sourceTree = "<group>"; };
 		C3004C2925872D81002C2822 /* PickRangeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickRangeVC.swift; sourceTree = "<group>"; };
+		C303704B25A542AD004E49FB /* PTRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTRadioButton.swift; sourceTree = "<group>"; };
+		C303704E25A55D8A004E49FB /* TimerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerVC.swift; sourceTree = "<group>"; };
 		C3074001246893D60075F950 /* PaulTheTutorTakeHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaulTheTutorTakeHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3074004246893D60075F950 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3074006246893D60075F950 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,8 +103,12 @@
 		C30740682469F4330075F950 /* plus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plus.json; sourceTree = "<group>"; };
 		C30740692469F4330075F950 /* smile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = smile.json; sourceTree = "<group>"; };
 		C307406A2469F4340075F950 /* minus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = minus.json; sourceTree = "<group>"; };
+		C3301DB325A51F910014B0DA /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		C3301DB725A524D00014B0DA /* TimerMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerMenuVC.swift; sourceTree = "<group>"; };
+		C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathFactsMenuVC.swift; sourceTree = "<group>"; };
+		C3301DC625A532B00014B0DA /* TimerParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerParameters.swift; sourceTree = "<group>"; };
+		C3301DC925A534190014B0DA /* TestSectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSectionsVC.swift; sourceTree = "<group>"; };
 		C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfDivisionVC.swift; sourceTree = "<group>"; };
-		C37EBB47258694E6008C7670 /* DashboardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVC.swift; sourceTree = "<group>"; };
 		C37EBB4D25869FE2008C7670 /* PTBlackOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTBlackOverlayView.swift; sourceTree = "<group>"; };
 		C37EBB502586A3BA008C7670 /* PTCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTCloseButton.swift; sourceTree = "<group>"; };
 		C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfIntegersVC.swift; sourceTree = "<group>"; };
@@ -184,18 +196,9 @@
 		C307401C246896A80075F950 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C37EBB412586945C008C7670 /* Dashboard */,
-				C37EBB612586B0D1008C7670 /* OperationsVC.swift */,
-				C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */,
-				C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */,
-				C3004C2625872D76002C2822 /* FocusNumberVC.swift */,
-				C3004C2925872D81002C2822 /* PickRangeVC.swift */,
-				C37EBB5B2586B08E008C7670 /* PositiveNegativeIntegersVC.swift */,
-				C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */,
-				C307404B2469B5830075F950 /* ProblemSet */,
-				C307404C2469B58A0075F950 /* Results */,
-				C30740492469B56F0075F950 /* MathOperations */,
-				C307404A2469B57C0075F950 /* Confirmation */,
+				C3301DB325A51F910014B0DA /* TabBarVC.swift */,
+				C3301DBF25A525510014B0DA /* Math Facts */,
+				C3301DC025A5255F0014B0DA /* Timer */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			children = (
 				C30740372468B7E50075F950 /* PTButton.swift */,
 				C37EBB502586A3BA008C7670 /* PTCloseButton.swift */,
+				C303704B25A542AD004E49FB /* PTRadioButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -349,12 +353,34 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
-		C37EBB412586945C008C7670 /* Dashboard */ = {
+		C3301DBF25A525510014B0DA /* Math Facts */ = {
 			isa = PBXGroup;
 			children = (
-				C37EBB47258694E6008C7670 /* DashboardVC.swift */,
+				C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */,
+				C37EBB612586B0D1008C7670 /* OperationsVC.swift */,
+				C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */,
+				C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */,
+				C3004C2625872D76002C2822 /* FocusNumberVC.swift */,
+				C3004C2925872D81002C2822 /* PickRangeVC.swift */,
+				C37EBB5B2586B08E008C7670 /* PositiveNegativeIntegersVC.swift */,
+				C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */,
+				C307404B2469B5830075F950 /* ProblemSet */,
+				C307404C2469B58A0075F950 /* Results */,
+				C30740492469B56F0075F950 /* MathOperations */,
+				C307404A2469B57C0075F950 /* Confirmation */,
 			);
-			path = Dashboard;
+			path = "Math Facts";
+			sourceTree = "<group>";
+		};
+		C3301DC025A5255F0014B0DA /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				C3301DB725A524D00014B0DA /* TimerMenuVC.swift */,
+				C3301DC925A534190014B0DA /* TestSectionsVC.swift */,
+				C303704E25A55D8A004E49FB /* TimerVC.swift */,
+				C3301DC625A532B00014B0DA /* TimerParameters.swift */,
+			);
+			path = Timer;
 			sourceTree = "<group>";
 		};
 		C3A100EFE2AE3476DCF1D6B4 /* Frameworks */ = {
@@ -488,7 +514,6 @@
 				C30740612469E0100075F950 /* PTAlertVC.swift in Sources */,
 				C30740562469B7F60075F950 /* ProblemSetVC+UI.swift in Sources */,
 				C3074005246893D60075F950 /* AppDelegate.swift in Sources */,
-				C37EBB48258694E6008C7670 /* DashboardVC.swift in Sources */,
 				C307403E2468D34C0075F950 /* ProblemSetVC.swift in Sources */,
 				C30740582469B8000075F950 /* ProblemSetVC+Ext.swift in Sources */,
 				C37DAF9F258F0C1600F526FD /* TypeOfDivisionVC.swift in Sources */,
@@ -504,21 +529,28 @@
 				C307402B2468A1F90075F950 /* UIView+Ext.swift in Sources */,
 				C3074007246893D60075F950 /* SceneDelegate.swift in Sources */,
 				C3074045246918E90075F950 /* ResultsVC.swift in Sources */,
+				C3301DB425A51F910014B0DA /* TabBarVC.swift in Sources */,
 				C307403C2468BA0E0075F950 /* PTContainerView.swift in Sources */,
 				C30740322468B62D0075F950 /* ConfirmationVC.swift in Sources */,
 				C30740542469B7E20075F950 /* ConfirmationVC+UI.swift in Sources */,
 				C307405C2469B8230075F950 /* ResultsVC+UI.swift in Sources */,
 				C37EBB592586B06A008C7670 /* TypeOfIntegersVC.swift in Sources */,
 				C30740342468B6930075F950 /* PTImageView.swift in Sources */,
+				C3301DB825A524D00014B0DA /* TimerMenuVC.swift in Sources */,
+				C3301DCA25A534190014B0DA /* TestSectionsVC.swift in Sources */,
 				C307404224690B4D0075F950 /* PTTextField.swift in Sources */,
+				C303704F25A55D8A004E49FB /* TimerVC.swift in Sources */,
 				C307404E2469B5A40075F950 /* MathOperationsVC+UI.swift in Sources */,
 				C30740482469B2540075F950 /* PTScrollView.swift in Sources */,
 				C307402724689F9F0075F950 /* ProblemSet.swift in Sources */,
+				C3301DC725A532B00014B0DA /* TimerParameters.swift in Sources */,
 				C307402524689E620075F950 /* UIHelper.swift in Sources */,
 				C30740502469B5B20075F950 /* MathOperationsVC+Ext.swift in Sources */,
 				C37EBB5C2586B08E008C7670 /* PositiveNegativeIntegersVC.swift in Sources */,
 				C307402E2468AF740075F950 /* PTTitleLabel.swift in Sources */,
 				C37EBB512586A3BA008C7670 /* PTCloseButton.swift in Sources */,
+				C3301DBC25A525340014B0DA /* MathFactsMenuVC.swift in Sources */,
+				C303704C25A542AD004E49FB /* PTRadioButton.swift in Sources */,
 				C30740382468B7E50075F950 /* PTButton.swift in Sources */,
 				C37EBB5F2586B0A7008C7670 /* NumberOfProblemsVC.swift in Sources */,
 			);

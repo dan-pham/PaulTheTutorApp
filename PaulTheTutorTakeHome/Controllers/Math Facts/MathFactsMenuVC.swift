@@ -1,14 +1,14 @@
 //
-//  DashboardVC.swift
+//  MathFactsMenuVC.swift
 //  PaulTheTutorTakeHome
 //
-//  Created by Dan Pham on 12/13/20.
-//  Copyright © 2020 Dan Pham. All rights reserved.
+//  Created by Dan Pham on 1/5/21.
+//  Copyright © 2021 Dan Pham. All rights reserved.
 //
 
 import UIKit
 
-class DashboardVC: UIViewController {
+class MathFactsMenuVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What type of numbers?")
     let integerButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "integers")
@@ -32,7 +32,6 @@ class DashboardVC: UIViewController {
     }
     
     private func configureUI() {
-        title = "Math Facts"
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, integerButton)
         

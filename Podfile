@@ -6,6 +6,7 @@ target 'PaulTheTutorTakeHome' do
   use_frameworks!
 
   # Pods for PaulTheTutorTakeHome
+  pod 'DLRadioButton'
   pod 'lottie-ios'
 
 end
