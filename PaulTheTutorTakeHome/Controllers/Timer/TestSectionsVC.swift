@@ -13,13 +13,13 @@ class TestSectionsVC: UIViewController {
     let testSectionsLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What sections will you do?")
     let scrollView = PTScrollView(heightConstraint: 450)
     
-    let englishButton = PTRadioButton(title: "Section 1 [English, 75 questions] - 45 minutes", isIconSquare: true)
-    let mathButton = PTRadioButton(title: "Section 2 [Math, 60 questions] - 60 minutes", isIconSquare: true)
-    let break1Button = PTRadioButton(title: "Break - 5 minutes", isIconSquare: true)
-    let readingButton = PTRadioButton(title: "Section 3 [Reading, 40 questions] - 35 minutes", isIconSquare: true)
-    let scienceButton = PTRadioButton(title: "Section 4 [Science, 40 questions] - 35 minutes", isIconSquare: true)
-    let break2Button = PTRadioButton(title: "Break 2 (optional) - 5 minutes", isIconSquare: true)
-    let essayButton = PTRadioButton(title: "Essay (optional) - 30 minutes", isIconSquare: true)
+    let englishButton = PTRadioButton(title: Tests.english.title, isIconSquare: true)
+    let mathButton = PTRadioButton(title: Tests.math.title, isIconSquare: true)
+    let break1Button = PTRadioButton(title: Tests.testBreak1.title, isIconSquare: true)
+    let readingButton = PTRadioButton(title: Tests.reading.title, isIconSquare: true)
+    let scienceButton = PTRadioButton(title: Tests.science.title, isIconSquare: true)
+    let break2Button = PTRadioButton(title: Tests.testBreak2.title, isIconSquare: true)
+    let essayButton = PTRadioButton(title: Tests.essay.title, isIconSquare: true)
     lazy var checkmarkButtons: [PTRadioButton] = [englishButton, mathButton, break1Button, readingButton, scienceButton, break2Button, essayButton]
     
     let nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Next")
@@ -34,35 +34,37 @@ class TestSectionsVC: UIViewController {
     }
     
     @objc func selectEnglish() {
-        handleSelectingButton(englishButton, section: .english)
+        handleSelectingButton(englishButton, test: Tests.english)
     }
     
     @objc func selectMath() {
-        handleSelectingButton(mathButton, section: .math)
+        handleSelectingButton(mathButton, test: Tests.math)
     }
     
     @objc func selectBreak1() {
-        handleSelectingButton(break1Button, section: .break1)
+        handleSelectingButton(break1Button, test: Tests.testBreak1)
     }
     
     @objc func selectReading() {
-        handleSelectingButton(readingButton, section: .reading)
+        handleSelectingButton(readingButton, test: Tests.reading)
     }
     
     @objc func selectScience() {
-        handleSelectingButton(scienceButton, section: .science)
+        handleSelectingButton(scienceButton, test: Tests.science)
     }
     
     @objc func selectBreak2() {
-        handleSelectingButton(break2Button, section: .break2)
+        handleSelectingButton(break2Button, test: Tests.testBreak2)
     }
     
     @objc func selectEssay() {
-        handleSelectingButton(essayButton, section: .essay)
+        handleSelectingButton(essayButton, test: Tests.essay)
     }
     
     @objc func navigateToNextVC() {
-        let vc = TimerVC(startingTimeInSeconds: 18000)
+        guard !parameters.tests.isEmpty else { return }
+        
+        let vc = TimerVC()
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -71,21 +73,29 @@ class TestSectionsVC: UIViewController {
             button.isSelected = true
         }
         
-        parameters.testSections = [.english, .math, .break1, .reading, .science, .break2, .essay]
+        parameters.tests = [Tests.english, Tests.math, Tests.testBreak1, Tests.reading, Tests.science, Tests.testBreak2, Tests.essay]
     }
     
-    private func handleSelectingButton(_ button: PTRadioButton, section: TimerParameters.TestSection) {
+    private func handleSelectingButton(_ button: PTRadioButton, test: Test) {
         if button.isSelected {
-            if !parameters.testSections.contains(section) {
-                parameters.testSections.append(section)
+            if !parameters.tests.contains(test) {
+                parameters.tests.append(test)
             }
         } else {
-            if parameters.testSections.contains(section) {
-                for (index, parameter) in parameters.testSections.enumerated() where parameter == section {
-                    parameters.testSections.remove(at: index)
+            if parameters.tests.contains(test) {
+                for (index, parameter) in parameters.tests.enumerated() where parameter == test {
+                    parameters.tests.remove(at: index)
                     break
                 }
+                
+                
             }
+        }
+        
+        if parameters.tests.isEmpty {
+            nextButton.isEnabled = false
+        } else {
+            nextButton.isEnabled = true
         }
     }
     
