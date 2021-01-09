@@ -25,6 +25,7 @@ class TimerVC: UIViewController {
     let padding = Padding.standard
     
     var currentTest: Test = Tests.english
+    var currentTestIndex = 0
     
     var timer = Timer()
     var startingTime = 0
@@ -104,7 +105,6 @@ class TimerVC: UIViewController {
             // Timer is running
             secondsRemaining -= 1
             timerLabel.text = timeString(time: secondsRemaining)
-            print(timeString(time: secondsRemaining))
             
             if secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds {
                 playAlert()
@@ -112,9 +112,21 @@ class TimerVC: UIViewController {
             
             if secondsRemaining > tenMinutesInSeconds + 5 { secondsRemaining = tenMinutesInSeconds + 5 }
             if secondsRemaining == tenMinutesInSeconds { secondsRemaining = fiveMinutesInSeconds + 5 }
-            if secondsRemaining == fiveMinutesInSeconds { secondsRemaining = oneMinuteInSeconds + 5 }
+            if secondsRemaining == fiveMinutesInSeconds || (secondsRemaining == fiveMinutesInSeconds - 5) { secondsRemaining = oneMinuteInSeconds + 5 }
             if secondsRemaining == oneMinuteInSeconds { secondsRemaining = 5 }
             
+        } else if currentTestIndex != (parameters.tests.count - 1) {
+            // Timer is done running but tests still remain
+            playAlert()
+            
+            currentTestIndex += 1
+            currentTest = parameters.tests[currentTestIndex]
+            
+            startingTime = currentTest.duration
+            secondsRemaining = startingTime
+            
+            testLabel.text = currentTest.shortTitle
+            timerLabel.text = timeString(time: secondsRemaining)
         } else {
             // Timer finished naturally
             timer.invalidate()
@@ -132,8 +144,10 @@ class TimerVC: UIViewController {
     }
     
     private func playAlert() {
+        print("current test: \(currentTest.shortTitle), time remaining: \(timeString(time: secondsRemaining))")
+        
         AudioServicesPlayAlertSoundWithCompletion(1005) { [self] in
-            if secondsRemaining <= 0 {
+            if (currentTestIndex == parameters.tests.count - 1) && (secondsRemaining <= 0) {
                 Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
                     UIApplication.shared.endBackgroundTask(bgTask)
                     timer.invalidate()
