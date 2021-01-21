@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        registerForNotifications()
         return true
+    }
+    
+    func registerForNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (success, error) in
+            if let error = error {
+                print("Notifications error: \(error.localizedDescription)")
+            }
+        }
+        
+        let timerAction = UNNotificationAction(identifier: TimerNotification.action.rawValue, title: "Open Timer", options: [.foreground])
+        let timerCategory = UNNotificationCategory(identifier: TimerNotification.category.rawValue, actions: [timerAction], intentIdentifiers: [], options: [])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([timerCategory])
     }
 
     // MARK: UISceneSession Lifecycle
@@ -35,3 +52,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        guard let rootVC = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController else { return }
+
+        if response.notification.request.content.categoryIdentifier == TimerNotification.category.rawValue, let tabBarVC = rootVC as? UITabBarController {
+            tabBarVC.selectedIndex = 1
+            
+            // TODO: Load saved tests/times from user defaults
+            
+        }
+        
+        completionHandler()
+    }
+    
+}

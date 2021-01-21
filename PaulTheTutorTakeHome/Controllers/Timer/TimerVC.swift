@@ -38,7 +38,8 @@ class TimerVC: UIViewController {
     let fiveMinutesInSeconds = 300
     let oneMinuteInSeconds = 60
     
-    var bgTask = UIBackgroundTaskIdentifier(rawValue: 1)
+    var bgTask = UIBackgroundTaskIdentifier.invalid
+    var isAppActive = true
     
     
     override func viewDidLoad() {
@@ -46,7 +47,7 @@ class TimerVC: UIViewController {
         handleSettingUpTests()
         configureUI()
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { _, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error {
                 print("Error requesting authorization for local notifications: \(error.localizedDescription)")
             }
@@ -76,10 +77,12 @@ class TimerVC: UIViewController {
             isTimerRunning = false
             startPauseButton.setTitle("Resume", for: .normal)
             resetButton.isEnabled = true
+            endBackgroundTasks()
         } else {
             // Play
             runTimer()
             startPauseButton.setTitle("Pause", for: .normal)
+//            bgTask = UIBackgroundTaskIdentifier(rawValue: 1)
         }
     }
     
@@ -100,6 +103,7 @@ class TimerVC: UIViewController {
         timerLabel.text = timeString(time: secondsRemaining)
         startPauseButton.setTitle("Start", for: .normal)
         enableStartButton()
+        endBackgroundTasks()
     }
     
     @objc func updateTimer() {
@@ -108,7 +112,7 @@ class TimerVC: UIViewController {
             secondsRemaining -= 1
             timerLabel.text = timeString(time: secondsRemaining)
             
-            if secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds {
+            if isAppActive && (secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds) {
                 playAlert()
             }
             
@@ -135,22 +139,24 @@ class TimerVC: UIViewController {
             startPauseButton.setTitle("Start", for: .normal)
             enableStartButton(false)
             playAlert()
+            endBackgroundTasks()
         }
     }
     
     @objc private func beginBackgroundTasks() {
-        guard timer.isValid else {
-            print("Timer is not valid")
-            return
-        }
+        guard timer.isValid else { return }
         
-        bgTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(self.bgTask)
+        isAppActive = false
+        
+        bgTask = UIApplication.shared.beginBackgroundTask(expirationHandler: { [self] in
+            UIApplication.shared.endBackgroundTask(bgTask)
+            bgTask = UIBackgroundTaskIdentifier.invalid
         })
         
         RunLoop.current.add(timer, forMode: .common)
         
         scheduleNotifications()
+        saveTests()
     }
     
     // Referenced from https://www.hackingwithswift.com/forums/swiftui/running-a-timer-while-the-app-is-in-the-background/1647
@@ -187,10 +193,15 @@ class TimerVC: UIViewController {
     }
     
     private func addLocalNotification(for title: String, withSubtitle subtitle: String, timeInterval: TimeInterval) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        let expectedNotificationTime = dateFormatter.string(from: Date().addingTimeInterval(timeInterval))
+        
         let content = UNMutableNotificationContent()
         content.title = title
-        content.subtitle = subtitle
+        content.subtitle = subtitle + ", exp. time: \(expectedNotificationTime)"
         content.sound = UNNotificationSound.default
+        content.categoryIdentifier = TimerNotification.category.rawValue
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -198,11 +209,25 @@ class TimerVC: UIViewController {
         UNUserNotificationCenter.current().add(request)
     }
     
+    // TODO: Save tests to UserDefaults
+    func saveTests() {
+        // test durations in int array
+        // save beginning test time when start button is tapped
+        // save beginning test time when resume button is tapped
+        
+        
+    }
+    
     // TODO: Find time elapsed and update timer
     // Referenced from https://medium.com/swlh/background-task-in-swift-a3ac600032ba
     @objc private func endBackgroundTasks() {
+        isAppActive = true
         
-        UIApplication.shared.endBackgroundTask(bgTask)
+        if bgTask != .invalid {
+            UIApplication.shared.endBackgroundTask(bgTask)
+            bgTask = UIBackgroundTaskIdentifier.invalid
+        }
+        
         removeLocalNotifications()
     }
     

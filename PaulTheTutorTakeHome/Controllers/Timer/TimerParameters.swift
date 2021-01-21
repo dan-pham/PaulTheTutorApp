@@ -53,3 +53,8 @@ class Test: Equatable {
         lhs.orderNumber == rhs.orderNumber
     }
 }
+
+enum TimerNotification: String {
+    case action = "timerAction"
+    case category = "timerCategory"
+}
