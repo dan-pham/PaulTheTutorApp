@@ -16,7 +16,7 @@ class TypeOfIntegersVC: UIViewController {
     let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")
     let hardOneDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "hard one digits (4-9)")
-    let zeroToTwelveButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "0 to 12")
+//    let zeroToTwelveButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "0 to 12")
     let oneToTwoDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one to two digits")
     let multipleDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "multiple digits")
     let focusOnANumberButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "focus on a number")
@@ -45,9 +45,14 @@ class TypeOfIntegersVC: UIViewController {
         navigateToPositiveNegativeIntegersVC()
     }
     
-    @objc func selectZeroToTwelve() {
-        parameters.integerType = .zeroToTwelve
-        navigateToPositiveNegativeIntegersVC()
+//    @objc func selectZeroToTwelve() {
+//        parameters.integerType = .zeroToTwelve
+//        navigateToPositiveNegativeIntegersVC()
+//    }
+    
+    @objc func selectFocusOnANumber() {
+        parameters.integerType = .focusOnANumber
+        navigateToFocusNumberVC()
     }
     
     @objc func selectOneToTwoDigits() {
@@ -60,18 +65,15 @@ class TypeOfIntegersVC: UIViewController {
         navigateToPositiveNegativeIntegersVC()
     }
     
-    @objc func selectFocusOnANumber() {
-        parameters.integerType = .focusOnANumber
-        navigateToFocusNumberVC()
-    }
-    
     @objc func selectPickTheRange() {
         parameters.integerType = .pickTheRange
         navigateToPickRangeVC()
     }
     
     private func navigateToPositiveNegativeIntegersVC() {
-        let vc = PositiveNegativeIntegersVC()
+        // For now, just do positive numbers
+        parameters.integerSign = .positive
+        let vc = NumberOfProblemsVC() // PositiveNegativeIntegersVC()
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -91,7 +93,7 @@ class TypeOfIntegersVC: UIViewController {
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        scrollView.addSubviews(doublesButton, oneDigitButton, hardOneDigitsButton, zeroToTwelveButton, oneToTwoDigitsButton, multipleDigitsButton, focusOnANumberButton, pickTheRangeButton)
+        scrollView.addSubviews(doublesButton, oneDigitButton, hardOneDigitsButton, /*zeroToTwelveButton,*/ focusOnANumberButton, oneToTwoDigitsButton, multipleDigitsButton,  pickTheRangeButton)
         scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
@@ -103,20 +105,20 @@ class TypeOfIntegersVC: UIViewController {
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
         hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneDigitButton)
         
-        zeroToTwelveButton.addTarget(self, action: #selector(selectZeroToTwelve), for: .touchUpInside)
-        zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: hardOneDigitsButton)
+//        zeroToTwelveButton.addTarget(self, action: #selector(selectZeroToTwelve), for: .touchUpInside)
+//        zeroToTwelveButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: hardOneDigitsButton)
+        
+        focusOnANumberButton.addTarget(self, action: #selector(selectFocusOnANumber), for: .touchUpInside)
+        focusOnANumberButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: hardOneDigitsButton)
         
         oneToTwoDigitsButton.addTarget(self, action: #selector(selectOneToTwoDigits), for: .touchUpInside)
-        oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: zeroToTwelveButton)
+        oneToTwoDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: focusOnANumberButton)
         
         multipleDigitsButton.addTarget(self, action: #selector(selectMultipleDigits), for: .touchUpInside)
         multipleDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneToTwoDigitsButton)
         
-        focusOnANumberButton.addTarget(self, action: #selector(selectFocusOnANumber), for: .touchUpInside)
-        focusOnANumberButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: multipleDigitsButton)
-        
         pickTheRangeButton.addTarget(self, action: #selector(selectPickTheRange), for: .touchUpInside)
-        pickTheRangeButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: focusOnANumberButton)
+        pickTheRangeButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: multipleDigitsButton)
     }
     
 }

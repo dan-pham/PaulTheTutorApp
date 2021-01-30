@@ -26,11 +26,14 @@ class TimerMenuVC: UIViewController {
     let parameters = TimerParameters.shared
     let padding = Padding.standard
     
+    let backgroundTimer = BackgroundTimer()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         setDefaultRadioButtons()
+        backgroundTimer.clearBackgroundTimer()
     }
     
     @objc func selectACT() {

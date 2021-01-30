@@ -22,6 +22,7 @@ class OperationsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        parameters.numberType = .integers
     }
     
     @objc func selectAddition() {

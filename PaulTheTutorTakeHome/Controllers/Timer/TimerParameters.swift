@@ -58,3 +58,44 @@ enum TimerNotification: String {
     case action = "timerAction"
     case category = "timerCategory"
 }
+
+class BackgroundTimer {
+    let startTimeKey = "startTime"
+    let testOrderNumbersKey = "testOrderNumbers"
+    
+    var startTime: Double {
+        didSet {
+            UserDefaults.standard.setValue(startTime, forKey: startTimeKey)
+            print("Setting startTime: \(startTime)")
+        }
+    }
+    
+    var testOrderNumbers: [Int] {
+        didSet {
+            UserDefaults.standard.setValue(testOrderNumbers, forKey: testOrderNumbersKey)
+            print("Setting testOrderNumbers: \(testOrderNumbers)")
+        }
+    }
+    
+    func updateNow(withTests tests: [Test]) {
+        let now = Date().timeIntervalSince1970
+        startTime = now
+        
+        var testNumbers: [Int] = []
+        for test in tests {
+            testNumbers.append(test.orderNumber)
+        }
+        
+        testOrderNumbers = testNumbers
+    }
+    
+    func clearBackgroundTimer() {
+        UserDefaults.standard.setValue(0, forKey: startTimeKey)
+        UserDefaults.standard.setValue([], forKey: testOrderNumbersKey)
+    }
+    
+    init() {
+        startTime = UserDefaults.standard.double(forKey: startTimeKey)
+        testOrderNumbers = UserDefaults.standard.array(forKey: testOrderNumbersKey) as? [Int] ?? []
+    }
+}

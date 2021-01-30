@@ -35,9 +35,6 @@ class MathFactsMenuVC: UIViewController {
         view.backgroundColor = Colors.paulLightGreen
         view.addSubviews(questionLabel, integerButton)
         
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
         integerButton.addTarget(self, action: #selector(selectIntegers), for: .touchUpInside)

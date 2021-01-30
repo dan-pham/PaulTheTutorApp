@@ -49,6 +49,8 @@ class NumberOfProblemsVC: UIViewController {
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
+        let initialProblems = 15
+        numberOfProblemsTextfield.text = "\(initialProblems)"
         numberOfProblemsTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel)
         
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)

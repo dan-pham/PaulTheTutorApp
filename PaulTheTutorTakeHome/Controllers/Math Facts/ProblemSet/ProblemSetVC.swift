@@ -68,19 +68,20 @@ class ProblemSetVC: UIViewController {
         
         if currentProblem > 0 { checkAnswer() }
         
-        answerTextField.resignFirstResponder()
-        
-        if problemSet.parameters.divisionType == .remainders {
-            remainderTextField.resignFirstResponder()
-        }
-        
         guard currentProblem < problemSet.parameters.numberOfProblems else {
+            answerTextField.resignFirstResponder()
+            if problemSet.parameters.divisionType == .remainders {
+                remainderTextField.resignFirstResponder()
+            }
+            
             presentResultsVC()
             return
         }
         
         currentProblem += 1
         updateFields()
+        
+        answerTextField.becomeFirstResponder()
     }
     
     private func checkAnswer() {
