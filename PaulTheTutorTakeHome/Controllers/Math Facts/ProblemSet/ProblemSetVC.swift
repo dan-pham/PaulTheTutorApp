@@ -21,9 +21,12 @@ class ProblemSetVC: UIViewController {
 //    var encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     var nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Submit")
     var hintButton = PTButton(titleColor: Colors.paulDarkGreen, backgroundColor: .clear, title: "Hint")
+    var hintLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     
     var problemSet: ProblemSet!
     var currentProblem = 0
+    
+    var hintTapCount = 0
     
     let padding = Padding.standard
     
@@ -80,7 +83,7 @@ class ProblemSetVC: UIViewController {
         
         currentProblem += 1
         updateFields()
-        
+        updateHint()
         answerTextField.becomeFirstResponder()
     }
     
@@ -115,7 +118,71 @@ class ProblemSetVC: UIViewController {
     }
     
     @objc func showHint() {
-        print("Show hint")
+        guard hintTapCount < 2, let problem = problemSet.problems?[currentProblem - 1], let result = problem.integerResult, problemSet.parameters.operation == .addition else { return }
+        hintTapCount += 1
+        
+        let hintOperand1 = configureHintOperand1(operand1: problem.operand1, operand2: problem.operand2, result: result)
+        let hintOperand2 = configureHintOperand2(hintOperand1: hintOperand1, operand1: problem.operand1, operand2: problem.operand2, result: result)
+        
+        let problemText = configureProblemText(hintOperand1: hintOperand1, hintOperand2: hintOperand2)
+        let answerText = configureAnswerText(hintOperand1: hintOperand1, hintOperand2: hintOperand2)
+        
+        if hintTapCount == 1 {
+            hintLabel.text = problemText
+        } else {
+            hintLabel.text = problemText + answerText
+        }
+    }
+    
+    private func configureHintOperand1(operand1: Int, operand2: Int, result: Int) -> Int {
+        let hintOperand1: Int
+        
+        if (operand1 == operand2) || (result < 10) {
+            hintOperand1 = (operand1 > 1) ? (operand1 - 1) : (operand1 + 1)
+        } else if (result / 10) > 1 {
+            hintOperand1 = result / 10
+        } else if result == 10 {
+            hintOperand1 = 5
+        } else {
+            hintOperand1 = 10
+        }
+        
+        return hintOperand1
+    }
+    
+    private func configureHintOperand2(hintOperand1: Int, operand1: Int, operand2: Int, result: Int) -> Int {
+        let hintOperand2: Int
+        
+        if operand1 == operand2 {
+            hintOperand2 = hintOperand1
+        } else {
+            let hintAnswerOffset = 1
+            hintOperand2 = result - hintOperand1 - hintAnswerOffset
+        }
+        
+        return hintOperand2
+    }
+    
+    private func configureProblemText(hintOperand1: Int, hintOperand2: Int) -> String {
+        let problemText = "\(hintOperand1) + \(hintOperand2)"
+        return problemText
+    }
+    
+    private func configureAnswerText(hintOperand1: Int, hintOperand2: Int) -> String {
+        let answerText: String
+        
+        if problemSet.parameters.operation == .addition {
+            answerText = " = \(hintOperand1 + hintOperand2)"
+        } else {
+            answerText = ""
+        }
+        
+        return answerText
+    }
+    
+    private func updateHint() {
+        hintTapCount = 0
+        hintLabel.text = ""
     }
     
     

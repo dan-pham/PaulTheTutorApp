@@ -22,7 +22,7 @@ class ResultsVC: UIViewController {
     var resultsDelegate: ResultsDelegate!
     
     let containerView = PTContainerView(frame: .zero)
-    lazy var scrollView = PTScrollView(heightConstraint: CGFloat(problemSet.problems!.count * 24 + 100))
+    lazy var scrollView = PTScrollView(heightConstraint: CGFloat(problemSet.problems!.count * 24 + 104))
     let correctResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
     let correctProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let incorrectResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")

@@ -35,7 +35,16 @@ struct ProblemSet {
         var operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
         var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
         
-        if parameters.divisionType == .even {
+        if parameters.operation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == .doubles) {
+            if operand1 < operand2 {
+                let temp = operand2
+                operand2 = operand1
+                operand1 = temp
+            }
+            
+            let result = operand1 - operand2
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
+        } else if parameters.divisionType == .even {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
@@ -130,7 +139,11 @@ struct ProblemSet {
         let operand2: Int
         
         if parameters.integerType == .doubles {
-            operand2 = operand1
+            if parameters.operation == .subtraction || parameters.operation == .division {
+                operand2 = operand1 * 2
+            } else {
+                operand2 = operand1
+            }
         } else if parameters.divisionType == .even {
             operand2 = operand1 * Int.random(in: minRange...maxRange)
         } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {

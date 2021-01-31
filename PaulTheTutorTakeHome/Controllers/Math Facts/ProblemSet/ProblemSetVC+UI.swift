@@ -24,13 +24,14 @@ extension ProblemSetVC {
         configureNextButton()
 //        configureEncouragementLabel()
         configureHintButton()
+        configureHintLabel()
     }
     
     private func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
 //        title = problemSet.title
-        view.addSubviews(totalProblemsLabel, containerView, hintButton)
+        view.addSubviews(totalProblemsLabel, containerView, hintButton, hintLabel)
     }
     
     private func configureNavBar() {
@@ -155,6 +156,16 @@ extension ProblemSetVC {
             hintButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             hintButton.widthAnchor.constraint(equalToConstant: 60),
             hintButton.heightAnchor.constraint(equalToConstant: 45)
+        ])
+    }
+    
+    private func configureHintLabel() {
+        hintLabel.adjustsFontSizeToFitWidth = true
+        
+        NSLayoutConstraint.activate([
+            hintLabel.centerYAnchor.constraint(equalTo: hintButton.centerYAnchor),
+            hintLabel.leadingAnchor.constraint(equalTo: hintButton.trailingAnchor, constant: Padding.small),
+            hintLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
     }
     
