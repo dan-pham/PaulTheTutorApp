@@ -24,6 +24,11 @@ class TypeOfIntegersVC: UIViewController {
     
     let parameters = ProblemSetParameters.shared
     
+    lazy var isAdditionOrMultiplication: Bool = { [unowned self] in
+        if parameters.operation == [.addition] || parameters.operation == [.multiplication] { return true }
+        return false
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,11 +101,12 @@ class TypeOfIntegersVC: UIViewController {
         scrollView.addSubviews(doublesButton, oneDigitButton, hardOneDigitsButton, /*zeroToTwelveButton,*/ focusOnANumberButton, oneToTwoDigitsButton, multipleDigitsButton,  pickTheRangeButton)
         scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
+        doublesButton.isHidden = isAdditionOrMultiplication
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
         doublesButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: true)
         
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
-        oneDigitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: doublesButton)
+        oneDigitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: isAdditionOrMultiplication ? nil : doublesButton, isScrollViewTop: isAdditionOrMultiplication)
         
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
         hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneDigitButton)
