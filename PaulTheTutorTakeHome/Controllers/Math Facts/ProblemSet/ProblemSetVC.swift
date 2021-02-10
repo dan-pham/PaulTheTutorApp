@@ -118,7 +118,13 @@ class ProblemSetVC: UIViewController {
     }
     
     @objc func showHint() {
-        guard hintTapCount < 2, let problem = problemSet.problems?[currentProblem - 1], let result = problem.integerResult, problemSet.parameters.operation == .addition else { return }
+        guard problemSet.parameters.operation == [.addition] else {
+            Alerts.showNoHintsAlert(on: self)
+            return
+        }
+        
+        guard hintTapCount < 2, let problem = problemSet.problems?[currentProblem - 1], let result = problem.integerResult else { return }
+        
         hintTapCount += 1
         
         let hintOperand1 = configureHintOperand1(operand1: problem.operand1, operand2: problem.operand2, result: result)
@@ -171,7 +177,7 @@ class ProblemSetVC: UIViewController {
     private func configureAnswerText(hintOperand1: Int, hintOperand2: Int) -> String {
         let answerText: String
         
-        if problemSet.parameters.operation == .addition {
+        if problemSet.parameters.operation == [.addition] {
             answerText = " = \(hintOperand1 + hintOperand2)"
         } else {
             answerText = ""

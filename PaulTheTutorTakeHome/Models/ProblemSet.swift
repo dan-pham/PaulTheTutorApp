@@ -22,20 +22,23 @@ struct ProblemSet {
         var newProblems: [Problem] = []
         
         for number in 1...parameters.numberOfProblems {
-            let newProblem = generateRandomProblem(number: number, parameters: parameters)
-            newProblems.append(newProblem)
+            if let newProblem = generateRandomProblem(number: number, parameters: parameters) {
+                newProblems.append(newProblem)
+            }
         }
         
         problems = newProblems
     }
     
-    private func generateRandomProblem(number: Int, parameters: ProblemSetParameters) -> Problem {
+    private func generateRandomProblem(number: Int, parameters: ProblemSetParameters) -> Problem? {
+        guard let randomOperation = parameters.operation.randomElement() else { return nil }
+        
         let minRange = calculateMinRange()
         let maxRange = calculateMaxRange()
         var operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
-        var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1)
+        var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1, operation: randomOperation)
         
-        if parameters.operation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == .doubles) {
+        if randomOperation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == .doubles) {
             if operand1 < operand2 {
                 let temp = operand2
                 operand2 = operand1
@@ -43,29 +46,29 @@ struct ProblemSet {
             }
             
             let result = operand1 - operand2
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
-        } else if parameters.divisionType == .even {
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, integerResult: result)
+        } else if randomOperation == .division && parameters.divisionType == .even {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
             let result = operand1 / operand2
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
-        } else if parameters.divisionType == .remainders {
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, integerResult: result)
+        } else if randomOperation == .division && parameters.divisionType == .remainders {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
             let quotient = operand1 / operand2
             let remainder = operand1 % operand2
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, quotient: quotient, remainder: remainder)
-        } else if parameters.divisionType == .decimals {
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, quotient: quotient, remainder: remainder)
+        } else if randomOperation == .division && parameters.divisionType == .decimals {
             let temp = operand2
             operand2 = operand1
             operand1 = temp
             let result = (Double(operand1) / Double(operand2)).round(toPlaces: 2)
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, decimalResult: result)
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, decimalResult: result)
         } else {
-            let result = generateResult(operand1: operand1, operand2: operand2)
-            return Problem(number: number, operand1: operand1, operand2: operand2, operation: parameters.operation.rawValue, integerResult: result)
+            let result = generateResult(operand1: operand1, operand2: operand2, operation: randomOperation)
+            return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, integerResult: result)
         }
     }
     
@@ -135,11 +138,11 @@ struct ProblemSet {
         return operand1
     }
     
-    private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int) -> Int {
+    private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int, operation: ProblemSetParameters.Operation) -> Int {
         let operand2: Int
         
         if parameters.integerType == .doubles {
-            if parameters.operation == .subtraction || parameters.operation == .division {
+            if operation == .subtraction || operation == .division {
                 operand2 = operand1 * 2
             } else {
                 operand2 = operand1
@@ -159,10 +162,10 @@ struct ProblemSet {
         return operand2
     }
     
-    private func generateResult(operand1: Int, operand2: Int) -> Int {
+    private func generateResult(operand1: Int, operand2: Int, operation: ProblemSetParameters.Operation) -> Int {
         let result: Int
         
-        switch parameters.operation {
+        switch operation {
         case .addition:
             result = operand1 + operand2
         case .subtraction:
@@ -183,7 +186,7 @@ class ProblemSetParameters {
     static let shared = ProblemSetParameters()
     
     var numberType: NumberType = .integers
-    var operation: Operation = .addition
+    var operation: [Operation] = [.addition]
     var divisionType: DivisionType?
     var integerType: IntegerType = .oneDigit
     var integerSign: IntegerSign = .positive

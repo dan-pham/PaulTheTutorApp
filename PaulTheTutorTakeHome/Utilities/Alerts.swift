@@ -27,6 +27,10 @@ enum Alerts {
         showBasicAlert(on: vc, withTitle: "Oops!", message: "You forgot to enter an answer.")
     }
     
+    static func showNoHintsAlert(on vc: UIViewController) {
+        showBasicAlert(on: vc, withTitle: "No Hint Available", message: "Currently no hints available for this operation.")
+    }
+    
     
     // MARK: - Confirmation Alerts
     
