@@ -28,6 +28,9 @@ class ProblemSetVC: UIViewController {
     
     var hintTapCount = 0
     
+    var isFirstTry = true
+    var isAnswerCorrect = true
+    
     let padding = Padding.standard
     
     
@@ -71,6 +74,11 @@ class ProblemSetVC: UIViewController {
         
         if currentProblem > 0 { checkAnswer() }
         
+        guard isAnswerCorrect else {
+            Alerts.showIncorrectAnswerAlert(on: self)
+            return
+        }
+        
         guard currentProblem < problemSet.parameters.numberOfProblems else {
             answerTextField.resignFirstResponder()
             if problemSet.parameters.divisionType == .remainders {
@@ -85,6 +93,7 @@ class ProblemSetVC: UIViewController {
         updateFields()
         updateHint()
         answerTextField.becomeFirstResponder()
+        isFirstTry = true
     }
     
     private func checkAnswer() {
@@ -102,18 +111,23 @@ class ProblemSetVC: UIViewController {
             return
         }
         
-        problemSet.problems?[currentProblem - 1].answer = answer
+        if isFirstTry {
+            problemSet.problems?[currentProblem - 1].answer = answer
+        }
         
-        if var problem = problemSet.problems?[currentProblem - 1] {
+        if let problem = problemSet.problems?[currentProblem - 1] {
             if let result = problem.integerResult {
-                problem.isCorrect = answerTextField.text == "\(result)" ? true : false
+                isAnswerCorrect = answerTextField.text == "\(result)"
             } else if let quotient = problem.quotient, let remainder = problem.remainder {
-                problem.isCorrect = answerTextField.text == "\(quotient)" && remainderTextField.text == "\(remainder)"
+                isAnswerCorrect = answerTextField.text == "\(quotient)" && remainderTextField.text == "\(remainder)"
             } else if let result = problem.decimalResult?.round(toPlaces: 2), let answer = answerTextField.text, let decimalAnswer = Double(answer)?.round(toPlaces: 2) {
-                problem.isCorrect = result == decimalAnswer ? true : false
+                isAnswerCorrect = result == decimalAnswer
             }
             
-            problemSet.problems?[currentProblem - 1].isCorrect = problem.isCorrect
+            if isFirstTry {
+                problemSet.problems?[currentProblem - 1].isCorrect = isAnswerCorrect
+                isFirstTry = false
+            }
         }
     }
     

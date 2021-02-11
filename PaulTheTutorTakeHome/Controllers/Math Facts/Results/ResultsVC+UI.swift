@@ -50,7 +50,7 @@ extension ResultsVC {
         animationView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            animationView.bottomAnchor.constraint(equalTo: homeButton.topAnchor, constant: -padding),
+            animationView.bottomAnchor.constraint(equalTo: homeButton.topAnchor, constant: -Padding.small),
             animationView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             animationView.widthAnchor.constraint(equalToConstant: animationViewLength),
             animationView.heightAnchor.constraint(equalToConstant: animationViewLength)
@@ -59,7 +59,7 @@ extension ResultsVC {
     
     func configureEncouragementLabel() {
         NSLayoutConstraint.activate([
-            encouragementLabel.bottomAnchor.constraint(equalTo: animationView.topAnchor, constant: -padding),
+            encouragementLabel.bottomAnchor.constraint(equalTo: animationView.topAnchor, constant: -Padding.small),
             encouragementLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             encouragementLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
         ])
@@ -76,9 +76,28 @@ extension ResultsVC {
         ])
     }
     
+    func configureIncorrectResultsLabel() {
+        NSLayoutConstraint.activate([
+            incorrectResultsLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            incorrectResultsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            incorrectResultsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+        ])
+    }
+    
+    func configureIncorrectProblemsLabel() {
+        incorrectProblemsLabel.numberOfLines = 0
+        incorrectProblemsLabel.textColor = .red
+        
+        NSLayoutConstraint.activate([
+            incorrectProblemsLabel.topAnchor.constraint(equalTo: incorrectResultsLabel.bottomAnchor, constant: padding / 2),
+            incorrectProblemsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            incorrectProblemsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+        ])
+    }
+    
     func configureCorrectResultsLabel() {
         NSLayoutConstraint.activate([
-            correctResultsLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            correctResultsLabel.topAnchor.constraint(equalTo: incorrectProblemsLabel.bottomAnchor, constant: padding),
             correctResultsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             correctResultsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
         ])
@@ -91,24 +110,6 @@ extension ResultsVC {
             correctProblemsLabel.topAnchor.constraint(equalTo: correctResultsLabel.bottomAnchor, constant: padding / 2),
             correctProblemsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
             correctProblemsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
-        ])
-    }
-    
-    func configureIncorrectResultsLabel() {
-        NSLayoutConstraint.activate([
-            incorrectResultsLabel.topAnchor.constraint(equalTo: correctProblemsLabel.bottomAnchor, constant: padding),
-            incorrectResultsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            incorrectResultsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
-        ])
-    }
-    
-    func configureIncorrectProblemsLabel() {
-        incorrectProblemsLabel.numberOfLines = 0
-        
-        NSLayoutConstraint.activate([
-            incorrectProblemsLabel.topAnchor.constraint(equalTo: incorrectResultsLabel.bottomAnchor, constant: padding / 2),
-            incorrectProblemsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
-            incorrectProblemsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
         ])
     }
     

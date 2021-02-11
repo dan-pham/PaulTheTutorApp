@@ -37,7 +37,7 @@ class PTTitleLabel: UILabel {
         lineBreakMode = .byWordWrapping
         
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.9
+        minimumScaleFactor = 0.8
     }
     
 }

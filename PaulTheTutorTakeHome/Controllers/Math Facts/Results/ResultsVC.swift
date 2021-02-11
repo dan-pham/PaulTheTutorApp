@@ -23,10 +23,10 @@ class ResultsVC: UIViewController {
     
     let containerView = PTContainerView(frame: .zero)
     lazy var scrollView = PTScrollView(heightConstraint: CGFloat(problemSet.problems!.count * 24 + 104))
-    let correctResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
-    let correctProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let incorrectResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
     let incorrectProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
+    let correctResultsLabel = PTTitleLabel(textAlignment: .left, fontSize: 24, text: "")
+    let correctProblemsLabel = PTBodyLabel(textAlignment: .left, fontSize: 20)
     let encouragementLabel = PTBodyLabel(textAlignment: .center, fontSize: 24)
     let animationView = AnimationView()
     let homeButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Home")
@@ -96,16 +96,16 @@ class ResultsVC: UIViewController {
         configureEncouragementLabel()
         
         configureScrollView()
-        configureCorrectResultsLabel()
-        configureCorrectProblemsLabel()
         configureIncorrectResultsLabel()
         configureIncorrectProblemsLabel()
+        configureCorrectResultsLabel()
+        configureCorrectProblemsLabel()
     }
     
     private func updateLabels() {
-        correctResultsLabel.text = "Correct: \(problemsCorrect)/\(problemSet.parameters.numberOfProblems)"
+        correctResultsLabel.text = "Correct on first try: \(problemsCorrect)/\(problemSet.parameters.numberOfProblems)"
         correctProblemsLabel.text = correctProblems
-        incorrectResultsLabel.text = "Incorrect: \(problemsIncorrect)/\(problemSet.parameters.numberOfProblems)"
+        incorrectResultsLabel.text = "Incorrect on first try: \(problemsIncorrect)/\(problemSet.parameters.numberOfProblems)"
         incorrectProblemsLabel.text = incorrectProblems
         
         if Double(problemsCorrect) >= Double(problemSet.parameters.numberOfProblems) * 0.7 {

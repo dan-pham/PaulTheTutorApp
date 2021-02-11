@@ -31,6 +31,10 @@ enum Alerts {
         showBasicAlert(on: vc, withTitle: "No Hint Available", message: "Currently no hints available for this operation.")
     }
     
+    static func showIncorrectAnswerAlert(on vc: UIViewController) {
+        showBasicAlert(on: vc, withTitle: "Try Again!", message: "Sorry, that answer is incorrect.")
+    }
+    
     
     // MARK: - Confirmation Alerts
     
