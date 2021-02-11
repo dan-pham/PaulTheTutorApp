@@ -46,6 +46,7 @@
 		C307406C2469F4340075F950 /* smile.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740692469F4330075F950 /* smile.json */; };
 		C307406D2469F4340075F950 /* minus.json in Resources */ = {isa = PBXBuildFile; fileRef = C307406A2469F4340075F950 /* minus.json */; };
 		C31B2C3825D4AA58004E7EF7 /* TypeOfSubtractionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B2C3725D4AA58004E7EF7 /* TypeOfSubtractionVC.swift */; };
+		C31B2C3B25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B2C3A25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift */; };
 		C3301DB425A51F910014B0DA /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB325A51F910014B0DA /* TabBarVC.swift */; };
 		C3301DB825A524D00014B0DA /* TimerMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB725A524D00014B0DA /* TimerMenuVC.swift */; };
 		C3301DBC25A525340014B0DA /* MathFactsMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */; };
@@ -105,6 +106,7 @@
 		C30740692469F4330075F950 /* smile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = smile.json; sourceTree = "<group>"; };
 		C307406A2469F4340075F950 /* minus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = minus.json; sourceTree = "<group>"; };
 		C31B2C3725D4AA58004E7EF7 /* TypeOfSubtractionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfSubtractionVC.swift; sourceTree = "<group>"; };
+		C31B2C3A25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryInteger+Ext.swift"; sourceTree = "<group>"; };
 		C3301DB325A51F910014B0DA /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		C3301DB725A524D00014B0DA /* TimerMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerMenuVC.swift; sourceTree = "<group>"; };
 		C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathFactsMenuVC.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				C30740202468970C0075F950 /* UIColor+Ext.swift */,
 				C307402A2468A1F90075F950 /* UIView+Ext.swift */,
 				C3B446102592BA5700EF2098 /* Double+Ext.swift */,
+				C31B2C3A25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 			files = (
 				C30740302468AF900075F950 /* PTBodyLabel.swift in Sources */,
 				C3074023246897300075F950 /* Constants.swift in Sources */,
+				C31B2C3B25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift in Sources */,
 				C3B446112592BA5700EF2098 /* Double+Ext.swift in Sources */,
 				C30740612469E0100075F950 /* PTAlertVC.swift in Sources */,
 				C30740562469B7F60075F950 /* ProblemSetVC+UI.swift in Sources */,
@@ -694,7 +698,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = J6YZ86R5K6;
 				INFOPLIST_FILE = PaulTheTutorTakeHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -715,7 +719,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = J6YZ86R5K6;
 				INFOPLIST_FILE = PaulTheTutorTakeHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

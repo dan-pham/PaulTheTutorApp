@@ -62,12 +62,20 @@ class TypeOfIntegersVC: UIViewController {
     
     @objc func selectOneToTwoDigits() {
         parameters.integerType = [.oneToTwoDigits]
-        navigateToPositiveNegativeIntegersVC()
+        if parameters.operation.contains(.subtraction) {
+            navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
+        } else {
+            navigateToPositiveNegativeIntegersVC()
+        }
     }
     
     @objc func selectMultipleDigits() {
         parameters.integerType = [.multipleDigits]
-        navigateToPositiveNegativeIntegersVC()
+        if parameters.operation.contains(.subtraction) {
+            navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
+        } else {
+            navigateToPositiveNegativeIntegersVC()
+        }
     }
     
     @objc func selectPickTheRange() {

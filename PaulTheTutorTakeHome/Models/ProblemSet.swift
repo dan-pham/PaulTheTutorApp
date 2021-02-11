@@ -145,7 +145,17 @@ struct ProblemSet {
     private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int, operation: ProblemSetParameters.Operation, integerType: ProblemSetParameters.IntegerType) -> Int {
         let operand2: Int
         
-        if integerType == .doubles {
+        if parameters.subtractionType == .noBorrowing {
+            var operand2DigitString = ""
+            let digits = operand1.digits
+            
+            for digit in digits {
+                let randomDigit = Int.random(in: 0...digit)
+                operand2DigitString.append("\(randomDigit)")
+            }
+            
+            operand2 = Int(operand2DigitString) ?? Int.random(in: minRange...maxRange)
+        } else if integerType == .doubles {
             if operation == .subtraction || operation == .division {
                 operand2 = operand1 * 2
             } else {

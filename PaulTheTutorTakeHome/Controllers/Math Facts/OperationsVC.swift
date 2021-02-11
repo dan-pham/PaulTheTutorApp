@@ -46,7 +46,12 @@ class OperationsVC: UIViewController {
     @objc func selectDoublesAndPairsOfTenSubtraction() {
         parameters.operation = [.subtraction]
         parameters.integerType = [.doubles, .pairsOfTen]
-        navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
+        
+        // For now, just do positive numbers
+        parameters.integerSign = .positive
+        
+        let vc = NumberOfProblemsVC() // PositiveNegativeIntegersVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func selectAddition() {
