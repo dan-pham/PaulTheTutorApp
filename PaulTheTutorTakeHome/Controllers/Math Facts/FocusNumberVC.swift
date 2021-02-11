@@ -73,8 +73,15 @@ class FocusNumberVC: UIViewController {
     }
     
     private func navigateToNextVC() {
-        let vc = NumberOfProblemsVC()
-        navigationController?.pushViewController(vc, animated: true)
+//        guard let focusNumber = parameters.focusNumber, let otherNumberMin = parameters.otherNumberMin,
+//              let otherNumberMax = parameters.otherNumberMax else { return }
+//        
+//        if parameters.operation.contains(.subtraction) && (focusNumber.digits.count > 1 || otherNumberMin.digits.count > 1 || otherNumberMax.digits.count > 1) {
+//            navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
+//        } else {
+            let vc = NumberOfProblemsVC()
+            navigationController?.pushViewController(vc, animated: true)
+//        }
     }
     
     private func configureUI() {

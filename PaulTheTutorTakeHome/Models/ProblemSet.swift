@@ -141,7 +141,7 @@ struct ProblemSet {
     private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int, operation: ProblemSetParameters.Operation, integerType: ProblemSetParameters.IntegerType) -> Int {
         let operand2: Int
         
-        if parameters.subtractionType == .noBorrowing {
+        if parameters.subtractionType == .noBorrowing && (parameters.integerType != [.pickTheRange] || parameters.integerType == [.focusOnANumber]) {
             var operand2DigitString = ""
             let digits = operand1.digits
             
@@ -170,13 +170,51 @@ struct ProblemSet {
                 swap(&secondNumberMin, &secondNumberMax)
             }
             
-            operand2 = Int.random(in: secondNumberMin...secondNumberMax)
+//            if parameters.subtractionType == .noBorrowing {
+//                var operand2DigitString = ""
+//                let digits = operand1.digits
+//
+//                for digit in digits {
+//                    var minDigit = secondNumberMin > digit ? secondNumberMin : 0
+//                    var maxDigit = secondNumberMax < digit ? secondNumberMax : digit
+//
+//                    if minDigit > maxDigit {
+//                        swap(&minDigit, &maxDigit)
+//                    }
+//
+//                    let randomDigit = Int.random(in: minDigit...maxDigit)
+//                    operand2DigitString.append("\(randomDigit)")
+//                }
+//
+//                operand2 = Int(operand2DigitString) ?? Int.random(in: secondNumberMin...secondNumberMax)
+//            } else {
+                operand2 = Int.random(in: secondNumberMin...secondNumberMax)
+//            }
         } else if parameters.integerType == [.focusOnANumber], var otherNumberMin = parameters.otherNumberMin, var otherNumberMax = parameters.otherNumberMax {
             if otherNumberMin > otherNumberMax {
                 swap(&otherNumberMin, &otherNumberMax)
             }
             
-            operand2 = Int.random(in: otherNumberMin...otherNumberMax)
+//            if parameters.subtractionType == .noBorrowing {
+//                var operand2DigitString = ""
+//                let digits = operand1.digits
+//
+//                for digit in digits {
+//                    var minDigit = otherNumberMin > digit ? otherNumberMin : 0
+//                    var maxDigit = otherNumberMax < digit ? otherNumberMax : digit
+//
+//                    if minDigit > maxDigit {
+//                        swap(&minDigit, &maxDigit)
+//                    }
+//
+//                    let randomDigit = Int.random(in: minDigit...maxDigit)
+//                    operand2DigitString.append("\(randomDigit)")
+//                }
+//
+//                operand2 = Int(operand2DigitString) ?? Int.random(in: minRange...maxRange)
+//            } else {
+                operand2 = Int.random(in: otherNumberMin...otherNumberMax)
+//            }
         } else if parameters.integerSign == .positive {
             operand2 = Int.random(in: minRange...maxRange)
         } else {

@@ -74,8 +74,15 @@ class PickRangeVC: UIViewController {
     }
     
     private func navigateToNextVC() {
-        let vc = NumberOfProblemsVC()
-        navigationController?.pushViewController(vc, animated: true)
+//        guard let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax,
+//              let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax else { return }
+//
+//        if parameters.operation.contains(.subtraction) && (firstNumberMin.digits.count > 1 || firstNumberMax.digits.count > 1 || secondNumberMin.digits.count > 1 || secondNumberMax.digits.count > 1) {
+//            navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
+//        } else {
+            let vc = NumberOfProblemsVC()
+            navigationController?.pushViewController(vc, animated: true)
+//        }
     }
     
     private func configureUI() {
