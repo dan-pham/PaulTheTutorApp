@@ -57,6 +57,7 @@ class FocusNumberVC: UIViewController {
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
+        view.addInputAccessoryForTextFields(textFields: [focusNumberTextfield, otherNumberMinTextfield, otherNumberMaxTextfield], dismissable: true, previousNextable: true)
         view.addSubviews(questionLabel, focusNumberLabel, focusNumberTextfield, otherNumberMinLabel, otherNumberMinTextfield, otherNumberMaxLabel, otherNumberMaxTextfield, submitButton)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)

@@ -31,6 +31,8 @@ extension ProblemSetVC {
     private func configureViewController() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
+        let isHorizontal = problemSet.parameters.divisionType == .remainders
+        view.addInputAccessoryForTextFields(textFields: [answerTextField, remainderTextField], dismissable: true, previousNextable: isHorizontal, isHorizontal: isHorizontal)
 //        title = problemSet.title
         view.addSubviews(totalProblemsLabel, containerView, hintButton, hintLabel)
     }

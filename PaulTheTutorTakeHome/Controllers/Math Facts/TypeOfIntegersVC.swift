@@ -11,7 +11,7 @@ import UIKit
 class TypeOfIntegersVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Type of Integers")
-    let scrollView = PTScrollView(heightConstraint: 620)
+    lazy var scrollView = PTScrollView(heightConstraint: isAdditionOrMultiplication ? 470 : 550)
     
     let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")

@@ -45,6 +45,7 @@ class NumberOfProblemsVC: UIViewController {
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
+        view.addInputAccessoryForTextFields(textFields: [numberOfProblemsTextfield], dismissable: true)
         view.addSubviews(questionLabel, numberOfProblemsTextfield, submitButton)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)

@@ -40,30 +40,22 @@ struct ProblemSet {
         
         if randomOperation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == [.doubles]) {
             if operand1 < operand2 {
-                let temp = operand2
-                operand2 = operand1
-                operand1 = temp
+                swap(&operand1, &operand2)
             }
             
             let result = operand1 - operand2
             return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, integerResult: result)
         } else if randomOperation == .division && parameters.divisionType == .even {
-            let temp = operand2
-            operand2 = operand1
-            operand1 = temp
+            swap(&operand1, &operand2)
             let result = operand1 / operand2
             return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, integerResult: result)
         } else if randomOperation == .division && parameters.divisionType == .remainders {
-            let temp = operand2
-            operand2 = operand1
-            operand1 = temp
+            swap(&operand1, &operand2)
             let quotient = operand1 / operand2
             let remainder = operand1 % operand2
             return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, quotient: quotient, remainder: remainder)
         } else if randomOperation == .division && parameters.divisionType == .decimals {
-            let temp = operand2
-            operand2 = operand1
-            operand1 = temp
+            swap(&operand1, &operand2)
             let result = (Double(operand1) / Double(operand2)).round(toPlaces: 2)
             return Problem(number: number, operand1: operand1, operand2: operand2, operation: randomOperation.rawValue, decimalResult: result)
         } else {
@@ -127,7 +119,11 @@ struct ProblemSet {
     private func generateOperand1(minRange: Int, maxRange: Int) -> Int {
         var operand1: Int
         
-        if parameters.integerType == [.pickTheRange], let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
+        if parameters.integerType == [.pickTheRange], var firstNumberMin = parameters.firstNumberMin, var firstNumberMax = parameters.firstNumberMax {
+            if firstNumberMin > firstNumberMax {
+                swap(&firstNumberMin, &firstNumberMax)
+            }
+            
             operand1 = Int.random(in: firstNumberMin...firstNumberMax)
         } else if parameters.integerType == [.focusOnANumber], let focusNumber = parameters.focusNumber {
             operand1 = focusNumber
@@ -169,9 +165,17 @@ struct ProblemSet {
             }
         } else if parameters.divisionType == .even {
             operand2 = operand1 * Int.random(in: minRange...maxRange)
-        } else if parameters.integerType == [.pickTheRange], let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
+        } else if parameters.integerType == [.pickTheRange], var secondNumberMin = parameters.secondNumberMin, var secondNumberMax = parameters.secondNumberMax {
+            if secondNumberMin > secondNumberMax {
+                swap(&secondNumberMin, &secondNumberMax)
+            }
+            
             operand2 = Int.random(in: secondNumberMin...secondNumberMax)
-        } else if parameters.integerType == [.focusOnANumber], let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
+        } else if parameters.integerType == [.focusOnANumber], var otherNumberMin = parameters.otherNumberMin, var otherNumberMax = parameters.otherNumberMax {
+            if otherNumberMin > otherNumberMax {
+                swap(&otherNumberMin, &otherNumberMax)
+            }
+            
             operand2 = Int.random(in: otherNumberMin...otherNumberMax)
         } else if parameters.integerSign == .positive {
             operand2 = Int.random(in: minRange...maxRange)

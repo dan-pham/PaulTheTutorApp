@@ -11,6 +11,8 @@ import UIKit
 class PickRangeVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What range do you want to focus on?")
+    let scrollView = PTScrollView(heightConstraint: 550)
+    
     let firstNumberMinLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Min for 1st Number")
     let firstNumberMinTextfield = PTTextField(frame: .zero)
     let firstNumberMaxLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Max for 1st Number")
@@ -57,24 +59,28 @@ class PickRangeVC: UIViewController {
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
-        view.addSubviews(questionLabel, firstNumberMinLabel, firstNumberMinTextfield, firstNumberMaxLabel, firstNumberMaxTextfield, secondNumberMinLabel, secondNumberMinTextfield, secondNumberMaxLabel, secondNumberMaxTextfield, submitButton)
+        view.addInputAccessoryForTextFields(textFields: [firstNumberMinTextfield, firstNumberMaxTextfield, secondNumberMinTextfield, secondNumberMaxTextfield], dismissable: true, previousNextable: true)
+        view.addSubviews(questionLabel, scrollView)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        firstNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel, naturalHeight: true)
-        firstNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMinLabel, smallTopPadding: true)
+        scrollView.addSubviews(firstNumberMinLabel, firstNumberMinTextfield, firstNumberMaxLabel, firstNumberMaxTextfield, secondNumberMinLabel, secondNumberMinTextfield, secondNumberMaxLabel, secondNumberMaxTextfield, submitButton)
+        scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
-        firstNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMinTextfield, naturalHeight: true)
-        firstNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMaxLabel, smallTopPadding: true)
+        firstNumberMinLabel.addFlexWidthSetHeightConstraints(to: scrollView, naturalHeight: true, isScrollViewTop: true)
+        firstNumberMinTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: firstNumberMinLabel, smallTopPadding: true)
         
-        secondNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: firstNumberMaxTextfield, naturalHeight: true)
-        secondNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMinLabel, smallTopPadding: true)
+        firstNumberMaxLabel.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: firstNumberMinTextfield, naturalHeight: true)
+        firstNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: firstNumberMaxLabel, smallTopPadding: true)
         
-        secondNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMinTextfield, naturalHeight: true)
-        secondNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMaxLabel, smallTopPadding: true)
+        secondNumberMinLabel.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: firstNumberMaxTextfield, naturalHeight: true)
+        secondNumberMinTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: secondNumberMinLabel, smallTopPadding: true)
+        
+        secondNumberMaxLabel.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: secondNumberMinTextfield, naturalHeight: true)
+        secondNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: secondNumberMaxLabel, smallTopPadding: true)
         
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
-        submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: secondNumberMaxTextfield)
+        submitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: secondNumberMaxTextfield)
     }
     
 }
