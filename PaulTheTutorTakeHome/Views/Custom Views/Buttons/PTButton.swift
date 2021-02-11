@@ -51,6 +51,8 @@ class PTButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 10
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .title2)
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     }
     
 }

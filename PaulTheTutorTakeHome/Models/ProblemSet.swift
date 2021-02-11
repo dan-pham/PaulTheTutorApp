@@ -31,14 +31,14 @@ struct ProblemSet {
     }
     
     private func generateRandomProblem(number: Int, parameters: ProblemSetParameters) -> Problem? {
-        guard let randomOperation = parameters.operation.randomElement() else { return nil }
+        guard let randomOperation = parameters.operation.randomElement(), let integerType = parameters.integerType.randomElement() else { return nil }
         
-        let minRange = calculateMinRange()
-        let maxRange = calculateMaxRange()
+        let minRange = calculateMinRange(integerType: integerType)
+        let maxRange = calculateMaxRange(integerType: integerType)
         var operand1 = generateOperand1(minRange: minRange, maxRange: maxRange)
-        var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1, operation: randomOperation)
+        var operand2 = generateOperand2(minRange: minRange, maxRange: maxRange, operand1: operand1, operation: randomOperation, integerType: integerType)
         
-        if randomOperation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == .doubles) {
+        if randomOperation == .subtraction && (parameters.integerSign == .positive || parameters.integerType == [.doubles]) {
             if operand1 < operand2 {
                 let temp = operand2
                 operand2 = operand1
@@ -72,10 +72,12 @@ struct ProblemSet {
         }
     }
     
-    private func calculateMinRange() -> Int {
+    private func calculateMinRange(integerType: ProblemSetParameters.IntegerType) -> Int {
         let minRange: Int
-        switch parameters.integerType {
+        switch integerType {
         case .doubles:
+            minRange = 1
+        case .pairsOfTen:
             minRange = 1
         case .oneDigit:
             minRange = 1
@@ -96,10 +98,12 @@ struct ProblemSet {
         return minRange
     }
     
-    private func calculateMaxRange() -> Int {
+    private func calculateMaxRange(integerType: ProblemSetParameters.IntegerType) -> Int {
         let maxRange: Int
-        switch parameters.integerType {
+        switch integerType {
         case .doubles:
+            maxRange = 9
+        case .pairsOfTen:
             maxRange = 9
         case .oneDigit:
             maxRange = 9
@@ -123,9 +127,9 @@ struct ProblemSet {
     private func generateOperand1(minRange: Int, maxRange: Int) -> Int {
         var operand1: Int
         
-        if parameters.integerType == .pickTheRange, let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
+        if parameters.integerType == [.pickTheRange], let firstNumberMin = parameters.firstNumberMin, let firstNumberMax = parameters.firstNumberMax {
             operand1 = Int.random(in: firstNumberMin...firstNumberMax)
-        } else if parameters.integerType == .focusOnANumber, let focusNumber = parameters.focusNumber {
+        } else if parameters.integerType == [.focusOnANumber], let focusNumber = parameters.focusNumber {
             operand1 = focusNumber
         } else if parameters.integerSign == .positive {
             operand1 = Int.random(in: minRange...maxRange)
@@ -138,20 +142,26 @@ struct ProblemSet {
         return operand1
     }
     
-    private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int, operation: ProblemSetParameters.Operation) -> Int {
+    private func generateOperand2(minRange: Int, maxRange: Int, operand1: Int, operation: ProblemSetParameters.Operation, integerType: ProblemSetParameters.IntegerType) -> Int {
         let operand2: Int
         
-        if parameters.integerType == .doubles {
+        if integerType == .doubles {
             if operation == .subtraction || operation == .division {
                 operand2 = operand1 * 2
             } else {
                 operand2 = operand1
             }
+        } else if integerType == .pairsOfTen {
+            if operation == .subtraction {
+                operand2 = 10
+            } else {
+                operand2 = 10 - operand1
+            }
         } else if parameters.divisionType == .even {
             operand2 = operand1 * Int.random(in: minRange...maxRange)
-        } else if parameters.integerType == .pickTheRange, let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
+        } else if parameters.integerType == [.pickTheRange], let secondNumberMin = parameters.secondNumberMin, let secondNumberMax = parameters.secondNumberMax {
             operand2 = Int.random(in: secondNumberMin...secondNumberMax)
-        } else if parameters.integerType == .focusOnANumber, let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
+        } else if parameters.integerType == [.focusOnANumber], let otherNumberMin = parameters.otherNumberMin, let otherNumberMax = parameters.otherNumberMax {
             operand2 = Int.random(in: otherNumberMin...otherNumberMax)
         } else if parameters.integerSign == .positive {
             operand2 = Int.random(in: minRange...maxRange)
@@ -187,8 +197,9 @@ class ProblemSetParameters {
     
     var numberType: NumberType = .integers
     var operation: [Operation] = [.addition]
+    var subtractionType: SubtractionType?
     var divisionType: DivisionType?
-    var integerType: IntegerType = .oneDigit
+    var integerType: [IntegerType] = [.oneDigit]
     var integerSign: IntegerSign = .positive
     var numberOfProblems: Int = 0
     
@@ -215,6 +226,11 @@ class ProblemSetParameters {
         case division = "÷"
     }
     
+    enum SubtractionType {
+        case borrowing
+        case noBorrowing
+    }
+    
     enum DivisionType {
         case even
         case remainders
@@ -223,6 +239,7 @@ class ProblemSetParameters {
     
     enum IntegerType {
         case doubles
+        case pairsOfTen
         case oneDigit
         case hardOneDigits
         case zeroToTwelve

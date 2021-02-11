@@ -36,17 +36,17 @@ class TypeOfIntegersVC: UIViewController {
     }
     
     @objc func selectDoubles() {
-        parameters.integerType = .doubles
+        parameters.integerType = [.doubles]
         navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectOneDigit() {
-        parameters.integerType = .oneDigit
+        parameters.integerType = [.oneDigit]
         navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectHardOneDigits() {
-        parameters.integerType = .hardOneDigits
+        parameters.integerType = [.hardOneDigits]
         navigateToPositiveNegativeIntegersVC()
     }
     
@@ -56,22 +56,22 @@ class TypeOfIntegersVC: UIViewController {
 //    }
     
     @objc func selectFocusOnANumber() {
-        parameters.integerType = .focusOnANumber
+        parameters.integerType = [.focusOnANumber]
         navigateToFocusNumberVC()
     }
     
     @objc func selectOneToTwoDigits() {
-        parameters.integerType = .oneToTwoDigits
+        parameters.integerType = [.oneToTwoDigits]
         navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectMultipleDigits() {
-        parameters.integerType = .multipleDigits
+        parameters.integerType = [.multipleDigits]
         navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectPickTheRange() {
-        parameters.integerType = .pickTheRange
+        parameters.integerType = [.pickTheRange]
         navigateToPickRangeVC()
     }
     

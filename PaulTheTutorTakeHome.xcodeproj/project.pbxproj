@@ -45,6 +45,7 @@
 		C307406B2469F4340075F950 /* plus.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740682469F4330075F950 /* plus.json */; };
 		C307406C2469F4340075F950 /* smile.json in Resources */ = {isa = PBXBuildFile; fileRef = C30740692469F4330075F950 /* smile.json */; };
 		C307406D2469F4340075F950 /* minus.json in Resources */ = {isa = PBXBuildFile; fileRef = C307406A2469F4340075F950 /* minus.json */; };
+		C31B2C3825D4AA58004E7EF7 /* TypeOfSubtractionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B2C3725D4AA58004E7EF7 /* TypeOfSubtractionVC.swift */; };
 		C3301DB425A51F910014B0DA /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB325A51F910014B0DA /* TabBarVC.swift */; };
 		C3301DB825A524D00014B0DA /* TimerMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DB725A524D00014B0DA /* TimerMenuVC.swift */; };
 		C3301DBC25A525340014B0DA /* MathFactsMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */; };
@@ -103,6 +104,7 @@
 		C30740682469F4330075F950 /* plus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plus.json; sourceTree = "<group>"; };
 		C30740692469F4330075F950 /* smile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = smile.json; sourceTree = "<group>"; };
 		C307406A2469F4340075F950 /* minus.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = minus.json; sourceTree = "<group>"; };
+		C31B2C3725D4AA58004E7EF7 /* TypeOfSubtractionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfSubtractionVC.swift; sourceTree = "<group>"; };
 		C3301DB325A51F910014B0DA /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		C3301DB725A524D00014B0DA /* TimerMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerMenuVC.swift; sourceTree = "<group>"; };
 		C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathFactsMenuVC.swift; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 			children = (
 				C3301DBB25A525340014B0DA /* MathFactsMenuVC.swift */,
 				C37EBB612586B0D1008C7670 /* OperationsVC.swift */,
+				C31B2C3725D4AA58004E7EF7 /* TypeOfSubtractionVC.swift */,
 				C37DAF9E258F0C1600F526FD /* TypeOfDivisionVC.swift */,
 				C37EBB582586B06A008C7670 /* TypeOfIntegersVC.swift */,
 				C3004C2625872D76002C2822 /* FocusNumberVC.swift */,
@@ -544,6 +547,7 @@
 				C30740482469B2540075F950 /* PTScrollView.swift in Sources */,
 				C307402724689F9F0075F950 /* ProblemSet.swift in Sources */,
 				C3301DC725A532B00014B0DA /* TimerParameters.swift in Sources */,
+				C31B2C3825D4AA58004E7EF7 /* TypeOfSubtractionVC.swift in Sources */,
 				C307402524689E620075F950 /* UIHelper.swift in Sources */,
 				C30740502469B5B20075F950 /* MathOperationsVC+Ext.swift in Sources */,
 				C37EBB5C2586B08E008C7670 /* PositiveNegativeIntegersVC.swift in Sources */,

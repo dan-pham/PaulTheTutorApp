@@ -11,8 +11,10 @@ import UIKit
 class OperationsVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What shall we do?")
-    let scrollView = PTScrollView(heightConstraint: 540)
+    let scrollView = PTScrollView(heightConstraint: 680)
     
+    let doublesAndPairsOfTenAdditionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles & pairs of 10's addition")
+    let doublesAndPairsOfTenSubtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles & pairs of 10's subtraction")
     let additionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "addition")
     let subtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "subtraction")
     let additionSubtractionButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "addition & subtraction")
@@ -28,6 +30,23 @@ class OperationsVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         parameters.numberType = .integers
+    }
+    
+    @objc func selectDoublesAndPairsOfTenAddition() {
+        parameters.operation = [.addition]
+        parameters.integerType = [.doubles, .pairsOfTen]
+        
+        // For now, just do positive numbers
+        parameters.integerSign = .positive
+        
+        let vc = NumberOfProblemsVC() // PositiveNegativeIntegersVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func selectDoublesAndPairsOfTenSubtraction() {
+        parameters.operation = [.subtraction]
+        parameters.integerType = [.doubles, .pairsOfTen]
+        navigationController?.pushViewController(TypeOfSubtractionVC(), animated: true)
     }
     
     @objc func selectAddition() {
@@ -47,7 +66,7 @@ class OperationsVC: UIViewController {
     
     @objc func selectDoublesMultiplication() {
         parameters.operation = [.multiplication]
-        parameters.integerType = .doubles
+        parameters.integerType = [.doubles]
         
         // For now, just do positive numbers
         parameters.integerSign = .positive
@@ -77,11 +96,17 @@ class OperationsVC: UIViewController {
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        scrollView.addSubviews(additionButton, subtractionButton, additionSubtractionButton, doublesMultiplicationButton, multiplicationButton, divisionButton, multiplicationDivisionButton)
+        scrollView.addSubviews(doublesAndPairsOfTenAdditionButton, doublesAndPairsOfTenSubtractionButton, additionButton, subtractionButton, additionSubtractionButton, doublesMultiplicationButton, multiplicationButton, divisionButton, multiplicationDivisionButton)
         scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
+        doublesAndPairsOfTenAdditionButton.addTarget(self, action: #selector(selectDoublesAndPairsOfTenAddition), for: .touchUpInside)
+        doublesAndPairsOfTenAdditionButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: true)
+        
+        doublesAndPairsOfTenSubtractionButton.addTarget(self, action: #selector(selectDoublesAndPairsOfTenSubtraction), for: .touchUpInside)
+        doublesAndPairsOfTenSubtractionButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: doublesAndPairsOfTenAdditionButton)
+        
         additionButton.addTarget(self, action: #selector(selectAddition), for: .touchUpInside)
-        additionButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: true)
+        additionButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: doublesAndPairsOfTenSubtractionButton)
         
         subtractionButton.addTarget(self, action: #selector(selectSubtraction), for: .touchUpInside)
         subtractionButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: additionButton)
