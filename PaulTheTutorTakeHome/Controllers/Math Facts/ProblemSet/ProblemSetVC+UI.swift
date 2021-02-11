@@ -17,6 +17,7 @@ extension ProblemSetVC {
         configureNavBar()
         configureTotalProblemsLabel()
         configureContainerView()
+        configureIncorrectAnswerImage()
         configureProblemLabel()
         configureAnswerTextField()
         configureRemainderTextField()
@@ -49,7 +50,7 @@ extension ProblemSetVC {
     }
     
     private func configureContainerView() {
-        containerView.addSubviews(problemLabel, answerTextField, remainderTextField, roundingLabel, nextButton) // encouragementLabel, nextButton)
+        containerView.addSubviews(incorrectAnswerImage, problemLabel, answerTextField, remainderTextField, roundingLabel, nextButton) // encouragementLabel, nextButton)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: totalProblemsLabel.bottomAnchor, constant: padding),
@@ -59,11 +60,23 @@ extension ProblemSetVC {
         ])
     }
     
+    private func configureIncorrectAnswerImage() {
+        incorrectAnswerImage.image = UIImage(systemName: "xmark")?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        incorrectAnswerImage.isHidden = true
+        
+        NSLayoutConstraint.activate([
+            incorrectAnswerImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Padding.small),
+            incorrectAnswerImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Padding.small),
+            incorrectAnswerImage.widthAnchor.constraint(equalToConstant: 30),
+            incorrectAnswerImage.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
     private func configureProblemLabel() {
         problemLabel.textAlignment = .center
         
         NSLayoutConstraint.activate([
-            problemLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
+            problemLabel.topAnchor.constraint(equalTo: incorrectAnswerImage.bottomAnchor, constant: Padding.small),
             problemLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             problemLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
         ])

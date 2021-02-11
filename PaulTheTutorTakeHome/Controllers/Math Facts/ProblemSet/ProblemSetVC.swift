@@ -14,6 +14,7 @@ class ProblemSetVC: UIViewController {
     
     var totalProblemsLabel = PTTitleLabel(textAlignment: .center, fontSize: 30, text: "")
     var containerView = PTContainerView(frame: .zero)
+    var incorrectAnswerImage = PTImageView(frame: .zero)
     var problemLabel = PTBodyLabel(textAlignment: .right, fontSize: 30)
     var answerTextField = PTTextField(frame: .zero)
     var remainderTextField = PTTextField(frame: .zero)
@@ -75,6 +76,7 @@ class ProblemSetVC: UIViewController {
         if currentProblem > 0 { checkAnswer() }
         
         guard isAnswerCorrect else {
+            incorrectAnswerImage.isHidden = false
             Alerts.showIncorrectAnswerAlert(on: self)
             return
         }
@@ -94,6 +96,7 @@ class ProblemSetVC: UIViewController {
         updateHint()
         answerTextField.becomeFirstResponder()
         isFirstTry = true
+        incorrectAnswerImage.isHidden = true
     }
     
     private func checkAnswer() {
