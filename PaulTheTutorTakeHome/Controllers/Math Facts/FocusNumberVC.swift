@@ -11,6 +11,7 @@ import UIKit
 class FocusNumberVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "What number do you want to focus on?")
+    let scrollView = PTScrollView(heightConstraint: 550)
     
     let focusNumberLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Focus on number")
     let focusNumberTextfield = PTTextField(frame: .zero)
@@ -29,6 +30,28 @@ class FocusNumberVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        registerForKeyboardNotifications()
+    }
+    
+    private func registerForKeyboardNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    @objc private func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+        }
+        
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
     
     @objc func submitNumberOfProblems() {
@@ -58,21 +81,24 @@ class FocusNumberVC: UIViewController {
         view.backgroundColor = Colors.paulLightGreen
         view.addDismissKeyboardTapGesture()
         view.addInputAccessoryForTextFields(textFields: [focusNumberTextfield, otherNumberMinTextfield, otherNumberMaxTextfield], dismissable: true, previousNextable: true)
-        view.addSubviews(questionLabel, focusNumberLabel, focusNumberTextfield, otherNumberMinLabel, otherNumberMinTextfield, otherNumberMaxLabel, otherNumberMaxTextfield, submitButton)
+        view.addSubviews(questionLabel, scrollView)
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        focusNumberLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: questionLabel, naturalHeight: true)
-        focusNumberTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusNumberLabel, smallTopPadding: true)
+        scrollView.addSubviews(focusNumberLabel, focusNumberTextfield, otherNumberMinLabel, otherNumberMinTextfield, otherNumberMaxLabel, otherNumberMaxTextfield, submitButton)
+        scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
-        otherNumberMinLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: focusNumberTextfield, naturalHeight: true)
-        otherNumberMinTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMinLabel, smallTopPadding: true)
+        focusNumberLabel.addFlexWidthSetHeightConstraints(to: scrollView, naturalHeight: true, isScrollViewTop: true)
+        focusNumberTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: focusNumberLabel, smallTopPadding: true)
         
-        otherNumberMaxLabel.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMinTextfield, naturalHeight: true)
-        otherNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMaxLabel, smallTopPadding: true)
+        otherNumberMinLabel.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: focusNumberTextfield, naturalHeight: true)
+        otherNumberMinTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: otherNumberMinLabel, smallTopPadding: true)
+        
+        otherNumberMaxLabel.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: otherNumberMinTextfield, naturalHeight: true)
+        otherNumberMaxTextfield.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: otherNumberMaxLabel, smallTopPadding: true)
         
         submitButton.addTarget(self, action: #selector(submitNumberOfProblems), for: .touchUpInside)
-        submitButton.addFlexWidthSetHeightConstraints(to: view, aboveComponent: otherNumberMaxTextfield)
+        submitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: otherNumberMaxTextfield)
     }
     
 }
