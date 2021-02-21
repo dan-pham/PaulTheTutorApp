@@ -20,10 +20,19 @@ struct ProblemSet {
     
     mutating func generateProblems() {
         var newProblems: [Problem] = []
+        var count = 0
         
-        for number in 1...parameters.numberOfProblems {
-            if let newProblem = generateRandomProblem(number: number, parameters: parameters) {
-                newProblems.append(newProblem)
+        while count <= parameters.numberOfProblems - 1 {
+            if let newProblem = generateRandomProblem(number: count + 1, parameters: parameters) {
+                if !newProblems.isEmpty {
+                    if newProblem != newProblems[count - 1] {
+                        newProblems.append(newProblem)
+                        count += 1
+                    }
+                } else {
+                    newProblems.append(newProblem)
+                    count += 1
+                }
             }
         }
         

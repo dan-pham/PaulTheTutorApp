@@ -11,8 +11,9 @@ import UIKit
 class TypeOfIntegersVC: UIViewController {
     
     let questionLabel = PTTitleLabel(textAlignment: .left, fontSize: 20, text: "Type of Integers")
-    lazy var scrollView = PTScrollView(heightConstraint: isAdditionOrMultiplication ? 470 : 550)
+    lazy var scrollView = PTScrollView(heightConstraint: isAddition ? 610 : 550)
     
+    let doublesAndPairsOfTenButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles & pairs of 10's")
     let doublesButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "doubles")
     let oneDigitButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "one digit")
     let hardOneDigitsButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "hard one digits (4-9)")
@@ -24,8 +25,8 @@ class TypeOfIntegersVC: UIViewController {
     
     let parameters = ProblemSetParameters.shared
     
-    lazy var isAdditionOrMultiplication: Bool = { [unowned self] in
-        if parameters.operation == [.addition] || parameters.operation == [.multiplication] { return true }
+    lazy var isAddition: Bool = { [unowned self] in
+        if parameters.operation == [.addition] { return true }
         return false
     }()
     
@@ -33,6 +34,11 @@ class TypeOfIntegersVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+    }
+    
+    @objc func selectDoublesAndPairsOfTen() {
+        parameters.integerType = [.doubles, .pairsOfTen]
+        navigateToPositiveNegativeIntegersVC()
     }
     
     @objc func selectDoubles() {
@@ -106,15 +112,18 @@ class TypeOfIntegersVC: UIViewController {
         
         questionLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        scrollView.addSubviews(doublesButton, oneDigitButton, hardOneDigitsButton, /*zeroToTwelveButton,*/ focusOnANumberButton, oneToTwoDigitsButton, multipleDigitsButton,  pickTheRangeButton)
+        scrollView.addSubviews(doublesAndPairsOfTenButton, doublesButton, oneDigitButton, hardOneDigitsButton, /*zeroToTwelveButton,*/ focusOnANumberButton, oneToTwoDigitsButton, multipleDigitsButton,  pickTheRangeButton)
         scrollView.addScrollViewConstraints(to: view, aboveComponent: questionLabel)
         
-        doublesButton.isHidden = isAdditionOrMultiplication
+        doublesAndPairsOfTenButton.isHidden = !isAddition
+        doublesAndPairsOfTenButton.addTarget(self, action: #selector(selectDoublesAndPairsOfTen), for: .touchUpInside)
+        doublesAndPairsOfTenButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: isAddition)
+        
         doublesButton.addTarget(self, action: #selector(selectDoubles), for: .touchUpInside)
-        doublesButton.addFlexWidthSetHeightConstraints(to: scrollView, isScrollViewTop: true)
+        doublesButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: isAddition ? doublesAndPairsOfTenButton : nil, isScrollViewTop: !isAddition)
         
         oneDigitButton.addTarget(self, action: #selector(selectOneDigit), for: .touchUpInside)
-        oneDigitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: isAdditionOrMultiplication ? nil : doublesButton, isScrollViewTop: isAdditionOrMultiplication)
+        oneDigitButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: doublesButton)
         
         hardOneDigitsButton.addTarget(self, action: #selector(selectHardOneDigits), for: .touchUpInside)
         hardOneDigitsButton.addFlexWidthSetHeightConstraints(to: scrollView, aboveComponent: oneDigitButton)

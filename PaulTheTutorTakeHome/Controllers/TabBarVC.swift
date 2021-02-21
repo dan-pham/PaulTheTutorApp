@@ -12,13 +12,7 @@ class TabBarVC: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if traitCollection.userInterfaceStyle == .light {
-            UITabBar.appearance().tintColor = Colors.paulDarkGreen
-        } else {
-            UITabBar.appearance().tintColor = Colors.paulLightGreen
-        }
-        
+        UITabBar.appearance().tintColor = traitCollection.userInterfaceStyle == .light ? Colors.paulDarkGreen : Colors.paulLightGreen
         viewControllers = [createMathFactsMenuNC(), createTimerMenuNC()]
     }
     

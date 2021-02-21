@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Problem {
+struct Problem: Equatable {
     var number: Int
     var operand1: Int
     var operand2: Int
@@ -42,5 +42,11 @@ struct Problem {
         }
         
         return equation
+    }
+    
+    static func ==(lhs: Problem, rhs: Problem) -> Bool {
+        let lhsEquation = "\(lhs.operand1) \(lhs.operation) \(lhs.operand2) = \(lhs.answer)"
+        let rhsEquation = "\(rhs.operand1) \(rhs.operation) \(rhs.operand2) = \(rhs.answer)"
+        return lhsEquation == rhsEquation
     }
 }

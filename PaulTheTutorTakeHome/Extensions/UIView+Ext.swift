@@ -53,7 +53,7 @@ extension UIView {
             items.append(contentsOf: [spacer, doneButton])
             
             for item in items {
-                item.tintColor = Colors.paulDarkGreen
+                item.tintColor = traitCollection.userInterfaceStyle == .light ? Colors.paulDarkGreen : Colors.paulLightGreen
             }
             
             toolbar.setItems(items, animated: false)
