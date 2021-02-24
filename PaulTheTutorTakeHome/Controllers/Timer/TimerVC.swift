@@ -15,15 +15,14 @@ import UserNotifications
 // Background mode reference from https://www.raywenderlich.com/5817-background-modes-tutorial-getting-started#toc-anchor-013
 
 
-// TODO: Fix background timer to account for pause (add a pauseTimer that counts until resume is tapped, then add the pause time to the background start time?
+// Bug: Some local notifications aren't being removed once the app is terminated or even coming into foreground. Notifications from previous sessions still appear.
+// Potential bug: switching tabs to math facts then switching back to timer
+// Potential bug (crash happened): using local notification to open app back to timer after the system background timer for the app has run out (about 30 seconds after app enters background)
 
 class TimerVC: UIViewController {
     
     let testLabel = PTTitleLabel(textAlignment: .center, fontSize: 30, text: "")
     let timerLabel = PTTitleLabel(textAlignment: .center, fontSize: 60, text: "")
-    
-    let startPauseButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Start")
-    let resetButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Reset")
     
     let parameters = TimerParameters.shared
     let padding = Padding.standard
@@ -38,7 +37,6 @@ class TimerVC: UIViewController {
     var timer = Timer()
     var startingTime = 0
     var secondsRemaining = 0
-    var isTimerRunning = false
     
     let tenMinutesInSeconds = 600
     let fiveMinutesInSeconds = 300
@@ -50,10 +48,25 @@ class TimerVC: UIViewController {
     let backgroundTimer = BackgroundTimer()
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+        endBackgroundTasks()
+        backgroundTimer.clearBackgroundTimer()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         handleSettingUpTests()
         configureUI()
+        startTest()
+        
+        print("view did load")
+//        let now = Date().timeIntervalSince1970
+//        backgroundTimer.startTime = now
+        
+        // Delete
+        addLocalNotification(for: "Test start", withSubtitle: .zeroMinutes, timeInterval: 5)
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error {
@@ -63,6 +76,7 @@ class TimerVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(beginBackgroundTasks), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(checkBackgroundTimer), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(endBackgroundTasks), name: UIApplication.willTerminateNotification, object: nil)
     }
     
     private func handleSettingUpTests() {
@@ -78,26 +92,9 @@ class TimerVC: UIViewController {
         secondsRemaining = startingTime
     }
     
-    @objc func startPause() {
-        if isTimerRunning {
-            pauseTest()
-        } else {
-            startTest()
-        }
-    }
-    
     private func startTest() {
         runTimer()
-        startPauseButton.setTitle("Pause", for: .normal)
         backgroundTimer.updateNow(withTests: parameters.tests)
-    }
-    
-    private func pauseTest() {
-        timer.invalidate()
-        isTimerRunning = false
-        startPauseButton.setTitle("Resume", for: .normal)
-        resetButton.isEnabled = true
-        endBackgroundTasks()
     }
     
     private func runTimer() {
@@ -105,9 +102,112 @@ class TimerVC: UIViewController {
             timer.invalidate()
         }
         
-        isTimerRunning = true
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         timer.tolerance = 0.1
+    }
+    
+    @objc func updateTimer() {
+        if secondsRemaining > 0 {
+            // Timer is running
+            secondsRemaining -= 1
+            timerLabel.text = timeString(time: secondsRemaining)
+            
+            if isAppActive && (secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds) {
+                playAlert()
+            }
+            
+        } else if currentTestIndex <= (parameters.tests.count - 1) {
+            // Timer is done running but tests still remain
+            playAlert()
+            
+            currentTestIndex += 1
+            currentTest = parameters.tests[currentTestIndex]
+            
+            startingTime = currentTest.duration
+            secondsRemaining = startingTime
+            
+            testLabel.text = currentTest.shortTitle
+            timerLabel.text = timeString(time: secondsRemaining)
+        } else {
+            // Timer finished naturally
+            timer.invalidate()
+            playAlert()
+            endBackgroundTasks()
+            backgroundTimer.clearBackgroundTimer()
+        }
+    }
+    
+    @objc private func beginBackgroundTasks() {
+        guard timer.isValid else { return }
+        
+        isAppActive = false
+        
+        backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: { [self] in
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = UIBackgroundTaskIdentifier.invalid
+        })
+        
+        RunLoop.current.add(timer, forMode: .common)
+        
+        scheduleNotifications()
+    }
+    
+    // Referenced from https://www.hackingwithswift.com/forums/swiftui/running-a-timer-while-the-app-is-in-the-background/1647
+    private func scheduleNotifications() {
+        var currentTotalTestDuration = 0
+        let now = Date()
+        var elapsedTime = 0
+        
+        for (index, test) in parameters.tests.enumerated() where index >= currentTestIndex {  // Look for current test
+            elapsedTime = (index == currentTestIndex) ? (currentTest.duration - secondsRemaining) : 0  // Look for time remaining from current test
+            
+            if (test.duration - elapsedTime > tenMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
+                let tenMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - tenMinutesInSeconds)).timeIntervalSince(now)
+                addLocalNotification(for: test.shortTitle, withSubtitle: .tenMinutes, timeInterval: tenMinutesFromEndOfTest)
+            }
+            
+            if (test.duration - elapsedTime > fiveMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
+                let fiveMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - fiveMinutesInSeconds)).timeIntervalSince(now)
+                addLocalNotification(for: test.shortTitle, withSubtitle: .fiveMinutes, timeInterval: fiveMinutesFromEndOfTest)
+            }
+            
+            if test.duration - elapsedTime > oneMinuteInSeconds {
+                let oneMinuteFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - oneMinuteInSeconds)).timeIntervalSince(now)
+                addLocalNotification(for: test.shortTitle, withSubtitle: .oneMinute, timeInterval: oneMinuteFromEndOfTest)
+            }
+            
+            if test.duration - elapsedTime > 0 {
+                let endOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime)).timeIntervalSince(now)
+                addLocalNotification(for: test.shortTitle, withSubtitle: .zeroMinutes, timeInterval: endOfTest)
+            }
+            
+            currentTotalTestDuration += test.duration
+        }
+    }
+    
+    private func addLocalNotification(for title: String, withSubtitle subtitle: TimeRemainingWarnings, timeInterval: TimeInterval) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.subtitle = subtitle.rawValue
+        content.sound = UNNotificationSound.default
+        content.categoryIdentifier = TimerNotification.category.rawValue
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    @objc private func checkBackgroundTimer() {
+        print("Did become active, startTime: \(backgroundTimer.startTime), testOrderNumbers: \(backgroundTimer.testOrderNumbers)")
+        
+        if Int(backgroundTimer.startTime) != 0 && !backgroundTimer.testOrderNumbers.isEmpty {
+            print("Current test found")
+            loadCurrentTests()
+            startTest()
+        }
+        
+        endBackgroundTasks()
     }
     
     private func loadCurrentTests() {
@@ -160,7 +260,11 @@ class TimerVC: UIViewController {
         print("Elapsed time: \(timeElapsed)")
         print("Remaining time: \(remainingTime)")
         
-        return remainingTime
+        if remainingTime > 0 {
+            return remainingTime
+        }
+        
+        return 0
     }
 
     private func getCurrentAndRemainingTests(from tests: [Test], withRemainingTime remainingTime: Int) {
@@ -169,6 +273,7 @@ class TimerVC: UIViewController {
         var remainingTests: [Test] = []
         
         for (index, test) in reversedTests.enumerated() {
+            print("test duration: \(test.duration), remaining time: \(remainingTime)")
             if test.duration < remainingTime {
                 remainingTime -= test.duration
                 remainingTests.append(test)
@@ -176,7 +281,7 @@ class TimerVC: UIViewController {
                 remainingTests.append(test)
                 currentTest = test
                 secondsRemaining = remainingTime
-                currentTestIndex = 6 - index
+                currentTestIndex = tests.count - 1 - index
                 break
             }
         }
@@ -184,136 +289,8 @@ class TimerVC: UIViewController {
         parameters.tests = remainingTests.reversed()
     }
     
-    @objc func resetTimer() {
-        timer.invalidate()
-        isTimerRunning = false
-        secondsRemaining = startingTime
-        timerLabel.text = timeString(time: secondsRemaining)
-        startPauseButton.setTitle("Start", for: .normal)
-        enableStartButton()
-        endBackgroundTasks()
-        backgroundTimer.clearBackgroundTimer()
-    }
-    
-    @objc func updateTimer() {
-        if secondsRemaining > 0 {
-            // Timer is running
-            secondsRemaining -= 1
-            timerLabel.text = timeString(time: secondsRemaining)
-            
-            if isAppActive && (secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds) {
-                playAlert()
-            }
-            
-//            if secondsRemaining > tenMinutesInSeconds + 5 { secondsRemaining = tenMinutesInSeconds + 5 }
-//            if secondsRemaining == tenMinutesInSeconds { secondsRemaining = fiveMinutesInSeconds + 5 }
-//            if secondsRemaining == fiveMinutesInSeconds || (secondsRemaining == fiveMinutesInSeconds - 5) { secondsRemaining = oneMinuteInSeconds + 5 }
-//            if secondsRemaining == oneMinuteInSeconds { secondsRemaining = 5 }
-            
-        } else if currentTestIndex != (parameters.tests.count - 1) {
-            // Timer is done running but tests still remain
-            playAlert()
-            
-            currentTestIndex += 1
-            currentTest = parameters.tests[currentTestIndex]
-            
-            startingTime = currentTest.duration
-            secondsRemaining = startingTime
-            
-            testLabel.text = currentTest.shortTitle
-            timerLabel.text = timeString(time: secondsRemaining)
-        } else {
-            // Timer finished naturally
-            timer.invalidate()
-            startPauseButton.setTitle("Start", for: .normal)
-            enableStartButton(false)
-            playAlert()
-            endBackgroundTasks()
-            backgroundTimer.clearBackgroundTimer()
-        }
-    }
-    
-    @objc private func beginBackgroundTasks() {
-        guard timer.isValid else { return }
-        
-        isAppActive = false
-        
-        backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: { [self] in
-            UIApplication.shared.endBackgroundTask(backgroundTask)
-            backgroundTask = UIBackgroundTaskIdentifier.invalid
-        })
-        
-        RunLoop.current.add(timer, forMode: .common)
-        
-        scheduleNotifications()
-    }
-    
-    // Referenced from https://www.hackingwithswift.com/forums/swiftui/running-a-timer-while-the-app-is-in-the-background/1647
-    private func scheduleNotifications() {
-        var currentTotalTestDuration = 0
-        let now = Date()
-        var elapsedTime = 0
-        
-        for (index, test) in parameters.tests.enumerated() where index >= currentTestIndex {  // Look for current test
-            elapsedTime = (index == currentTestIndex) ? (currentTest.duration - secondsRemaining) : 0  // Look for time remaining from current test
-            
-            if (test.duration - elapsedTime > tenMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
-                let tenMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - tenMinutesInSeconds)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: timeString(time: tenMinutesInSeconds), timeInterval: tenMinutesFromEndOfTest)
-            }
-            
-            if (test.duration - elapsedTime > fiveMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
-                let fiveMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - fiveMinutesInSeconds)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: timeString(time: fiveMinutesInSeconds), timeInterval: fiveMinutesFromEndOfTest)
-            }
-            
-            if test.duration - elapsedTime > oneMinuteInSeconds {
-                let oneMinuteFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - oneMinuteInSeconds)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: timeString(time: oneMinuteInSeconds), timeInterval: oneMinuteFromEndOfTest)
-            }
-            
-            if test.duration - elapsedTime > 0 {
-                let endOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: timeString(time: 0), timeInterval: endOfTest)
-            }
-            
-            currentTotalTestDuration += test.duration
-        }
-    }
-    
-    private func addLocalNotification(for title: String, withSubtitle subtitle: String, timeInterval: TimeInterval) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        let expectedNotificationTime = dateFormatter.string(from: Date().addingTimeInterval(timeInterval))
-        
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.subtitle = subtitle + ", exp. time: \(expectedNotificationTime)"
-        content.sound = UNNotificationSound.default
-        content.categoryIdentifier = TimerNotification.category.rawValue
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
-    }
-    
-    @objc private func checkBackgroundTimer() {
-        print("Did become active, startTime: \(backgroundTimer.startTime), testOrderNumbers: \(backgroundTimer.testOrderNumbers)")
-        
-        if Int(backgroundTimer.startTime) != 0 && !backgroundTimer.testOrderNumbers.isEmpty {
-//            print("Current test found")
-            loadCurrentTests()
-            startTest()
-        } else {
-//            print("No current test found")
-        }
-        
-        endBackgroundTasks()
-    }
-    
     // Referenced from https://medium.com/swlh/background-task-in-swift-a3ac600032ba
-    private func endBackgroundTasks() {
+    @objc private func endBackgroundTasks() {
         isAppActive = true
         
         if backgroundTask != .invalid {
@@ -329,15 +306,8 @@ class TimerVC: UIViewController {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
-    private func enableStartButton(_ isEnabled: Bool = true) {
-        startPauseButton.isEnabled = isEnabled
-        resetButton.isEnabled = !isEnabled
-    }
-    
     private func playAlert() {
         AudioServicesPlayAlertSoundWithCompletion(1005, nil)
-        
-//        print("current test: \(currentTest.shortTitle), time remaining: \(timeString(time: secondsRemaining))")
     }
     
     private func timeString(time: Int) -> String {
@@ -349,17 +319,13 @@ class TimerVC: UIViewController {
     }
     
     private func configureUI() {
+        title = parameters.testType == .act ? "ACT" : "SAT"
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(testLabel, timerLabel, startPauseButton, resetButton)
+        view.addSubviews(testLabel, timerLabel)
         
         testLabel.text = currentTest.shortTitle
         
         timerLabel.text = timeString(time: secondsRemaining)
-        
-        startPauseButton.addTarget(self, action: #selector(startPause), for: .touchUpInside)
-        
-        resetButton.addTarget(self, action: #selector(resetTimer), for: .touchUpInside)
-        resetButton.isEnabled = false
         
         NSLayoutConstraint.activate([
             timerLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -Padding.large),
@@ -368,17 +334,7 @@ class TimerVC: UIViewController {
             
             testLabel.bottomAnchor.constraint(equalTo: timerLabel.topAnchor, constant: -Padding.large),
             testLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            testLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            
-            resetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            resetButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            resetButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            startPauseButton.bottomAnchor.constraint(equalTo: resetButton.topAnchor, constant: -padding),
-            startPauseButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            startPauseButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            startPauseButton.heightAnchor.constraint(equalToConstant: 50)
+            testLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
         ])
     }
     

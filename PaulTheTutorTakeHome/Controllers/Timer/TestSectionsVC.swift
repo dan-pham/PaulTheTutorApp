@@ -22,7 +22,7 @@ class TestSectionsVC: UIViewController {
     let essayButton = PTRadioButton(title: Tests.essay.title, isIconSquare: true)
     lazy var checkmarkButtons: [PTRadioButton] = [englishButton, mathButton, break1Button, readingButton, scienceButton, break2Button, essayButton]
     
-    let nextButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Next")
+    let startButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "Start")
     
     let parameters = TimerParameters.shared
     let padding = Padding.standard
@@ -87,34 +87,32 @@ class TestSectionsVC: UIViewController {
                     parameters.tests.remove(at: index)
                     break
                 }
-                
-                
             }
         }
         
         if parameters.tests.isEmpty {
-            nextButton.isEnabled = false
+            startButton.isEnabled = false
         } else {
-            nextButton.isEnabled = true
+            startButton.isEnabled = true
         }
     }
     
     private func configureUI() {
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(testSectionsLabel, scrollView, nextButton)
+        view.addSubviews(testSectionsLabel, scrollView, startButton)
         
         testSectionsLabel.addFlexWidthSetHeightConstraints(to: view)
         
-        nextButton.addTarget(self, action: #selector(navigateToNextVC), for: .touchUpInside)
+        startButton.addTarget(self, action: #selector(navigateToNextVC), for: .touchUpInside)
         NSLayoutConstraint.activate([
-            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            nextButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            nextButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            nextButton.heightAnchor.constraint(equalToConstant: 50)
+            startButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            startButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+            startButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            startButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         scrollView.addSubviews(englishButton, mathButton, break1Button, readingButton, scienceButton, break2Button, essayButton)
-        scrollView.addScrollViewConstraints(to: view, aboveComponent: testSectionsLabel, belowComponent: nextButton)
+        scrollView.addScrollViewConstraints(to: view, aboveComponent: testSectionsLabel, belowComponent: startButton)
         
         configureCheckmarkButtons()
     }

@@ -35,6 +35,13 @@ struct Tests {
     static let essay = Test(title: "Essay (optional) - 30 minutes", shortTitle: "Essay - 30 minutes", durationInMinutes: 30, orderNumber: 6)
 }
 
+enum TimeRemainingWarnings: String {
+    case tenMinutes = "10 minutes remaining"
+    case fiveMinutes = "5 minutes remaining"
+    case oneMinute = "1 minute remaining"
+    case zeroMinutes = "Time's up for this section!"
+}
+
 class Test: Equatable {
     let title: String
     let shortTitle: String
@@ -73,13 +80,14 @@ class BackgroundTimer {
     var testOrderNumbers: [Int] {
         didSet {
             UserDefaults.standard.setValue(testOrderNumbers, forKey: testOrderNumbersKey)
-            print("Setting testOrderNumbers: \(testOrderNumbers)")
         }
     }
     
     func updateNow(withTests tests: [Test]) {
-        let now = Date().timeIntervalSince1970
-        startTime = now
+        if startTime == 0 {
+            let now = Date().timeIntervalSince1970
+            startTime = now
+        }
         
         var testNumbers: [Int] = []
         for test in tests {

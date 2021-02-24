@@ -33,7 +33,6 @@ class TimerMenuVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         setDefaultRadioButtons()
-        backgroundTimer.clearBackgroundTimer()
     }
     
     @objc func selectACT() {
@@ -53,6 +52,7 @@ class TimerMenuVC: UIViewController {
     }
     
     @objc func navigateToNextVC() {
+        backgroundTimer.clearBackgroundTimer()
         let vc = TestSectionsVC()
         navigationController?.pushViewController(vc, animated: true)
     }
