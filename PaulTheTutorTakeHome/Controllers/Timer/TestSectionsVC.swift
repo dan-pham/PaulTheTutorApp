@@ -64,7 +64,7 @@ class TestSectionsVC: UIViewController {
     @objc func navigateToNextVC() {
         guard !parameters.tests.isEmpty else { return }
         
-        let vc = TimerVC()
+        let vc = TimerVC(isContinuing: false)
         navigationController?.pushViewController(vc, animated: true)
     }
     

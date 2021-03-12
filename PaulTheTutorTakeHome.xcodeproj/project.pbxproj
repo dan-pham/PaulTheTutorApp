@@ -10,8 +10,9 @@
 		879D8D3C0609A537CAE9B2B7 /* Pods_PaulTheTutorTakeHome.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD885DD593C2A22C86FC8 /* Pods_PaulTheTutorTakeHome.framework */; };
 		C3004C2725872D76002C2822 /* FocusNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3004C2625872D76002C2822 /* FocusNumberVC.swift */; };
 		C3004C2A25872D81002C2822 /* PickRangeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3004C2925872D81002C2822 /* PickRangeVC.swift */; };
+		C303311125FB0C39003D3162 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303311025FB0C39003D3162 /* Date+Ext.swift */; };
+		C303311425FB0C88003D3162 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303311325FB0C88003D3162 /* String+Ext.swift */; };
 		C303704C25A542AD004E49FB /* PTRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303704B25A542AD004E49FB /* PTRadioButton.swift */; };
-		C303704F25A55D8A004E49FB /* TimerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C303704E25A55D8A004E49FB /* TimerVC.swift */; };
 		C3074005246893D60075F950 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3074004246893D60075F950 /* AppDelegate.swift */; };
 		C3074007246893D60075F950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3074006246893D60075F950 /* SceneDelegate.swift */; };
 		C307400E246893D70075F950 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C307400D246893D70075F950 /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 		C37EBB5F2586B0A7008C7670 /* NumberOfProblemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */; };
 		C37EBB622586B0D1008C7670 /* OperationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37EBB612586B0D1008C7670 /* OperationsVC.swift */; };
 		C3B446112592BA5700EF2098 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B446102592BA5700EF2098 /* Double+Ext.swift */; };
+		C3E8A0A625F9A59700E8C391 /* TimerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E8A0A525F9A59700E8C391 /* TimerVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,8 +70,9 @@
 		8472AA8B1EBBFA4C2706FEA7 /* Pods-PaulTheTutorTakeHome.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaulTheTutorTakeHome.release.xcconfig"; path = "Target Support Files/Pods-PaulTheTutorTakeHome/Pods-PaulTheTutorTakeHome.release.xcconfig"; sourceTree = "<group>"; };
 		C3004C2625872D76002C2822 /* FocusNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusNumberVC.swift; sourceTree = "<group>"; };
 		C3004C2925872D81002C2822 /* PickRangeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickRangeVC.swift; sourceTree = "<group>"; };
+		C303311025FB0C39003D3162 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		C303311325FB0C88003D3162 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		C303704B25A542AD004E49FB /* PTRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTRadioButton.swift; sourceTree = "<group>"; };
-		C303704E25A55D8A004E49FB /* TimerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerVC.swift; sourceTree = "<group>"; };
 		C3074001246893D60075F950 /* PaulTheTutorTakeHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaulTheTutorTakeHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3074004246893D60075F950 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3074006246893D60075F950 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +123,7 @@
 		C37EBB5E2586B0A7008C7670 /* NumberOfProblemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberOfProblemsVC.swift; sourceTree = "<group>"; };
 		C37EBB612586B0D1008C7670 /* OperationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsVC.swift; sourceTree = "<group>"; };
 		C3B446102592BA5700EF2098 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
+		C3E8A0A525F9A59700E8C391 /* TimerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +216,7 @@
 			children = (
 				C307402624689F9F0075F950 /* ProblemSet.swift */,
 				C307403F2468D3F40075F950 /* Problem.swift */,
+				C3301DC625A532B00014B0DA /* TimerParameters.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -232,6 +237,8 @@
 				C307402A2468A1F90075F950 /* UIView+Ext.swift */,
 				C3B446102592BA5700EF2098 /* Double+Ext.swift */,
 				C31B2C3A25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift */,
+				C303311025FB0C39003D3162 /* Date+Ext.swift */,
+				C303311325FB0C88003D3162 /* String+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -383,8 +390,7 @@
 			children = (
 				C3301DB725A524D00014B0DA /* TimerMenuVC.swift */,
 				C3301DC925A534190014B0DA /* TestSectionsVC.swift */,
-				C303704E25A55D8A004E49FB /* TimerVC.swift */,
-				C3301DC625A532B00014B0DA /* TimerParameters.swift */,
+				C3E8A0A525F9A59700E8C391 /* TimerVC.swift */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -519,6 +525,7 @@
 				C31B2C3B25D4C4A9004E7EF7 /* BinaryInteger+Ext.swift in Sources */,
 				C3B446112592BA5700EF2098 /* Double+Ext.swift in Sources */,
 				C30740612469E0100075F950 /* PTAlertVC.swift in Sources */,
+				C303311125FB0C39003D3162 /* Date+Ext.swift in Sources */,
 				C30740562469B7F60075F950 /* ProblemSetVC+UI.swift in Sources */,
 				C3074005246893D60075F950 /* AppDelegate.swift in Sources */,
 				C307403E2468D34C0075F950 /* ProblemSetVC.swift in Sources */,
@@ -531,6 +538,7 @@
 				C307402924689FAF0075F950 /* ProblemSetCell.swift in Sources */,
 				C3004C2725872D76002C2822 /* FocusNumberVC.swift in Sources */,
 				C37EBB4E25869FE2008C7670 /* PTBlackOverlayView.swift in Sources */,
+				C303311425FB0C88003D3162 /* String+Ext.swift in Sources */,
 				C30740662469E31F0075F950 /* Alerts.swift in Sources */,
 				C37EBB622586B0D1008C7670 /* OperationsVC.swift in Sources */,
 				C307402B2468A1F90075F950 /* UIView+Ext.swift in Sources */,
@@ -546,8 +554,8 @@
 				C3301DB825A524D00014B0DA /* TimerMenuVC.swift in Sources */,
 				C3301DCA25A534190014B0DA /* TestSectionsVC.swift in Sources */,
 				C307404224690B4D0075F950 /* PTTextField.swift in Sources */,
-				C303704F25A55D8A004E49FB /* TimerVC.swift in Sources */,
 				C307404E2469B5A40075F950 /* MathOperationsVC+UI.swift in Sources */,
+				C3E8A0A625F9A59700E8C391 /* TimerVC.swift in Sources */,
 				C30740482469B2540075F950 /* PTScrollView.swift in Sources */,
 				C307402724689F9F0075F950 /* ProblemSet.swift in Sources */,
 				C3301DC725A532B00014B0DA /* TimerParameters.swift in Sources */,

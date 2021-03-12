@@ -26,13 +26,14 @@ class TimerMenuVC: UIViewController {
     let parameters = TimerParameters.shared
     let padding = Padding.standard
     
-    let backgroundTimer = BackgroundTimer()
+    let currentTestSession = CurrentTestSession()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         setDefaultRadioButtons()
+        checkCurrentTest()
     }
     
     @objc func selectACT() {
@@ -52,7 +53,6 @@ class TimerMenuVC: UIViewController {
     }
     
     @objc func navigateToNextVC() {
-        backgroundTimer.clearBackgroundTimer()
         let vc = TestSectionsVC()
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -63,6 +63,27 @@ class TimerMenuVC: UIViewController {
         
         notExtendedButton.isSelected = true
         selectNotExtended()
+    }
+    
+    private func checkCurrentTest() {
+        if !currentTestSession.testOrderNumbers.isEmpty {
+            print("Current test found")
+            let alert = UIAlertController(title: "Test Session Found", message: "Would you like to continue your current session?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { _ in
+                self.currentTestSession.clearCurrentTestSession()
+                self.removeLocalNotifications()
+            }))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                let timerVC = TimerVC(isContinuing: true)
+                self.present(timerVC, animated: true)
+            }))
+            present(alert, animated: true)
+        }
+    }
+    
+    private func removeLocalNotifications() {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     private func configureUI() {

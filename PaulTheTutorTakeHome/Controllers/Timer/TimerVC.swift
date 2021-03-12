@@ -2,7 +2,7 @@
 //  TimerVC.swift
 //  PaulTheTutorTakeHome
 //
-//  Created by Dan Pham on 1/5/21.
+//  Created by Dan Pham on 3/10/21.
 //  Copyright © 2021 Dan Pham. All rights reserved.
 //
 
@@ -10,23 +10,16 @@ import AVFoundation
 import UIKit
 import UserNotifications
 
-
-// Alert sound reference: https://github.com/TUNER88/iOSSystemSoundsLibrary
-// Background mode reference from https://www.raywenderlich.com/5817-background-modes-tutorial-getting-started#toc-anchor-013
-
-
-// Bug: Some local notifications aren't being removed once the app is terminated or even coming into foreground. Notifications from previous sessions still appear.
-// Potential bug: switching tabs to math facts then switching back to timer
-// Potential bug (crash happened): using local notification to open app back to timer after the system background timer for the app has run out (about 30 seconds after app enters background)
-
 class TimerVC: UIViewController {
     
     let testLabel = PTTitleLabel(textAlignment: .center, fontSize: 30, text: "")
     let timerLabel = PTTitleLabel(textAlignment: .center, fontSize: 60, text: "")
+    let startEndButton = PTButton(titleColor: .white, backgroundColor: Colors.paulDarkGreen, title: "")
     
     let parameters = TimerParameters.shared
     let padding = Padding.standard
     
+    var tests: [Test] = []
     var currentTest: Test = Tests.english {
         didSet {
             testLabel.text = currentTest.shortTitle
@@ -35,38 +28,36 @@ class TimerVC: UIViewController {
     var currentTestIndex = 0
     
     var timer = Timer()
-    var startingTime = 0
     var secondsRemaining = 0
     
     let tenMinutesInSeconds = 600
     let fiveMinutesInSeconds = 300
     let oneMinuteInSeconds = 60
     
-    var backgroundTask = UIBackgroundTaskIdentifier.invalid
-    var isAppActive = true
+    let currentTestSession = CurrentTestSession()
+    var isContinuing = false
     
-    let backgroundTimer = BackgroundTimer()
+    
+    required init(isContinuing: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        self.isContinuing = isContinuing
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer.invalidate()
-        endBackgroundTasks()
-        backgroundTimer.clearBackgroundTimer()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        handleSettingUpTests()
+        isContinuing ? checkCurrentTest() : handleSettingUpTests()
         configureUI()
-        startTest()
-        
-        print("view did load")
-//        let now = Date().timeIntervalSince1970
-//        backgroundTimer.startTime = now
-        
-        // Delete
-        addLocalNotification(for: "Test start", withSubtitle: .zeroMinutes, timeInterval: 5)
+        if isContinuing { startTest() }
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error {
@@ -74,10 +65,42 @@ class TimerVC: UIViewController {
             }
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(beginBackgroundTasks), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(checkBackgroundTimer), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(endBackgroundTasks), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getCurrentTest), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
+    
+    
+    // MARK: - Button functions
+    
+    @objc private func startEndTest() {
+        if startEndButton.titleLabel?.text == "Start \(parameters.testType.rawValue)" {
+            startTest()
+            saveTestInfo()
+            scheduleNotifications()
+        } else {
+            endTest()
+            
+            if let navigationController = navigationController {
+                navigationController.popToRootViewController(animated: true)
+            } else {
+                dismiss(animated: true)
+            }
+        }
+    }
+    
+    private func startTest() {
+        startEndButton.setTitle("End \(parameters.testType.rawValue)", for: .normal)
+        runTimer()
+    }
+    
+    private func endTest() {
+        startEndButton.isHidden = true
+        timer.invalidate()
+        currentTestSession.clearCurrentTestSession()
+        removeLocalNotifications()
+    }
+    
+    
+    // MARK: - Test functions
     
     private func handleSettingUpTests() {
         parameters.tests.sort { (test1, test2) -> Bool in
@@ -88,14 +111,130 @@ class TimerVC: UIViewController {
             currentTest = firstTest
         }
         
-        startingTime = currentTest.duration
-        secondsRemaining = startingTime
+        tests = parameters.tests
+        secondsRemaining = currentTest.duration
     }
     
-    private func startTest() {
-        runTimer()
-        backgroundTimer.updateNow(withTests: parameters.tests)
+    // SET functions
+    
+    private func saveTestsToUserDefaults(test: Test, index: Int, endTime: Double) {
+        saveTestOrderNumbers(test: test)
+        saveTestEndTimes(index: index, endTime: endTime)
     }
+    
+    private func saveTestInfo() {
+        currentTestSession.testType = parameters.testType.rawValue
+    }
+    
+    private func saveTestOrderNumbers(test: Test) {
+             if test == Tests.english    { currentTestSession.testOrderNumbers.append(0) }
+        else if test == Tests.math       { currentTestSession.testOrderNumbers.append(1) }
+        else if test == Tests.testBreak1 { currentTestSession.testOrderNumbers.append(2) }
+        else if test == Tests.reading    { currentTestSession.testOrderNumbers.append(3) }
+        else if test == Tests.science    { currentTestSession.testOrderNumbers.append(4) }
+        else if test == Tests.testBreak2 { currentTestSession.testOrderNumbers.append(5) }
+        else if test == Tests.essay      { currentTestSession.testOrderNumbers.append(6) }
+    }
+    
+    private func saveTestEndTimes(index: Int, endTime: Double) {
+        let endDate = Date().addingTimeInterval(endTime)
+        
+             if index == 0 { currentTestSession.firstTestEndTime    = endDate.toString() }
+        else if index == 1 { currentTestSession.secondTestEndTime   = endDate.toString() }
+        else if index == 2 { currentTestSession.thirdTestEndTime    = endDate.toString() }
+        else if index == 3 { currentTestSession.fourthTestEndTime   = endDate.toString() }
+        else if index == 4 { currentTestSession.fifthTestEndTime    = endDate.toString() }
+        else if index == 5 { currentTestSession.sixthTestEndTime    = endDate.toString() }
+        else if index == 6 { currentTestSession.seventhTestEndTime  = endDate.toString() }
+    }
+    
+    // GET functions
+    
+    private func checkCurrentTest() {
+        guard !currentTestSession.testOrderNumbers.isEmpty else {
+            handleNoTestSessionFound()
+            return
+        }
+        
+//        print("Current test found")
+        loadCurrentTestsFromUserDefaults()
+        startEndButton.setTitle("End \(parameters.testType.rawValue)", for: .normal)
+    }
+    
+    private func loadCurrentTestsFromUserDefaults() {
+//        print("Loading current tests")
+        getTestType()
+        getTestsFromOrderNumbers()
+        getCurrentTest()
+        
+//        print("Current test: \(currentTest.shortTitle)")
+//        print("Seconds remaining: \(secondsRemaining)")
+//        print("Tests: \(tests)")
+    }
+    
+    private func getTestType() {
+        parameters.testType = (currentTestSession.testType == TimerParameters.TestType.act.rawValue) ? .act : .sat
+    }
+
+    private func getTestsFromOrderNumbers() {
+        // Sort test order numbers
+        currentTestSession.testOrderNumbers.sort { (test1, test2) -> Bool in
+            test1 < test2
+        }
+        
+        // Correlate test order numbers with their respective tests
+        for number in currentTestSession.testOrderNumbers {
+                 if number == 0 { tests.append(Tests.english) }
+            else if number == 1 { tests.append(Tests.math) }
+            else if number == 2 { tests.append(Tests.testBreak1) }
+            else if number == 3 { tests.append(Tests.reading) }
+            else if number == 4 { tests.append(Tests.science) }
+            else if number == 5 { tests.append(Tests.testBreak2) }
+            else if number == 6 { tests.append(Tests.essay) }
+        }
+    }
+
+    @objc private func getCurrentTest() {
+        let now = Date()
+        
+        if !currentTestSession.firstTestEndTime.isEmpty, let firstTestEndDate = currentTestSession.firstTestEndTime.toDate(), firstTestEndDate > now, tests.count >= 1 {
+            updateCurrentTestIndex(to: 0)
+            secondsRemaining = Int(firstTestEndDate - now)
+        } else if !currentTestSession.secondTestEndTime.isEmpty, let firstTestEndDate = currentTestSession.firstTestEndTime.toDate(), firstTestEndDate < now, let secondTestEndDate = currentTestSession.secondTestEndTime.toDate(), secondTestEndDate > now, tests.count >= 2 {
+            updateCurrentTestIndex(to: 1)
+            secondsRemaining = Int(secondTestEndDate - now)
+        } else if !currentTestSession.thirdTestEndTime.isEmpty, let secondTestEndDate = currentTestSession.secondTestEndTime.toDate(), secondTestEndDate < now, let thirdTestEndDate = currentTestSession.thirdTestEndTime.toDate(), thirdTestEndDate > now, tests.count >= 3 {
+            updateCurrentTestIndex(to: 2)
+            secondsRemaining = Int(thirdTestEndDate - now)
+        } else if !currentTestSession.fourthTestEndTime.isEmpty, let thirdTestEndDate = currentTestSession.thirdTestEndTime.toDate(), thirdTestEndDate < now, let fourthTestEndDate = currentTestSession.fourthTestEndTime.toDate(), fourthTestEndDate > now, tests.count >= 4 {
+            updateCurrentTestIndex(to: 3)
+            secondsRemaining = Int(fourthTestEndDate - now)
+        } else if !currentTestSession.fifthTestEndTime.isEmpty, let fourthTestEndDate = currentTestSession.fourthTestEndTime.toDate(), fourthTestEndDate < now, let fifthTestEndDate = currentTestSession.fifthTestEndTime.toDate(), fifthTestEndDate > now, tests.count >= 5 {
+            updateCurrentTestIndex(to: 4)
+            secondsRemaining = Int(fifthTestEndDate - now)
+        } else if !currentTestSession.sixthTestEndTime.isEmpty, let fifthTestEndDate = currentTestSession.fifthTestEndTime.toDate(), fifthTestEndDate < now, let sixthTestEndDate = currentTestSession.sixthTestEndTime.toDate(), sixthTestEndDate > now, tests.count >= 6 {
+            updateCurrentTestIndex(to: 5)
+            secondsRemaining = Int(sixthTestEndDate - now)
+        } else if !currentTestSession.seventhTestEndTime.isEmpty, let sixthTestEndDate = currentTestSession.sixthTestEndTime.toDate(), sixthTestEndDate < now, let seventhTestEndDate = currentTestSession.seventhTestEndTime.toDate(), seventhTestEndDate > now, tests.count >= 7 {
+            updateCurrentTestIndex(to: 6)
+            secondsRemaining = Int(seventhTestEndDate - now)
+        } else {
+            handleNoTestSessionFound()
+        }
+        
+//        print("now: \(now)")
+//        print("firstTestEndTime: \(currentTestSession.firstTestEndTime)")
+//        print("secondTestEndTime: \(currentTestSession.secondTestEndTime)")
+//        print("thirdTestEndTime: \(currentTestSession.thirdTestEndTime)")
+//        print("fourthTestEndTime: \(currentTestSession.fourthTestEndTime)")
+//        print("fifthTestEndTime: \(currentTestSession.fifthTestEndTime)")
+//        print("sixthTestEndTime: \(currentTestSession.sixthTestEndTime)")
+//        print("seventhTestEndTime: \(currentTestSession.seventhTestEndTime)")
+//        print("secondsRemaining: \(secondsRemaining)")
+    }
+    
+    
+    // MARK: - Timer functions
     
     private func runTimer() {
         if timer.isValid {
@@ -106,80 +245,58 @@ class TimerVC: UIViewController {
         timer.tolerance = 0.1
     }
     
-    @objc func updateTimer() {
+    @objc private func updateTimer() {
         if secondsRemaining > 0 {
             // Timer is running
             secondsRemaining -= 1
             timerLabel.text = timeString(time: secondsRemaining)
             
-            if isAppActive && (secondsRemaining == tenMinutesInSeconds || secondsRemaining == fiveMinutesInSeconds || secondsRemaining == oneMinuteInSeconds) {
+            if (secondsRemaining == tenMinutesInSeconds) || (secondsRemaining == fiveMinutesInSeconds) || (secondsRemaining == oneMinuteInSeconds) {
                 playAlert()
             }
             
-        } else if currentTestIndex <= (parameters.tests.count - 1) {
+        } else if currentTestIndex <= (tests.count - 1) {
             // Timer is done running but tests still remain
             playAlert()
             
             currentTestIndex += 1
-            currentTest = parameters.tests[currentTestIndex]
-            
-            startingTime = currentTest.duration
-            secondsRemaining = startingTime
+            currentTest = tests[currentTestIndex]
+            secondsRemaining = currentTest.duration
             
             testLabel.text = currentTest.shortTitle
             timerLabel.text = timeString(time: secondsRemaining)
         } else {
             // Timer finished naturally
-            timer.invalidate()
             playAlert()
-            endBackgroundTasks()
-            backgroundTimer.clearBackgroundTimer()
+            endTest()
         }
     }
     
-    @objc private func beginBackgroundTasks() {
-        guard timer.isValid else { return }
-        
-        isAppActive = false
-        
-        backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: { [self] in
-            UIApplication.shared.endBackgroundTask(backgroundTask)
-            backgroundTask = UIBackgroundTaskIdentifier.invalid
-        })
-        
-        RunLoop.current.add(timer, forMode: .common)
-        
-        scheduleNotifications()
-    }
+    
+    // MARK: - Local Notifications
     
     // Referenced from https://www.hackingwithswift.com/forums/swiftui/running-a-timer-while-the-app-is-in-the-background/1647
     private func scheduleNotifications() {
         var currentTotalTestDuration = 0
         let now = Date()
-        var elapsedTime = 0
         
-        for (index, test) in parameters.tests.enumerated() where index >= currentTestIndex {  // Look for current test
-            elapsedTime = (index == currentTestIndex) ? (currentTest.duration - secondsRemaining) : 0  // Look for time remaining from current test
-            
-            if (test.duration - elapsedTime > tenMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
-                let tenMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - tenMinutesInSeconds)).timeIntervalSince(now)
+        for (index, test) in parameters.tests.enumerated() where index >= currentTestIndex {
+            if test.duration > fiveMinutesInSeconds {
+                let tenMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - tenMinutesInSeconds)).timeIntervalSince(now)
                 addLocalNotification(for: test.shortTitle, withSubtitle: .tenMinutes, timeInterval: tenMinutesFromEndOfTest)
-            }
-            
-            if (test.duration - elapsedTime > fiveMinutesInSeconds) && (test.duration > fiveMinutesInSeconds) {
-                let fiveMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - fiveMinutesInSeconds)).timeIntervalSince(now)
+                
+                let fiveMinutesFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - fiveMinutesInSeconds)).timeIntervalSince(now)
                 addLocalNotification(for: test.shortTitle, withSubtitle: .fiveMinutes, timeInterval: fiveMinutesFromEndOfTest)
             }
             
-            if test.duration - elapsedTime > oneMinuteInSeconds {
-                let oneMinuteFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime - oneMinuteInSeconds)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: .oneMinute, timeInterval: oneMinuteFromEndOfTest)
-            }
+            let oneMinuteFromEndOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - oneMinuteInSeconds)).timeIntervalSince(now)
+            addLocalNotification(for: test.shortTitle, withSubtitle: .oneMinute, timeInterval: oneMinuteFromEndOfTest)
             
-            if test.duration - elapsedTime > 0 {
-                let endOfTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration - elapsedTime)).timeIntervalSince(now)
-                addLocalNotification(for: test.shortTitle, withSubtitle: .zeroMinutes, timeInterval: endOfTest)
-            }
+            let isFinalTest = index == parameters.tests.count - 1
+            let endTimeOfCurrentTest = Date(timeIntervalSinceNow: TimeInterval(currentTotalTestDuration + test.duration)).timeIntervalSince(now)
+            addLocalNotification(for: isFinalTest ? "End of \(parameters.testType.rawValue)" : test.shortTitle, withSubtitle: isFinalTest ? .finalTest : .zeroMinutes, timeInterval: endTimeOfCurrentTest)
+            
+            saveTestsToUserDefaults(test: test, index: index, endTime: endTimeOfCurrentTest)
             
             currentTotalTestDuration += test.duration
         }
@@ -196,114 +313,21 @@ class TimerVC: UIViewController {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request)
-    }
-    
-    @objc private func checkBackgroundTimer() {
-        print("Did become active, startTime: \(backgroundTimer.startTime), testOrderNumbers: \(backgroundTimer.testOrderNumbers)")
         
-        if Int(backgroundTimer.startTime) != 0 && !backgroundTimer.testOrderNumbers.isEmpty {
-            print("Current test found")
-            loadCurrentTests()
-            startTest()
-        }
-        
-        endBackgroundTasks()
-    }
-    
-    private func loadCurrentTests() {
-        print("Loading current tests")
-        
-        let tests = getTestsFromOrderNumbers()
-        let remainingTime = getRemainingTime(from: tests)
-        getCurrentAndRemainingTests(from: tests, withRemainingTime: remainingTime)
-        
-        print("Current test: \(currentTest.shortTitle)")
-        print("Current test index: \(currentTestIndex)")
-        print("Seconds remaining: \(secondsRemaining)")
-    }
-
-    private func getTestsFromOrderNumbers() -> [Test] {
-        // Sort test order numbers
-        backgroundTimer.testOrderNumbers.sort { (test1, test2) -> Bool in
-            test1 < test2
-        }
-        
-        // Correlate test order numbers with their respective tests
-        var tests: [Test] = []
-        
-        for number in backgroundTimer.testOrderNumbers {
-                 if number == 0 { tests.append(Tests.english) }
-            else if number == 1 { tests.append(Tests.math) }
-            else if number == 2 { tests.append(Tests.testBreak1) }
-            else if number == 3 { tests.append(Tests.reading) }
-            else if number == 4 { tests.append(Tests.science) }
-            else if number == 5 { tests.append(Tests.testBreak2) }
-            else if number == 6 { tests.append(Tests.essay) }
-        }
-        
-        return tests
-    }
-
-    private func getRemainingTime(from tests: [Test]) -> Int {
-        // Find total testing time
-        var totalTestingTime = 0
-        for test in tests {
-            totalTestingTime += test.duration
-        }
-        
-        // Find remaining testing time
-        let now = Date().timeIntervalSince1970
-        let timeElapsed = Int(now - backgroundTimer.startTime)
-        let remainingTime = totalTestingTime - timeElapsed
-        
-        print("Total testing time: \(totalTestingTime)")
-        print("Elapsed time: \(timeElapsed)")
-        print("Remaining time: \(remainingTime)")
-        
-        if remainingTime > 0 {
-            return remainingTime
-        }
-        
-        return 0
-    }
-
-    private func getCurrentAndRemainingTests(from tests: [Test], withRemainingTime remainingTime: Int) {
-        let reversedTests = tests.reversed()
-        var remainingTime = remainingTime
-        var remainingTests: [Test] = []
-        
-        for (index, test) in reversedTests.enumerated() {
-            print("test duration: \(test.duration), remaining time: \(remainingTime)")
-            if test.duration < remainingTime {
-                remainingTime -= test.duration
-                remainingTests.append(test)
-            } else {
-                remainingTests.append(test)
-                currentTest = test
-                secondsRemaining = remainingTime
-                currentTestIndex = tests.count - 1 - index
-                break
-            }
-        }
-        
-        parameters.tests = remainingTests.reversed()
-    }
-    
-    // Referenced from https://medium.com/swlh/background-task-in-swift-a3ac600032ba
-    @objc private func endBackgroundTasks() {
-        isAppActive = true
-        
-        if backgroundTask != .invalid {
-            UIApplication.shared.endBackgroundTask(backgroundTask)
-            backgroundTask = UIBackgroundTaskIdentifier.invalid
-        }
-        
-        removeLocalNotifications()
+//        print("Adding local notification for title: \(content.title), subtitle: \(content.subtitle), timeInterval: \(timeInterval)")
     }
     
     private func removeLocalNotifications() {
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    private func updateCurrentTestIndex(to index: Int) {
+        currentTest = tests[index]
+        currentTestIndex = index
     }
     
     private func playAlert() {
@@ -318,14 +342,24 @@ class TimerVC: UIViewController {
         return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
     }
     
+    private func handleNoTestSessionFound() {
+        let alert = UIAlertController(title: "No Test Session Found", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.navigationController?.popToRootViewController(animated: true)
+        }))
+        present(alert, animated: true)
+    }
+    
     private func configureUI() {
-        title = parameters.testType == .act ? "ACT" : "SAT"
+        title = parameters.testType.rawValue
         view.backgroundColor = Colors.paulLightGreen
-        view.addSubviews(testLabel, timerLabel)
+        view.addSubviews(testLabel, timerLabel, startEndButton)
         
         testLabel.text = currentTest.shortTitle
-        
         timerLabel.text = timeString(time: secondsRemaining)
+        
+        startEndButton.setTitle("Start \(parameters.testType.rawValue)", for: .normal)
+        startEndButton.addTarget(self, action: #selector(startEndTest), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             timerLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -Padding.large),
@@ -334,7 +368,12 @@ class TimerVC: UIViewController {
             
             testLabel.bottomAnchor.constraint(equalTo: timerLabel.topAnchor, constant: -Padding.large),
             testLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            testLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding)
+            testLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            
+            startEndButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            startEndButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+            startEndButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            startEndButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
