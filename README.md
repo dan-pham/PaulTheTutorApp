@@ -1,5 +1,8 @@
 # PaulTheTutorApp
+## Overview
 Version 1.0 of the math practice app.
+
+The math practice app is designed to help younger users with basic math problems. The goal of the app is to motivate users to work on their mathematical foundation. To improve user experience and alleviate the monotony of traditional pen and paper worksheets, I integrated playful colors and Lottie animations.
 
 ## Previous version vs. Latest version
 Changes:
